@@ -7,5 +7,16 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/image',
     '@nuxtjs/tailwindcss'
-  ]
+  ],
+  runtimeConfig: {
+    // Private keys (server-side only)
+    databaseUrl: process.env.DATABASE_URL || '',
+    adminUsername: process.env.ADMIN_USERNAME || 'admin',
+    adminPassword: process.env.ADMIN_PASSWORD || '',
+    sessionSecret: process.env.SESSION_SECRET || '',
+    // Public keys (exposed to client)
+    public: {
+      apiBase: '/api'
+    }
+  }
 })
