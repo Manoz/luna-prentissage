@@ -1,26 +1,26 @@
 <template>
-  <div class="min-h-screen bg-warmCream">
+  <div class="min-h-screen bg-warm-cream">
     <div class="fixed inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E')" />
 
     <div class="relative">
       <!-- Header -->
-      <header class="border-b border-deepTeal/10 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
+      <header class="border-b border-deep-teal/10 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
         <div class="container mx-auto px-6 py-4">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
-              <NuxtLink to="/admin" class="text-deepTeal/60 hover:text-deepTeal transition-colors">
+              <NuxtLink to="/admin" class="text-deep-teal/60 hover:text-deep-teal transition-colors">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
               </NuxtLink>
-              <h1 class="text-2xl font-serif font-bold text-deepTeal">
+              <h1 class="text-2xl font-serif font-bold text-deep-teal">
                 Termes médicaux
               </h1>
             </div>
 
             <button
               type="button"
-              class="px-4 py-2 bg-deepTeal text-white font-medium rounded-lg hover:bg-deepTeal/90 transition-all shadow-lg"
+              class="px-4 py-2 bg-deep-teal text-white font-medium rounded-lg hover:bg-deep-teal/90 transition-all shadow-lg"
               @click="openCreateModal"
             >
               + Nouveau terme
@@ -34,24 +34,24 @@
         <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-deepTeal mb-2">
+              <label class="block text-sm font-medium text-deep-teal mb-2">
                 Rechercher
               </label>
               <input
                 v-model="searchQuery"
                 type="text"
                 placeholder="Rechercher par radical ou signification..."
-                class="w-full px-4 py-2 border-2 border-deepTeal/20 rounded-lg focus:border-deepTeal focus:outline-none"
+                class="w-full px-4 py-2 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
               >
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-deepTeal mb-2">
+              <label class="block text-sm font-medium text-deep-teal mb-2">
                 Filtrer par catégorie
               </label>
               <select
                 v-model="filterCategoryId"
-                class="w-full px-4 py-2 border-2 border-deepTeal/20 rounded-lg focus:border-deepTeal focus:outline-none"
+                class="w-full px-4 py-2 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
               >
                 <option :value="null">Toutes les catégories</option>
                 <option
@@ -65,7 +65,7 @@
             </div>
           </div>
 
-          <div class="mt-4 flex items-center justify-between text-sm text-deepTeal/60">
+          <div class="mt-4 flex items-center justify-between text-sm text-deep-teal/60">
             <span>{{ filteredTerms.length }} terme(s) trouvé(s)</span>
             <span>Page {{ currentPage }} sur {{ totalPages }}</span>
           </div>
@@ -74,8 +74,8 @@
         <!-- Loading State -->
         <div v-if="loading" class="flex items-center justify-center py-20">
           <div class="text-center">
-            <div class="w-16 h-16 border-4 border-deepTeal/20 border-t-deepTeal rounded-full animate-spin mx-auto mb-4" />
-            <p class="text-deepTeal/60">Chargement...</p>
+            <div class="w-16 h-16 border-4 border-deep-teal/20 border-t-deepTeal rounded-full animate-spin mx-auto mb-4" />
+            <p class="text-deep-teal/60">Chargement...</p>
           </div>
         </div>
 
@@ -83,18 +83,18 @@
         <div v-else class="bg-white rounded-xl shadow-lg overflow-hidden">
           <div class="overflow-x-auto">
             <table class="w-full">
-              <thead class="bg-deepTeal/5 border-b border-deepTeal/10">
+              <thead class="bg-deep-teal/5 border-b border-deep-teal/10">
                 <tr>
-                  <th class="px-6 py-4 text-left text-sm font-semibold text-deepTeal">
+                  <th class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">
                     Radical
                   </th>
-                  <th class="px-6 py-4 text-left text-sm font-semibold text-deepTeal">
+                  <th class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">
                     Signification
                   </th>
-                  <th class="px-6 py-4 text-left text-sm font-semibold text-deepTeal">
+                  <th class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">
                     Catégorie
                   </th>
-                  <th class="px-6 py-4 text-right text-sm font-semibold text-deepTeal">
+                  <th class="px-6 py-4 text-right text-sm font-semibold text-deep-teal">
                     Actions
                   </th>
                 </tr>
@@ -103,12 +103,12 @@
                 <tr
                   v-for="term in paginatedTerms"
                   :key="term.id"
-                  class="hover:bg-deepTeal/5 transition-colors"
+                  class="hover:bg-deep-teal/5 transition-colors"
                 >
                   <td class="px-6 py-4">
-                    <span class="font-semibold text-deepTeal">{{ term.root }}</span>
+                    <span class="font-semibold text-deep-teal">{{ term.root }}</span>
                   </td>
-                  <td class="px-6 py-4 text-deepTeal/70">
+                  <td class="px-6 py-4 text-deep-teal/70">
                     {{ term.meaning }}
                   </td>
                   <td class="px-6 py-4">
@@ -123,7 +123,7 @@
                     <div class="flex items-center justify-end gap-2">
                       <button
                         type="button"
-                        class="p-2 text-deepTeal/60 hover:text-deepTeal hover:bg-deepTeal/5 rounded-lg transition-all"
+                        class="p-2 text-deep-teal/60 hover:text-deep-teal hover:bg-deep-teal/5 rounded-lg transition-all"
                         @click="openEditModal(term)"
                       >
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -147,12 +147,12 @@
           </div>
 
           <!-- Pagination -->
-          <div v-if="totalPages > 1" class="px-6 py-4 border-t border-deepTeal/10">
+          <div v-if="totalPages > 1" class="px-6 py-4 border-t border-deep-teal/10">
             <div class="flex items-center justify-between">
               <button
                 type="button"
                 :disabled="currentPage === 1"
-                class="px-4 py-2 text-sm font-medium text-deepTeal border-2 border-deepTeal/20 rounded-lg hover:bg-deepTeal/5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                class="px-4 py-2 text-sm font-medium text-deep-teal border-2 border-deep-teal/20 rounded-lg hover:bg-deep-teal/5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                 @click="currentPage--"
               >
                 Précédent
@@ -165,8 +165,8 @@
                   type="button"
                   class="w-10 h-10 rounded-lg font-medium transition-all"
                   :class="{
-                    'bg-deepTeal text-white': page === currentPage,
-                    'text-deepTeal hover:bg-deepTeal/5': page !== currentPage
+                    'bg-deep-teal text-white': page === currentPage,
+                    'text-deep-teal hover:bg-deep-teal/5': page !== currentPage
                   }"
                   @click="currentPage = page"
                 >
@@ -177,7 +177,7 @@
               <button
                 type="button"
                 :disabled="currentPage === totalPages"
-                class="px-4 py-2 text-sm font-medium text-deepTeal border-2 border-deepTeal/20 rounded-lg hover:bg-deepTeal/5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                class="px-4 py-2 text-sm font-medium text-deep-teal border-2 border-deep-teal/20 rounded-lg hover:bg-deep-teal/5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                 @click="currentPage++"
               >
                 Suivant
@@ -193,7 +193,7 @@
           @click.self="closeModal"
         >
           <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8">
-            <h2 class="text-2xl font-serif font-bold text-deepTeal mb-6">
+            <h2 class="text-2xl font-serif font-bold text-deep-teal mb-6">
               {{ editingTerm ? 'Modifier le terme' : 'Nouveau terme' }}
             </h2>
 
@@ -221,12 +221,12 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
-              <h3 class="text-xl font-serif font-bold text-deepTeal mb-2">
+              <h3 class="text-xl font-serif font-bold text-deep-teal mb-2">
                 Confirmer la suppression
               </h3>
-              <p class="text-deepTeal/60">
+              <p class="text-deep-teal/60">
                 Êtes-vous sûr de vouloir supprimer le terme
-                <span class="font-semibold text-deepTeal">{{ termToDelete?.root }}</span> ?
+                <span class="font-semibold text-deep-teal">{{ termToDelete?.root }}</span> ?
               </p>
             </div>
 
@@ -421,25 +421,5 @@ async function handleDelete() {
 
 .font-serif {
   font-family: 'Crimson Pro', serif;
-}
-
-.bg-warmCream {
-  background-color: #FAF9F6;
-}
-
-.text-deepTeal {
-  color: #2D5F5D;
-}
-
-.bg-deepTeal {
-  background-color: #2D5F5D;
-}
-
-.text-terracotta {
-  color: #C1666B;
-}
-
-.bg-terracotta {
-  background-color: #C1666B;
 }
 </style>

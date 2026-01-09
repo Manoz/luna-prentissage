@@ -1,19 +1,19 @@
 <template>
-  <div class="min-h-screen bg-warmCream">
+  <div class="min-h-screen bg-warm-cream">
     <div class="fixed inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E')" />
 
     <div class="relative">
       <!-- Header -->
-      <header class="border-b border-deepTeal/10">
+      <header class="border-b border-deep-teal/10">
         <div class="container mx-auto px-6 py-6">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
-              <NuxtLink to="/" class="text-deepTeal/60 hover:text-deepTeal transition-colors">
+              <NuxtLink to="/" class="text-deep-teal/60 hover:text-deep-teal transition-colors">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
               </NuxtLink>
-              <h1 class="text-2xl font-serif font-bold text-deepTeal">
+              <h1 class="text-2xl font-serif font-bold text-deep-teal">
                 Mode Quiz
               </h1>
             </div>
@@ -25,22 +25,22 @@
         <!-- Setup Screen -->
         <div v-if="quizState === 'setup'" class="max-w-2xl mx-auto">
           <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-            <h2 class="text-3xl font-serif font-bold text-deepTeal mb-2">
+            <h2 class="text-3xl font-serif font-bold text-deep-teal mb-2">
               Configurer votre quiz
             </h2>
-            <p class="text-deepTeal/60 mb-8">
+            <p class="text-deep-teal/60 mb-8">
               Choisissez les paramètres pour personnaliser votre session de quiz.
             </p>
 
             <div class="space-y-8">
               <!-- Category Selection -->
               <div>
-                <label class="block text-sm font-semibold text-deepTeal mb-3">
+                <label class="block text-sm font-semibold text-deep-teal mb-3">
                   Catégorie
                 </label>
                 <select
                   v-model="selectedCategoryId"
-                  class="w-full px-4 py-3 border-2 border-deepTeal/20 rounded-lg focus:border-deepTeal focus:outline-none"
+                  class="w-full px-4 py-3 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
                 >
                   <option :value="null">Toutes les catégories</option>
                   <option
@@ -55,7 +55,7 @@
 
               <!-- Quiz Type -->
               <div>
-                <label class="block text-sm font-semibold text-deepTeal mb-3">
+                <label class="block text-sm font-semibold text-deep-teal mb-3">
                   Type de questions
                 </label>
                 <div class="grid grid-cols-3 gap-3">
@@ -64,7 +64,7 @@
                     class="p-4 rounded-lg border-2 transition-all cursor-pointer"
                     :class="{
                       'border-terracotta text-terracotta': quizType === 'multiple-choice',
-                      'border-deepTeal/20 text-deepTeal/60 hover:border-deepTeal/40': quizType !== 'multiple-choice'
+                      'border-deep-teal/20 text-deep-teal/60 hover:border-deep-teal/40': quizType !== 'multiple-choice'
                     }"
                     @click="quizType = 'multiple-choice'"
                   >
@@ -78,7 +78,7 @@
                     class="p-4 rounded-lg border-2 transition-all cursor-pointer"
                     :class="{
                       'border-terracotta text-terracotta': quizType === 'true-false',
-                      'border-deepTeal/20 text-deepTeal/60 hover:border-deepTeal/40': quizType !== 'true-false'
+                      'border-deep-teal/20 text-deep-teal/60 hover:border-deep-teal/40': quizType !== 'true-false'
                     }"
                     @click="quizType = 'true-false'"
                   >
@@ -92,7 +92,7 @@
                     class="p-4 rounded-lg border-2 transition-all cursor-pointer"
                     :class="{
                       'border-terracotta text-terracotta': quizType === 'mixed',
-                      'border-deepTeal/40 text-deepTeal/60 hover:border-deepTeal/40': quizType !== 'mixed'
+                      'border-deep-teal/40 text-deep-teal/60 hover:border-deep-teal/40': quizType !== 'mixed'
                     }"
                     @click="quizType = 'mixed'"
                   >
@@ -105,7 +105,7 @@
 
               <!-- Number of Questions -->
               <div>
-                <label class="block text-sm font-semibold text-deepTeal mb-3">
+                <label class="block text-sm font-semibold text-deep-teal mb-3">
                   Nombre de questions
                 </label>
                 <div class="py-4">
@@ -118,9 +118,9 @@
                     class="slider w-full"
                   >
                 </div>
-                <div class="flex justify-between text-sm text-deepTeal/60 mt-2">
+                <div class="flex justify-between text-sm text-deep-teal/60 mt-2">
                   <span>5</span>
-                  <span class="text-lg font-semibold text-deepTeal">{{ questionCount }}</span>
+                  <span class="text-lg font-semibold text-deep-teal">{{ questionCount }}</span>
                   <span>50</span>
                 </div>
               </div>
@@ -129,7 +129,7 @@
               <button
                 type="button"
                 :disabled="availableTerms.length === 0"
-                class="w-full py-4 bg-deepTeal text-white font-semibold rounded-full hover:bg-deepTeal/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                class="w-full py-4 bg-deep-teal text-white font-semibold rounded-full hover:bg-deep-teal/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 @click="startQuiz"
               >
                 Commencer le quiz
@@ -158,7 +158,7 @@
               v-if="currentIndex < questions.length - 1"
               type="button"
               :disabled="!hasAnswered"
-              class="px-8 py-3 bg-deepTeal text-white font-semibold rounded-full hover:bg-deepTeal/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              class="px-8 py-3 bg-deep-teal text-white font-semibold rounded-full hover:bg-deep-teal/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               @click="nextQuestion"
             >
               Question suivante
@@ -167,7 +167,7 @@
               v-else
               type="button"
               :disabled="!hasAnswered"
-              class="px-8 py-3 bg-terracotta text-warmCream font-semibold rounded-full hover:bg-terracotta/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              class="px-8 py-3 bg-terracotta text-warm-cream font-semibold rounded-full hover:bg-terracotta/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               @click="finishQuiz"
             >
               Voir les résultats
@@ -190,42 +190,42 @@
                 {{ percentage }}%
               </div>
 
-              <h2 class="text-4xl font-serif font-bold text-deepTeal mb-2">
+              <h2 class="text-4xl font-serif font-bold text-deep-teal mb-2">
                 {{ getResultTitle() }}
               </h2>
 
-              <p class="text-xl text-deepTeal/70">
-                Vous avez obtenu <span class="font-semibold text-deepTeal">{{ score }}/{{ questions.length }}</span> bonnes réponses
+              <p class="text-xl text-deep-teal/70">
+                Vous avez obtenu <span class="font-semibold text-deep-teal">{{ score }}/{{ questions.length }}</span> bonnes réponses
               </p>
             </div>
 
             <div class="grid grid-cols-2 gap-6 mb-8">
-              <div class="p-6 bg-deepTeal/5 rounded-xl">
-                <div class="text-3xl font-serif font-bold text-deepTeal mb-1">
+              <div class="p-6 bg-deep-teal/5 rounded-xl">
+                <div class="text-3xl font-serif font-bold text-deep-teal mb-1">
                   {{ score }}
                 </div>
-                <div class="text-sm text-deepTeal/60">Bonnes réponses</div>
+                <div class="text-sm text-deep-teal/60">Bonnes réponses</div>
               </div>
 
               <div class="p-6 bg-terracotta/5 rounded-xl">
                 <div class="text-3xl font-serif font-bold text-terracotta mb-1">
                   {{ questions.length - score }}
                 </div>
-                <div class="text-sm text-deepTeal/60">Erreurs</div>
+                <div class="text-sm text-deep-teal/60">Erreurs</div>
               </div>
             </div>
 
             <div class="flex gap-3">
               <button
                 type="button"
-                class="flex-1 px-6 py-3 bg-deepTeal text-white font-semibold rounded-full hover:bg-deepTeal/90 transition-all"
+                class="flex-1 px-6 py-3 bg-deep-teal text-white font-semibold rounded-full hover:bg-deep-teal/90 transition-all"
                 @click="resetQuiz"
               >
                 Recommencer
               </button>
               <NuxtLink
                 to="/"
-                class="flex-1 px-6 py-3 border-2 border-deepTeal/20 text-deepTeal font-semibold rounded-full hover:bg-deepTeal/5 transition-all inline-block"
+                class="flex-1 px-6 py-3 border-2 border-deep-teal/20 text-deep-teal font-semibold rounded-full hover:bg-deep-teal/5 transition-all inline-block"
               >
                 Retour à l'accueil
               </NuxtLink>
@@ -422,26 +422,6 @@ function triggerConfetti(percentage: number) {
 
 .font-serif {
   font-family: 'Crimson Pro', serif;
-}
-
-.bg-warmCream {
-  background-color: #FAF9F6;
-}
-
-.text-deepTeal {
-  color: #2D5F5D;
-}
-
-.bg-deepTeal {
-  background-color: #2D5F5D;
-}
-
-.text-terracotta {
-  color: #C1666B;
-}
-
-.bg-terracotta {
-  background-color: #C1666B;
 }
 
 /* Custom range input styling */

@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-warmCream">
+  <div class="min-h-screen bg-warm-cream">
     <!-- Subtle texture overlay -->
     <div class="fixed inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E')" />
 
@@ -7,12 +7,12 @@
       <!-- Navigation -->
       <nav class="container mx-auto px-6 py-8">
         <div class="flex items-center justify-between">
-          <h1 class="text-3xl font-serif font-bold text-deepTeal">
+          <h1 class="text-3xl font-serif font-bold text-deep-teal">
             Luna<span class="text-terracotta">·</span>Prentissage
           </h1>
           <NuxtLink
             to="/admin"
-            class="text-sm text-deepTeal/60 hover:text-deepTeal hover:underline transition-colors"
+            class="text-sm text-deep-teal/60 hover:text-deep-teal hover:underline transition-colors"
           >
             Administration
           </NuxtLink>
@@ -23,18 +23,18 @@
       <section class="container mx-auto px-6 py-20">
         <div class="max-w-4xl mx-auto text-center">
           <div class="inline-block mb-6">
-            <span class="text-sm uppercase tracking-[0.3em] text-warmCream font-medium">
+            <span class="text-sm uppercase tracking-[0.3em] text-warm-cream font-medium">
               Terminologie Médicale
             </span>
           </div>
 
-          <h2 class="text-6xl md:text-7xl lg:text-8xl font-serif font-bold text-warmCream leading-[0.95] mb-8">
+          <h2 class="text-6xl md:text-7xl lg:text-8xl font-serif font-bold text-warm-cream leading-[0.95] mb-8">
             Maîtrisez les
-            <span class="block mt-2 italic text-warmCream">radicaux</span>
+            <span class="block mt-2 italic text-warm-cream">radicaux</span>
             médicaux
           </h2>
 
-          <p class="text-xl text-warmCream max-w-2xl mx-auto mb-12 leading-relaxed">
+          <p class="text-xl text-warm-cream max-w-2xl mx-auto mb-12 leading-relaxed">
             Une approche moderne pour apprendre et mémoriser les préfixes, suffixes
             et radicaux de la terminologie médicale.
           </p>
@@ -43,7 +43,7 @@
           <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <NuxtLink
               to="/flashcards"
-              class="group px-8 py-4 bg-white text-warmCream font-medium rounded-full hover:bg-deepTeal/90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 w-full sm:w-auto"
+              class="group px-8 py-4 bg-white text-warm-cream font-medium rounded-full hover:bg-deep-teal/90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 w-full sm:w-auto"
             >
               <span class="flex items-center justify-center gap-2">
                 <svg class="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -55,7 +55,7 @@
 
             <NuxtLink
               to="/quiz"
-              class="group px-8 py-4 bg-white text-warmCream font-medium rounded-full hover:bg-terracotta/90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 w-full sm:w-auto"
+              class="group px-8 py-4 bg-white text-warm-cream font-medium rounded-full hover:bg-terracotta/90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 w-full sm:w-auto"
             >
               <span class="flex items-center justify-center gap-2">
                 <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -72,10 +72,10 @@
       <section v-if="!loading" class="container mx-auto px-6 py-20">
         <div class="max-w-6xl mx-auto">
           <div class="text-center mb-16">
-            <h3 class="text-4xl font-serif font-bold text-deepTeal mb-4">
+            <h3 class="text-4xl font-serif font-bold text-deep-teal mb-4">
               Explorer par catégorie
             </h3>
-            <p class="text-deepTeal/70 max-w-2xl mx-auto">
+            <p class="text-deep-teal/70 max-w-2xl mx-auto">
               Chaque catégorie regroupe des radicaux liés à un système ou concept médical spécifique.
             </p>
           </div>
@@ -125,8 +125,8 @@
       </section>
 
       <!-- Footer -->
-      <footer class="container mx-auto px-6 py-12 border-t border-deepTeal/10">
-        <div class="text-center text-deepTeal/60 text-sm">
+      <footer class="container mx-auto px-6 py-12 border-t border-deep-teal/10">
+        <div class="text-center text-deep-teal/60 text-sm">
           <p>Luna-Prentissage · Terminologie Médicale</p>
         </div>
       </footer>
@@ -156,42 +156,12 @@ function getTermCountForCategory(categoryId: number) {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700;900&family=DM+Sans:wght@400;500;600;700&display=swap');
 
-:root {
-  --warm-cream: #FAF9F6;
-  --deep-teal: #2D5F5D;
-  --terracotta: #C1666B;
-}
-
 * {
   font-family: 'DM Sans', sans-serif;
 }
 
 .font-serif {
   font-family: 'Crimson Pro', serif;
-}
-
-.bg-warmCream {
-  background-color: var(--warm-cream);
-}
-
-.text-deepTeal {
-  color: var(--deep-teal);
-}
-
-.bg-deepTeal {
-  background-color: var(--deep-teal);
-}
-
-.text-terracotta {
-  color: var(--terracotta);
-}
-
-.bg-terracotta {
-  background-color: var(--terracotta);
-}
-
-.border-terracotta {
-  border-color: var(--terracotta);
 }
 
 @keyframes fadeInUp {

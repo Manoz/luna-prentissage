@@ -1,26 +1,26 @@
 <template>
-  <div class="min-h-screen bg-warmCream">
+  <div class="min-h-screen bg-warm-cream">
     <div class="fixed inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E')" />
 
     <div class="relative">
       <!-- Header -->
-      <header class="border-b border-deepTeal/10 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
+      <header class="border-b border-deep-teal/10 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
         <div class="container mx-auto px-6 py-4">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
-              <NuxtLink to="/admin" class="text-deepTeal/60 hover:text-deepTeal transition-colors">
+              <NuxtLink to="/admin" class="text-deep-teal/60 hover:text-deep-teal transition-colors">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
               </NuxtLink>
-              <h1 class="text-2xl font-serif font-bold text-deepTeal">
+              <h1 class="text-2xl font-serif font-bold text-deep-teal">
                 Catégories
               </h1>
             </div>
 
             <button
               type="button"
-              class="px-4 py-2 bg-deepTeal text-white font-medium rounded-lg hover:bg-deepTeal/90 transition-all shadow-lg"
+              class="px-4 py-2 bg-deep-teal text-white font-medium rounded-lg hover:bg-deep-teal/90 transition-all shadow-lg"
               @click="openCreateModal"
             >
               + Nouvelle catégorie
@@ -33,8 +33,8 @@
         <!-- Loading State -->
         <div v-if="loading" class="flex items-center justify-center py-20">
           <div class="text-center">
-            <div class="w-16 h-16 border-4 border-deepTeal/20 border-t-deepTeal rounded-full animate-spin mx-auto mb-4" />
-            <p class="text-deepTeal/60">Chargement...</p>
+            <div class="w-16 h-16 border-4 border-deep-teal/20 border-t-deepTeal rounded-full animate-spin mx-auto mb-4" />
+            <p class="text-deep-teal/60">Chargement...</p>
           </div>
         </div>
 
@@ -53,7 +53,7 @@
               <div class="flex gap-2">
                 <button
                   type="button"
-                  class="p-2 text-deepTeal/60 hover:text-deepTeal hover:bg-deepTeal/5 rounded-lg transition-all"
+                  class="p-2 text-deep-teal/60 hover:text-deep-teal hover:bg-deep-teal/5 rounded-lg transition-all"
                   @click="openEditModal(category)"
                 >
                   <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -72,16 +72,16 @@
               </div>
             </div>
 
-            <h3 class="text-xl font-serif font-bold text-deepTeal mb-2">
+            <h3 class="text-xl font-serif font-bold text-deep-teal mb-2">
               {{ category.name }}
             </h3>
 
-            <p class="text-sm text-deepTeal/60 mb-4">
+            <p class="text-sm text-deep-teal/60 mb-4">
               {{ category.description || 'Aucune description' }}
             </p>
 
-            <div class="flex items-center gap-2 text-xs text-deepTeal/60">
-              <span class="px-2 py-1 bg-deepTeal/5 rounded font-mono">
+            <div class="flex items-center gap-2 text-xs text-deep-teal/60">
+              <span class="px-2 py-1 bg-deep-teal/5 rounded font-mono">
                 {{ category.color }}
               </span>
             </div>
@@ -95,7 +95,7 @@
           @click.self="closeModal"
         >
           <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8">
-            <h2 class="text-2xl font-serif font-bold text-deepTeal mb-6">
+            <h2 class="text-2xl font-serif font-bold text-deep-teal mb-6">
               {{ editingCategory ? 'Modifier la catégorie' : 'Nouvelle catégorie' }}
             </h2>
 
@@ -121,12 +121,12 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
-              <h3 class="text-xl font-serif font-bold text-deepTeal mb-2">
+              <h3 class="text-xl font-serif font-bold text-deep-teal mb-2">
                 Confirmer la suppression
               </h3>
-              <p class="text-deepTeal/60">
+              <p class="text-deep-teal/60">
                 Êtes-vous sûr de vouloir supprimer la catégorie
-                <span class="font-semibold text-deepTeal">{{ categoryToDelete?.name }}</span> ?
+                <span class="font-semibold text-deep-teal">{{ categoryToDelete?.name }}</span> ?
               </p>
               <p class="text-sm text-terracotta mt-2">
                 Cette action ne peut pas être annulée.
@@ -267,25 +267,5 @@ async function handleDelete() {
 
 .font-serif {
   font-family: 'Crimson Pro', serif;
-}
-
-.bg-warmCream {
-  background-color: #FAF9F6;
-}
-
-.text-deepTeal {
-  color: #2D5F5D;
-}
-
-.bg-deepTeal {
-  background-color: #2D5F5D;
-}
-
-.text-terracotta {
-  color: #C1666B;
-}
-
-.bg-terracotta {
-  background-color: #C1666B;
 }
 </style>
