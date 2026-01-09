@@ -1,4 +1,4 @@
-import type { TermWithCategory } from '~/server/utils/queries'
+import type { TermWithCategory } from '~/types'
 
 export function useTerms() {
   const terms = useState<TermWithCategory[]>('terms', () => [])

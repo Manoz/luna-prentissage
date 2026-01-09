@@ -1,0 +1,134 @@
+<template>
+  <div class="min-h-screen bg-warmCream flex items-center justify-center px-6">
+    <div class="fixed inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E')" />
+
+    <div class="relative w-full max-w-md">
+      <div class="text-center mb-8">
+        <NuxtLink to="/" class="inline-block">
+          <h1 class="text-4xl font-serif font-bold text-deepTeal">
+            Luna<span class="text-terracotta">·</span>Prentissage
+          </h1>
+        </NuxtLink>
+        <p class="text-deepTeal/60 mt-2">Administration</p>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-xl p-8">
+        <h2 class="text-2xl font-serif font-bold text-deepTeal mb-6">
+          Connexion
+        </h2>
+
+        <form class="space-y-6" @submit.prevent="handleLogin">
+          <div>
+            <label for="username" class="block text-sm font-medium text-deepTeal mb-2">
+              Nom d'utilisateur
+            </label>
+            <input
+              id="username"
+              v-model="credentials.username"
+              type="text"
+              required
+              class="w-full px-4 py-3 border-2 border-deepTeal/20 rounded-lg focus:border-deepTeal focus:outline-none transition-colors"
+              placeholder="admin"
+            >
+          </div>
+
+          <div>
+            <label for="password" class="block text-sm font-medium text-deepTeal mb-2">
+              Mot de passe
+            </label>
+            <input
+              id="password"
+              v-model="credentials.password"
+              type="password"
+              required
+              class="w-full px-4 py-3 border-2 border-deepTeal/20 rounded-lg focus:border-deepTeal focus:outline-none transition-colors"
+              placeholder="••••••••"
+            >
+          </div>
+
+          <button
+            type="submit"
+            :disabled="loading"
+            class="w-full py-3 bg-deepTeal text-white font-semibold rounded-lg hover:bg-deepTeal/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {{ loading ? 'Connexion...' : 'Se connecter' }}
+          </button>
+
+          <p v-if="error" class="text-terracotta text-sm text-center">
+            {{ error }}
+          </p>
+        </form>
+
+        <div class="mt-6 pt-6 border-t border-deepTeal/10">
+          <NuxtLink
+            to="/"
+            class="text-sm text-deepTeal/60 hover:text-deepTeal transition-colors flex items-center justify-center gap-2"
+          >
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Retour à l'accueil
+          </NuxtLink>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+const { login } = useAdminAuth()
+const router = useRouter()
+
+const credentials = reactive({
+  username: '',
+  password: ''
+})
+
+const loading = ref(false)
+const error = ref<string | null>(null)
+
+async function handleLogin() {
+  loading.value = true
+  error.value = null
+
+  try {
+    await login(credentials)
+    await router.push('/admin')
+  }
+  catch (e: unknown) {
+    console.error(e)
+    error.value = 'Nom d\'utilisateur ou mot de passe incorrect'
+  }
+  finally {
+    loading.value = false
+  }
+}
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700;900&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+* {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.font-serif {
+  font-family: 'Crimson Pro', serif;
+}
+
+.bg-warmCream {
+  background-color: #FAF9F6;
+}
+
+.text-deepTeal {
+  color: #2D5F5D;
+}
+
+.bg-deepTeal {
+  background-color: #2D5F5D;
+}
+
+.text-terracotta {
+  color: #C1666B;
+}
+</style>

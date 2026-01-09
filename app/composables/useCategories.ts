@@ -1,4 +1,4 @@
-import type { Category } from '~/server/utils/queries'
+import type { Category } from '~/types'
 
 export function useCategories() {
   const categories = useState<Category[]>('categories', () => [])

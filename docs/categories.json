@@ -1,57 +1,57 @@
 [
   {
     "name": "Système Nerveux et Motricité",
-    "color": "#D4A574",
+    "color": "#D97706",
     "description": "Radicaux liés au système nerveux et à la motricité"
   },
   {
     "name": "Système Cardio-Respiratoire",
-    "color": "#C67B9C",
+    "color": "#E11D48",
     "description": "Radicaux liés au système cardiovasculaire et respiratoire"
   },
   {
     "name": "Nutrition",
-    "color": "#E8C468",
+    "color": "#F59E0B",
     "description": "Radicaux liés à la nutrition et au système digestif"
   },
   {
     "name": "Constituance, État",
-    "color": "#A85B5B",
+    "color": "#DC2626",
     "description": "Préfixes et suffixes liés à la constitution et l'état"
   },
   {
     "name": "Couleurs",
-    "color": "#B68CB8",
+    "color": "#A855F7",
     "description": "Préfixes et radicaux liés aux couleurs"
   },
   {
     "name": "Homéostasie",
-    "color": "#C8C474",
+    "color": "#84CC16",
     "description": "Radicaux liés à l'homéostasie et aux constantes biologiques"
   },
   {
     "name": "Organisation et Fonctionnement",
-    "color": "#5B6BA8",
+    "color": "#3B82F6",
     "description": "Radicaux liés à l'organisation et au fonctionnement du corps"
   },
   {
     "name": "Nombres, Quantités, Position, Forme",
-    "color": "#8BB4D4",
+    "color": "#0EA5E9",
     "description": "Préfixes et suffixes pour les nombres, quantités, positions et formes"
   },
   {
     "name": "Pathologies et traitements",
-    "color": "#68A878",
+    "color": "#10B981",
     "description": "Suffixes liés aux pathologies et traitements médicaux"
   },
   {
     "name": "Gestes Chirurgicaux",
-    "color": "#A8C488",
+    "color": "#22C55E",
     "description": "Suffixes liés aux interventions chirurgicales"
   },
   {
     "name": "Analyses, Examens",
-    "color": "#E8C468",
+    "color": "#F97316",
     "description": "Suffixes liés aux analyses et examens médicaux"
   }
 ]

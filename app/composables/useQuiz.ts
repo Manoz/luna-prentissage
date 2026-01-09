@@ -1,12 +1,4 @@
-import type { TermWithCategory } from '~/server/utils/queries'
-
-export interface QuizQuestion {
-  term: TermWithCategory
-  type: 'multiple-choice' | 'true-false'
-  options?: string[]
-  statement?: string
-  correctAnswer: string | boolean
-}
+import type { QuizQuestion, TermWithCategory } from '~/types'
 
 export function useQuiz() {
   const questions = useState<QuizQuestion[]>('quiz-questions', () => [])
@@ -71,7 +63,7 @@ export function useQuiz() {
     const statement = isTrue
       ? term.meaning
       : sameCategoryTerms.length > 0
-        ? sameCategoryTerms[Math.floor(Math.random() * sameCategoryTerms.length)].meaning
+        ? sameCategoryTerms[Math.floor(Math.random() * sameCategoryTerms.length)]!.meaning
         : term.meaning
 
     return {
@@ -84,6 +76,8 @@ export function useQuiz() {
 
   function submitAnswer(answer: string | boolean) {
     const currentQuestion = questions.value[currentIndex.value]
+    if (!currentQuestion) return
+
     const isCorrect = answer === currentQuestion.correctAnswer
 
     answers.value.push(isCorrect)
