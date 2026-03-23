@@ -7,17 +7,16 @@ export default defineEventHandler(async (event) => {
     if (Number.isNaN(id)) {
       throw createError({
         statusCode: 400,
-        message: 'Invalid category ID'
+        message: 'Invalid category ID',
       })
     }
 
     await deleteCategory(id)
     return { success: true }
-  }
-  catch {
+  } catch {
     throw createError({
       statusCode: 500,
-      message: 'Failed to delete category. It may have associated terms.'
+      message: 'Failed to delete category. It may have associated terms.',
     })
   }
 })

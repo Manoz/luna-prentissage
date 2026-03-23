@@ -9,19 +9,18 @@ export function useQuiz() {
   function generateQuestions(
     terms: TermWithCategory[],
     type: 'multiple-choice' | 'true-false' | 'mixed',
-    count: number = 10
+    count: number = 10,
   ) {
     const shuffled = [...terms].sort(() => Math.random() - 0.5)
     const selectedTerms = shuffled.slice(0, Math.min(count, shuffled.length))
 
     questions.value = selectedTerms.map((term) => {
-      const questionType
-        = type === 'mixed' ? (Math.random() > 0.5 ? 'multiple-choice' : 'true-false') : type
+      const questionType =
+        type === 'mixed' ? (Math.random() > 0.5 ? 'multiple-choice' : 'true-false') : type
 
       if (questionType === 'multiple-choice') {
         return generateMultipleChoiceQuestion(term, terms)
-      }
-      else {
+      } else {
         return generateTrueFalseQuestion(term, terms)
       }
     })
@@ -33,13 +32,13 @@ export function useQuiz() {
 
   function generateMultipleChoiceQuestion(
     term: TermWithCategory,
-    allTerms: TermWithCategory[]
+    allTerms: TermWithCategory[],
   ): QuizQuestion {
     const wrongAnswers = allTerms
-      .filter(t => t.id !== term.id && t.category_id === term.category_id)
+      .filter((t) => t.id !== term.id && t.category_id === term.category_id)
       .sort(() => Math.random() - 0.5)
       .slice(0, 3)
-      .map(t => t.meaning)
+      .map((t) => t.meaning)
 
     const options = [term.meaning, ...wrongAnswers].sort(() => Math.random() - 0.5)
 
@@ -47,17 +46,17 @@ export function useQuiz() {
       term,
       type: 'multiple-choice',
       options,
-      correctAnswer: term.meaning
+      correctAnswer: term.meaning,
     }
   }
 
   function generateTrueFalseQuestion(
     term: TermWithCategory,
-    allTerms: TermWithCategory[]
+    allTerms: TermWithCategory[],
   ): QuizQuestion {
     const isTrue = Math.random() > 0.5
     const sameCategoryTerms = allTerms.filter(
-      t => t.id !== term.id && t.category_id === term.category_id
+      (t) => t.id !== term.id && t.category_id === term.category_id,
     )
 
     const statement = isTrue
@@ -70,7 +69,7 @@ export function useQuiz() {
       term,
       type: 'true-false',
       statement,
-      correctAnswer: isTrue
+      correctAnswer: isTrue,
     }
   }
 
@@ -105,8 +104,8 @@ export function useQuiz() {
 
   const isComplete = computed(() => {
     return (
-      currentIndex.value === questions.value.length - 1
-      && answers.value.length === questions.value.length
+      currentIndex.value === questions.value.length - 1 &&
+      answers.value.length === questions.value.length
     )
   })
 
@@ -120,6 +119,6 @@ export function useQuiz() {
     generateQuestions,
     submitAnswer,
     nextQuestion,
-    resetQuiz
+    resetQuiz,
   }
 }

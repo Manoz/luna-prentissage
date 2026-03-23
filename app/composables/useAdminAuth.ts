@@ -9,20 +9,18 @@ export function useAdminAuth() {
     try {
       const response = await $fetch('/api/admin/auth/login', {
         method: 'POST',
-        body: credentials
+        body: credentials,
       })
 
       isAuthenticated.value = true
       username.value = credentials.username
 
       return response
-    }
-    catch (_error) {
+    } catch (_error) {
       isAuthenticated.value = false
       username.value = null
       throw _error
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }
@@ -30,8 +28,7 @@ export function useAdminAuth() {
   async function logout() {
     try {
       await $fetch('/api/admin/auth/logout', { method: 'POST' })
-    }
-    finally {
+    } finally {
       isAuthenticated.value = false
       username.value = null
     }
@@ -40,12 +37,11 @@ export function useAdminAuth() {
   async function checkAuth() {
     try {
       const response = await $fetch<{ authenticated: boolean; username?: string }>(
-        '/api/admin/auth/status'
+        '/api/admin/auth/status',
       )
       isAuthenticated.value = response.authenticated
       username.value = response.username || null
-    }
-    catch {
+    } catch {
       isAuthenticated.value = false
       username.value = null
     }
@@ -57,6 +53,6 @@ export function useAdminAuth() {
     loading: readonly(loading),
     login,
     logout,
-    checkAuth
+    checkAuth,
   }
 }

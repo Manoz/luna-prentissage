@@ -11,6 +11,8 @@
     "typecheck": "nuxt typecheck",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "migrate": "tsx ./scripts/migrate-data.ts"
   },
   "dependencies": {
@@ -29,6 +31,8 @@
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.9.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.1",
     "tsx": "^4.19.2",
     "typescript": "^5.9.3"
   }

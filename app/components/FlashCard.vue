@@ -8,7 +8,7 @@
       class="flashcard relative w-full h-80 transition-transform duration-600"
       :style="{
         transformStyle: 'preserve-3d',
-        transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+        transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
       }"
     >
       <!-- Front (root) -->
@@ -16,7 +16,7 @@
         class="flashcard-face absolute w-full h-full rounded-xl shadow-2xl p-8 flex items-center justify-center"
         :style="{
           backgroundColor: term.category_color,
-          backfaceVisibility: 'hidden'
+          backfaceVisibility: 'hidden',
         }"
       >
         <div class="text-center">
@@ -31,7 +31,7 @@
         :style="{
           backgroundColor: term.category_color,
           backfaceVisibility: 'hidden',
-          transform: 'rotateY(180deg)'
+          transform: 'rotateY(180deg)',
         }"
       >
         <div class="text-center">
@@ -58,13 +58,16 @@ function flip() {
 }
 
 // Reset flip when term changes
-watch(() => props.term, () => {
-  isFlipped.value = false
-})
+watch(
+  () => props.term,
+  () => {
+    isFlipped.value = false
+  },
+)
 
 // Expose flip method for parent components
 defineExpose({
-  flip
+  flip,
 })
 </script>
 

@@ -44,12 +44,12 @@ pnpm migrate      # Run database migrations
 
 ### API Structure
 
-| Public | Admin (session-protected) |
-|---|---|
-| `GET /api/categories` | `POST/PUT/DELETE /api/admin/categories` |
-| `GET /api/terms` (filter by `categoryId`) | `POST/PUT/DELETE /api/admin/terms` |
-| `GET /api/terms/:id` | `POST /api/admin/auth/login\|logout` |
-| | `GET /api/admin/auth/status` |
+| Public                                    | Admin (session-protected)               |
+| ----------------------------------------- | --------------------------------------- |
+| `GET /api/categories`                     | `POST/PUT/DELETE /api/admin/categories` |
+| `GET /api/terms` (filter by `categoryId`) | `POST/PUT/DELETE /api/admin/terms`      |
+| `GET /api/terms/:id`                      | `POST /api/admin/auth/login\|logout`    |
+|                                           | `GET /api/admin/auth/status`            |
 
 ### Key Types (`app/types/index.ts`)
 
@@ -61,6 +61,7 @@ pnpm migrate      # Run database migrations
 ## Environment Variables
 
 Required in `.env` (see `.env.example`):
+
 - `DATABASE_URL` — Neon PostgreSQL connection string
 - `ADMIN_USERNAME` / `ADMIN_PASSWORD` — single admin credentials
 - `SESSION_SECRET` — 32-char hex for H3 session encryption

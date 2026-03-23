@@ -21,9 +21,7 @@
         <div class="container mx-auto px-6">
           <div class="max-w-4xl mx-auto text-center">
             <div class="inline-block mb-6">
-              <span
-                class="text-sm uppercase tracking-[0.3em] text-deep-teal font-medium"
-              >
+              <span class="text-sm uppercase tracking-[0.3em] text-deep-teal font-medium">
                 Terminologie Médicale
               </span>
             </div>
@@ -36,17 +34,13 @@
               médicaux
             </h2>
 
-            <p
-              class="text-xl text-gray-900 max-w-2xl mx-auto mb-12 leading-relaxed"
-            >
-              Une approche moderne pour apprendre et mémoriser les préfixes,
-              suffixes et radicaux de la terminologie médicale.
+            <p class="text-xl text-gray-900 max-w-2xl mx-auto mb-12 leading-relaxed">
+              Une approche moderne pour apprendre et mémoriser les préfixes, suffixes et radicaux de
+              la terminologie médicale.
             </p>
 
             <!-- CTA Buttons -->
-            <div
-              class="flex flex-col sm:flex-row gap-4 justify-center items-center"
-            >
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <NuxtLink
                 to="/flashcards"
                 class="group px-8 py-4 bg-white text-deep-teal font-medium rounded-full hover:bg-deep-teal hover:text-white transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 w-full sm:w-auto"
@@ -103,8 +97,8 @@
               Explorer par catégorie
             </h3>
             <p class="text-deep-teal/70 max-w-2xl mx-auto">
-              Chaque catégorie regroupe des radicaux liés à un système ou
-              concept médical spécifique.
+              Chaque catégorie regroupe des radicaux liés à un système ou concept médical
+              spécifique.
             </p>
           </div>
 
@@ -122,9 +116,7 @@
             >
               <div class="relative z-10">
                 <div class="flex items-start justify-between mb-3">
-                  <span
-                    class="text-xs uppercase tracking-wider font-medium text-white/80"
-                  >
+                  <span class="text-xs uppercase tracking-wider font-medium text-white/80">
                     {{ getTermCountForCategory(category.id) }} termes
                   </span>
                   <div
@@ -146,9 +138,7 @@
                   </div>
                 </div>
 
-                <h4
-                  class="text-xl font-serif font-bold text-white mb-2 leading-tight"
-                >
+                <h4 class="text-xl font-serif font-bold text-white mb-2 leading-tight">
                   {{ category.name }}
                 </h4>
 
@@ -177,22 +167,20 @@
 </template>
 
 <script setup lang="ts">
-import type { TermWithCategory } from "~/types";
+import type { TermWithCategory } from '~/types'
 
-const { categories, fetchCategories, loading } = useCategories();
-const { terms, fetchTerms, loading: termsLoading } = useTerms();
+const { categories, fetchCategories, loading } = useCategories()
+const { terms, fetchTerms, loading: termsLoading } = useTerms()
 
-const dataReady = computed(() => !loading.value && !termsLoading.value);
+const dataReady = computed(() => !loading.value && !termsLoading.value)
 
 // Fetch data on mount
 onMounted(async () => {
-  await Promise.all([fetchCategories(), fetchTerms()]);
-});
+  await Promise.all([fetchCategories(), fetchTerms()])
+})
 
 function getTermCountForCategory(categoryId: number) {
-  return terms.value.filter(
-    (t: TermWithCategory) => t.category_id === categoryId,
-  ).length;
+  return terms.value.filter((t: TermWithCategory) => t.category_id === categoryId).length
 }
 </script>
 

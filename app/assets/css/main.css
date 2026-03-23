@@ -1,18 +1,18 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --color-warm-cream: #FAF9F6;
-  --color-deep-teal: #2D5F5D;
-  --color-terracotta: #C1666B;
+  --color-warm-cream: #faf9f6;
+  --color-deep-teal: #2d5f5d;
+  --color-terracotta: #c1666b;
 }
 
 @layer base {
   * {
-    font-family: "DM Sans", sans-serif;
+    font-family: 'DM Sans', sans-serif;
   }
 
   .font-serif {
-    font-family: "Crimson Pro", serif;
+    font-family: 'Crimson Pro', serif;
   }
 
   button:not(:disabled) {

@@ -44,14 +44,14 @@ export async function createCategory(data: {
   const db = getDatabase()
   const result = await db.query(
     'INSERT INTO categories (name, color, description) VALUES ($1, $2, $3) RETURNING *',
-    [data.name, data.color, data.description || null]
+    [data.name, data.color, data.description || null],
   )
   return result[0] as Category
 }
 
 export async function updateCategory(
   id: number,
-  data: Partial<{ name: string; color: string; description: string }>
+  data: Partial<{ name: string; color: string; description: string }>,
 ): Promise<Category | null> {
   const db = getDatabase()
   const fields: string[] = []
@@ -78,7 +78,7 @@ export async function updateCategory(
   values.push(id)
   const result = await db.query(
     `UPDATE categories SET ${fields.join(', ')} WHERE id = $${paramIndex} RETURNING *`,
-    values
+    values,
   )
   return (result[0] as Category) || null
 }
@@ -102,27 +102,29 @@ export async function getAllTerms(): Promise<TermWithCategory[]> {
 
 export async function getTermsByCategory(categoryId: number): Promise<TermWithCategory[]> {
   const db = getDatabase()
-  const result = await db.query(`
+  const result = await db.query(
+    `
     SELECT t.*, c.name as category_name, c.color as category_color
     FROM terms t
     JOIN categories c ON t.category_id = c.id
     WHERE t.category_id = $1
     ORDER BY t.root ASC
   `,
-    [categoryId]
+    [categoryId],
   )
   return result as TermWithCategory[]
 }
 
 export async function getTermById(id: number): Promise<TermWithCategory | null> {
   const db = getDatabase()
-  const result = await db.query(`
+  const result = await db.query(
+    `
     SELECT t.*, c.name as category_name, c.color as category_color
     FROM terms t
     JOIN categories c ON t.category_id = c.id
     WHERE t.id = $1
   `,
-    [id]
+    [id],
   )
   return (result[0] as TermWithCategory) || null
 }
@@ -135,14 +137,14 @@ export async function createTerm(data: {
   const db = getDatabase()
   const result = await db.query(
     'INSERT INTO terms (root, meaning, category_id) VALUES ($1, $2, $3) RETURNING *',
-    [data.root, data.meaning, data.category_id]
+    [data.root, data.meaning, data.category_id],
   )
   return result[0] as Term
 }
 
 export async function updateTerm(
   id: number,
-  data: Partial<{ root: string; meaning: string; category_id: number }>
+  data: Partial<{ root: string; meaning: string; category_id: number }>,
 ): Promise<Term | null> {
   const db = getDatabase()
   const fields: string[] = []
@@ -170,7 +172,7 @@ export async function updateTerm(
   values.push(id)
   const result = await db.query(
     `UPDATE terms SET ${fields.join(', ')} WHERE id = $${paramIndex} RETURNING *`,
-    values
+    values,
   )
   return (result[0] as Term) || null
 }

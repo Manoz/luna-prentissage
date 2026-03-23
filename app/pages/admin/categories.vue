@@ -9,9 +9,7 @@
 
     <div class="relative">
       <!-- Header -->
-      <header
-        class="border-b border-deep-teal/10 bg-white/50 backdrop-blur-sm sticky top-0 z-10"
-      >
+      <header class="border-b border-deep-teal/10 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
         <div class="container mx-auto px-6 py-4">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
@@ -19,12 +17,7 @@
                 to="/admin"
                 class="text-deep-teal/60 hover:text-deep-teal transition-colors"
               >
-                <svg
-                  class="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -33,9 +26,7 @@
                   />
                 </svg>
               </NuxtLink>
-              <h1 class="text-2xl font-serif font-bold text-deep-teal">
-                Catégories
-              </h1>
+              <h1 class="text-2xl font-serif font-bold text-deep-teal">Catégories</h1>
             </div>
 
             <button
@@ -61,10 +52,7 @@
         </div>
 
         <!-- Categories List -->
-        <div
-          v-else
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
+        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div
             v-for="category in categories"
             :key="category.id"
@@ -81,12 +69,7 @@
                   class="p-2 text-deep-teal/60 hover:text-deep-teal hover:bg-deep-teal/5 rounded-lg transition-all"
                   @click="openEditModal(category)"
                 >
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -100,12 +83,7 @@
                   class="p-2 text-red-700 hover:text-terracotta hover:bg-terracotta/5 rounded-lg transition-all"
                   @click="confirmDelete(category)"
                 >
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -122,7 +100,7 @@
             </h3>
 
             <p class="text-sm text-deep-teal/60 mb-4">
-              {{ category.description || "Aucune description" }}
+              {{ category.description || 'Aucune description' }}
             </p>
 
             <div class="flex items-center gap-2 text-xs text-deep-teal/60">
@@ -141,9 +119,7 @@
         >
           <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8">
             <h2 class="text-2xl font-serif font-bold text-deep-teal mb-6">
-              {{
-                editingCategory ? "Modifier la catégorie" : "Nouvelle catégorie"
-              }}
+              {{ editingCategory ? 'Modifier la catégorie' : 'Nouvelle catégorie' }}
             </h2>
 
             <CategoryForm
@@ -185,14 +161,10 @@
               </h3>
               <p class="text-deep-teal/60">
                 Êtes-vous sûr de vouloir supprimer la catégorie
-                <span class="font-semibold text-deep-teal">{{
-                  categoryToDelete?.name
-                }}</span>
+                <span class="font-semibold text-deep-teal">{{ categoryToDelete?.name }}</span>
                 ?
               </p>
-              <p class="text-sm text-terracotta mt-2">
-                Cette action ne peut pas être annulée.
-              </p>
+              <p class="text-sm text-terracotta mt-2">Cette action ne peut pas être annulée.</p>
             </div>
 
             <div class="flex gap-3">
@@ -209,14 +181,11 @@
                 class="flex-1 px-4 py-3 bg-terracotta text-white font-semibold rounded-lg hover:bg-terracotta/90 transition-all disabled:opacity-50"
                 @click="handleDelete"
               >
-                {{ deleting ? "Suppression..." : "Supprimer" }}
+                {{ deleting ? 'Suppression...' : 'Supprimer' }}
               </button>
             </div>
 
-            <p
-              v-if="deleteError"
-              class="text-terracotta text-sm mt-4 text-center"
-            >
+            <p v-if="deleteError" class="text-terracotta text-sm mt-4 text-center">
               {{ deleteError }}
             </p>
           </div>
@@ -227,99 +196,95 @@
 </template>
 
 <script setup lang="ts">
-import type { Category } from "~/types";
-import CategoryForm from "~/components/admin/CategoryForm.vue";
+import type { Category } from '~/types'
+import CategoryForm from '~/components/admin/CategoryForm.vue'
 
 definePageMeta({
-  middleware: "admin",
-});
+  middleware: 'admin',
+})
 
-const { categories, fetchCategories, loading } = useCategories();
+const { categories, fetchCategories, loading } = useCategories()
 
-const showModal = ref(false);
-const editingCategory = ref<Category | null>(null);
-const showDeleteConfirm = ref(false);
-const categoryToDelete = ref<Category | null>(null);
-const deleting = ref(false);
-const deleteError = ref<string | null>(null);
+const showModal = ref(false)
+const editingCategory = ref<Category | null>(null)
+const showDeleteConfirm = ref(false)
+const categoryToDelete = ref<Category | null>(null)
+const deleting = ref(false)
+const deleteError = ref<string | null>(null)
 
 onMounted(() => {
-  fetchCategories();
-});
+  fetchCategories()
+})
 
 function openCreateModal() {
-  editingCategory.value = null;
-  showModal.value = true;
+  editingCategory.value = null
+  showModal.value = true
 }
 
 function openEditModal(category: Category) {
-  editingCategory.value = category;
-  showModal.value = true;
+  editingCategory.value = category
+  showModal.value = true
 }
 
 function closeModal() {
-  showModal.value = false;
-  editingCategory.value = null;
+  showModal.value = false
+  editingCategory.value = null
 }
 
-async function handleSubmit(data: {
-  name: string;
-  color: string;
-  description?: string;
-}) {
+async function handleSubmit(data: { name: string; color: string; description?: string }) {
   try {
     if (editingCategory.value) {
       // Update existing category
       await $fetch(`/api/admin/categories/${editingCategory.value.id}`, {
-        method: "PUT",
+        method: 'PUT',
         body: data,
-      });
+      })
     } else {
       // Create new category
-      await $fetch("/api/admin/categories", {
-        method: "POST",
+      await $fetch('/api/admin/categories', {
+        method: 'POST',
         body: data,
-      });
+      })
     }
 
-    closeModal();
-    await fetchCategories();
+    closeModal()
+    await fetchCategories()
   } catch (error) {
-    console.error("Failed to save category:", error);
+    console.error('Failed to save category:', error)
   }
 }
 
 function confirmDelete(category: Category) {
-  categoryToDelete.value = category;
-  showDeleteConfirm.value = true;
-  deleteError.value = null;
+  categoryToDelete.value = category
+  showDeleteConfirm.value = true
+  deleteError.value = null
 }
 
 function closeDeleteConfirm() {
-  showDeleteConfirm.value = false;
-  categoryToDelete.value = null;
-  deleteError.value = null;
+  showDeleteConfirm.value = false
+  categoryToDelete.value = null
+  deleteError.value = null
 }
 
 async function handleDelete() {
-  if (!categoryToDelete.value) return;
+  if (!categoryToDelete.value) return
 
-  deleting.value = true;
-  deleteError.value = null;
+  deleting.value = true
+  deleteError.value = null
 
   try {
     await $fetch(`/api/admin/categories/${categoryToDelete.value.id}`, {
-      method: "DELETE",
-    });
+      method: 'DELETE',
+    })
 
-    closeDeleteConfirm();
-    await fetchCategories();
+    closeDeleteConfirm()
+    await fetchCategories()
   } catch (error) {
-    console.error("Failed to delete category:", error);
+    console.error('Failed to delete category:', error)
     deleteError.value =
-      "Impossible de supprimer cette catégorie. Elle contient peut-être des termes.";
+      'Impossible de supprimer cette catégorie. Elle contient peut-être des termes.'
   } finally {
-    deleting.value = false;
+    deleting.value = false
   }
 }
 </script>

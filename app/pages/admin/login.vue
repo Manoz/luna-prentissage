@@ -1,6 +1,11 @@
 <template>
   <div class="min-h-screen bg-warm-cream flex items-center justify-center px-6">
-    <div class="fixed inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E')" />
+    <div
+      class="fixed inset-0 opacity-[0.03] pointer-events-none"
+      style="
+        background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E');
+      "
+    />
 
     <div class="relative w-full max-w-md">
       <div class="text-center mb-8">
@@ -13,9 +18,7 @@
       </div>
 
       <div class="bg-white rounded-2xl shadow-xl p-8">
-        <h2 class="text-2xl font-serif font-bold text-deep-teal mb-6">
-          Connexion
-        </h2>
+        <h2 class="text-2xl font-serif font-bold text-deep-teal mb-6">Connexion</h2>
 
         <form class="space-y-6" @submit.prevent="handleLogin">
           <div>
@@ -29,7 +32,7 @@
               required
               class="w-full px-4 py-3 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none transition-colors"
               placeholder="admin"
-            >
+            />
           </div>
 
           <div>
@@ -43,7 +46,7 @@
               required
               class="w-full px-4 py-3 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none transition-colors"
               placeholder="••••••••"
-            >
+            />
           </div>
 
           <button
@@ -65,7 +68,12 @@
             class="text-sm text-deep-teal/60 hover:text-deep-teal transition-colors flex items-center justify-center gap-2"
           >
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
             </svg>
             Retour à l'accueil
           </NuxtLink>
@@ -81,7 +89,7 @@ const router = useRouter()
 
 const credentials = reactive({
   username: '',
-  password: ''
+  password: '',
 })
 
 const loading = ref(false)
@@ -94,14 +102,11 @@ async function handleLogin() {
   try {
     await login(credentials)
     await router.push('/admin')
-  }
-  catch (e: unknown) {
+  } catch (e: unknown) {
     console.error(e)
-    error.value = 'Nom d\'utilisateur ou mot de passe incorrect'
-  }
-  finally {
+    error.value = "Nom d'utilisateur ou mot de passe incorrect"
+  } finally {
     loading.value = false
   }
 }
 </script>
-

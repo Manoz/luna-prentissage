@@ -13,16 +13,8 @@
         <div class="container mx-auto px-6 py-6">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
-              <NuxtLink
-                to="/"
-                class="text-deep-teal/60 hover:text-deep-teal transition-colors"
-              >
-                <svg
-                  class="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
+              <NuxtLink to="/" class="text-deep-teal/60 hover:text-deep-teal transition-colors">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -31,9 +23,7 @@
                   />
                 </svg>
               </NuxtLink>
-              <h1 class="text-2xl font-serif font-bold text-deep-teal">
-                Flashcards
-              </h1>
+              <h1 class="text-2xl font-serif font-bold text-deep-teal">Flashcards</h1>
             </div>
 
             <button
@@ -43,12 +33,7 @@
               @click="handleShuffle"
             >
               <span class="flex items-center gap-2">
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -87,10 +72,7 @@
             </div>
 
             <!-- No Terms -->
-            <div
-              v-else-if="filteredTerms.length === 0"
-              class="text-center py-20"
-            >
+            <div v-else-if="filteredTerms.length === 0" class="text-center py-20">
               <div class="max-w-md mx-auto">
                 <div
                   class="w-20 h-20 rounded-full bg-terracotta/10 flex items-center justify-center mx-auto mb-6"
@@ -112,9 +94,7 @@
                 <h3 class="text-2xl font-serif font-bold text-deep-teal mb-2">
                   Aucun terme trouvé
                 </h3>
-                <p class="text-deep-teal/60">
-                  Essayez de sélectionner une autre catégorie.
-                </p>
+                <p class="text-deep-teal/60">Essayez de sélectionner une autre catégorie.</p>
               </div>
             </div>
 
@@ -128,27 +108,16 @@
                   <span class="font-semibold">{{ filteredTerms.length }}</span>
                 </div>
                 <div class="flex items-center gap-2 text-xs text-deep-teal/60">
-                  <kbd
-                    class="px-2 py-1 bg-white rounded border border-deep-teal/20"
-                    >←</kbd
-                  >
-                  <kbd
-                    class="px-2 py-1 bg-white rounded border border-deep-teal/20"
-                    >→</kbd
-                  >
+                  <kbd class="px-2 py-1 bg-white rounded border border-deep-teal/20">←</kbd>
+                  <kbd class="px-2 py-1 bg-white rounded border border-deep-teal/20">→</kbd>
                   <span>pour naviguer</span>
-                  <kbd
-                    class="px-2 py-1 bg-white rounded border border-deep-teal/20"
-                    >Espace</kbd
-                  >
+                  <kbd class="px-2 py-1 bg-white rounded border border-deep-teal/20">Espace</kbd>
                   <span>pour retourner</span>
                 </div>
               </div>
 
               <!-- Progress Bar -->
-              <div
-                class="w-full h-2 bg-deep-teal/10 rounded-full overflow-hidden"
-              >
+              <div class="w-full h-2 bg-deep-teal/10 rounded-full overflow-hidden">
                 <div
                   class="h-full bg-gradient-to-r from-deep-teal to-terracotta transition-all duration-300"
                   :style="{
@@ -171,12 +140,7 @@
                   @click="previousCard"
                 >
                   <span class="flex items-center gap-2">
-                    <svg
-                      class="w-5 h-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
@@ -196,12 +160,7 @@
                 >
                   <span class="flex items-center gap-2">
                     Suivant
-                    <svg
-                      class="w-5 h-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
@@ -221,96 +180,94 @@
 </template>
 
 <script setup lang="ts">
-import type { TermWithCategory } from "~/types";
+import type { TermWithCategory } from '~/types'
 
-const { categories, fetchCategories } = useCategories();
-const { terms, fetchTerms, shuffleTerms, loading } = useTerms();
+const { categories, fetchCategories } = useCategories()
+const { terms, fetchTerms, shuffleTerms, loading } = useTerms()
 
-const route = useRoute();
-const selectedCategoryId = ref<number | null>(null);
-const currentIndex = ref(0);
-const flashcardRef = ref();
+const route = useRoute()
+const selectedCategoryId = ref<number | null>(null)
+const currentIndex = ref(0)
+const flashcardRef = ref()
 
 const filteredTerms = computed(() => {
   if (selectedCategoryId.value === null) {
-    return terms.value;
+    return terms.value
   }
-  return terms.value.filter(
-    (t: TermWithCategory) => t.category_id === selectedCategoryId.value,
-  );
-});
+  return terms.value.filter((t: TermWithCategory) => t.category_id === selectedCategoryId.value)
+})
 
 const currentTerm = computed(() => {
-  return filteredTerms.value[currentIndex.value];
-});
+  return filteredTerms.value[currentIndex.value]
+})
 
 // Fetch data on mount
 onMounted(async () => {
-  await Promise.all([fetchCategories(), fetchTerms()]);
+  await Promise.all([fetchCategories(), fetchTerms()])
 
   // Check for category query param
-  const categoryParam = route.query.category;
+  const categoryParam = route.query.category
   if (categoryParam) {
-    const categoryId = parseInt(categoryParam as string, 10);
+    const categoryId = parseInt(categoryParam as string, 10)
     if (!isNaN(categoryId)) {
-      selectedCategoryId.value = categoryId;
+      selectedCategoryId.value = categoryId
     }
   }
-});
+})
 
 function handleCategorySelect(categoryId: number | null) {
-  selectedCategoryId.value = categoryId;
-  currentIndex.value = 0;
+  selectedCategoryId.value = categoryId
+  currentIndex.value = 0
 }
 
 function nextCard() {
   if (currentIndex.value < filteredTerms.value.length - 1) {
-    currentIndex.value++;
+    currentIndex.value++
   }
 }
 
 function previousCard() {
   if (currentIndex.value > 0) {
-    currentIndex.value--;
+    currentIndex.value--
   }
 }
 
 function handleShuffle() {
-  shuffleTerms();
-  currentIndex.value = 0;
+  shuffleTerms()
+  currentIndex.value = 0
 }
 
 // Keyboard navigation
 onMounted(() => {
   const handleKeyPress = (e: KeyboardEvent) => {
-    if (e.key === "ArrowRight") {
-      nextCard();
-    } else if (e.key === "ArrowLeft") {
-      previousCard();
-    } else if (e.key === " ") {
-      e.preventDefault();
-      flashcardRef.value?.flip();
+    if (e.key === 'ArrowRight') {
+      nextCard()
+    } else if (e.key === 'ArrowLeft') {
+      previousCard()
+    } else if (e.key === ' ') {
+      e.preventDefault()
+      flashcardRef.value?.flip()
     }
-  };
+  }
 
-  window.addEventListener("keydown", handleKeyPress);
+  window.addEventListener('keydown', handleKeyPress)
 
   onUnmounted(() => {
-    window.removeEventListener("keydown", handleKeyPress);
-  });
-});
+    window.removeEventListener('keydown', handleKeyPress)
+  })
+})
 
 // Reset index when filtered terms change
 watch(filteredTerms, () => {
   if (currentIndex.value >= filteredTerms.value.length) {
-    currentIndex.value = 0;
+    currentIndex.value = 0
   }
-});
+})
 </script>
 
 <style scoped>
 kbd {
-  font-family: "DM Sans", sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 0.75rem;
   font-weight: 500;
 }

@@ -242,27 +242,79 @@
   { "root": "-cide", "meaning": "qui tue", "category": "Pathologies et traitements" },
   { "root": "crino-", "meaning": "sécréter", "category": "Pathologies et traitements" },
   { "root": "dys-", "meaning": "difficulté, anormal", "category": "Pathologies et traitements" },
-  { "root": "-ectasie", "meaning": "dilatation localisée", "category": "Pathologies et traitements" },
+  {
+    "root": "-ectasie",
+    "meaning": "dilatation localisée",
+    "category": "Pathologies et traitements"
+  },
   { "root": "-émèse", "meaning": "vomissement", "category": "Pathologies et traitements" },
-  { "root": "endocrino-", "meaning": "qui sécrète à l'intérieur", "category": "Pathologies et traitements" },
+  {
+    "root": "endocrino-",
+    "meaning": "qui sécrète à l'intérieur",
+    "category": "Pathologies et traitements"
+  },
   { "root": "-esthésie", "meaning": "sensibilité", "category": "Pathologies et traitements" },
-  { "root": "-gène", "meaning": "qui engendre, qui donne", "category": "Pathologies et traitements" },
+  {
+    "root": "-gène",
+    "meaning": "qui engendre, qui donne",
+    "category": "Pathologies et traitements"
+  },
   { "root": "-ite", "meaning": "inflammation", "category": "Pathologies et traitements" },
-  { "root": "-lyse, -lytique", "meaning": "dissolution, dissociation, destruction", "category": "Pathologies et traitements" },
+  {
+    "root": "-lyse, -lytique",
+    "meaning": "dissolution, dissociation, destruction",
+    "category": "Pathologies et traitements"
+  },
   { "root": "-ome", "meaning": "tumeur", "category": "Pathologies et traitements" },
-  { "root": "-ose", "meaning": "état pathologique, affection non inflammatoire", "category": "Pathologies et traitements" },
-  { "root": "-pathie, patho-", "meaning": "maladie, affection, souffrance", "category": "Pathologies et traitements" },
-  { "root": "-pause", "meaning": "arrêt, cessation, stopper", "category": "Pathologies et traitements" },
-  { "root": "-physe", "meaning": "production, croissance", "category": "Pathologies et traitements" },
-  { "root": "-phyte", "meaning": "excroissance, végétation", "category": "Pathologies et traitements" },
+  {
+    "root": "-ose",
+    "meaning": "état pathologique, affection non inflammatoire",
+    "category": "Pathologies et traitements"
+  },
+  {
+    "root": "-pathie, patho-",
+    "meaning": "maladie, affection, souffrance",
+    "category": "Pathologies et traitements"
+  },
+  {
+    "root": "-pause",
+    "meaning": "arrêt, cessation, stopper",
+    "category": "Pathologies et traitements"
+  },
+  {
+    "root": "-physe",
+    "meaning": "production, croissance",
+    "category": "Pathologies et traitements"
+  },
+  {
+    "root": "-phyte",
+    "meaning": "excroissance, végétation",
+    "category": "Pathologies et traitements"
+  },
   { "root": "-plégie", "meaning": "choc, paralysie", "category": "Pathologies et traitements" },
   { "root": "-poïèse", "meaning": "formation, création", "category": "Pathologies et traitements" },
   { "root": "-ptysie", "meaning": "crachement", "category": "Pathologies et traitements" },
   { "root": "-rragie", "meaning": "écoulement sanguin", "category": "Pathologies et traitements" },
-  { "root": "-rrhée", "meaning": "écoulement non sanguin", "category": "Pathologies et traitements" },
-  { "root": "-spasme", "meaning": "contraction involontaire", "category": "Pathologies et traitements" },
+  {
+    "root": "-rrhée",
+    "meaning": "écoulement non sanguin",
+    "category": "Pathologies et traitements"
+  },
+  {
+    "root": "-spasme",
+    "meaning": "contraction involontaire",
+    "category": "Pathologies et traitements"
+  },
   { "root": "-stase", "meaning": "arrêt", "category": "Pathologies et traitements" },
-  { "root": "-sténo, -sténose", "meaning": "étroit, rétréci", "category": "Pathologies et traitements" },
+  {
+    "root": "-sténo, -sténose",
+    "meaning": "étroit, rétréci",
+    "category": "Pathologies et traitements"
+  },
   { "root": "-thérapie", "meaning": "traitement", "category": "Pathologies et traitements" },
-  { "root": "-trope", "meaning": "affinité pour, tourné vers", "category": "Pathologies et traitements" }
+  {
+    "root": "-trope",
+    "meaning": "affinité pour, tourné vers",
+    "category": "Pathologies et traitements"
+  }
 ]

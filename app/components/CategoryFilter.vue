@@ -7,7 +7,7 @@
         class="w-full p-3 text-left rounded-lg border-2 transition-all font-medium"
         :class="{
           'border-purple-500 bg-purple-50 text-purple-900': selectedCategoryId === null,
-          'border-gray-300 hover:border-gray-400 text-gray-700': selectedCategoryId !== null
+          'border-gray-300 hover:border-gray-400 text-gray-700': selectedCategoryId !== null,
         }"
         @click="selectCategory(null)"
       >
@@ -23,7 +23,7 @@
         class="w-full p-3 text-left rounded-lg border-2 transition-all font-medium"
         :class="{
           'border-purple-500 bg-purple-50': selectedCategoryId === category.id,
-          'border-gray-300 hover:border-gray-400': selectedCategoryId !== category.id
+          'border-gray-300 hover:border-gray-400': selectedCategoryId !== category.id,
         }"
         @click="selectCategory(category.id)"
       >

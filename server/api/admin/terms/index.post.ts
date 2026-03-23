@@ -8,20 +8,19 @@ export default defineEventHandler(async (event) => {
     if (!root || !meaning || !category_id) {
       throw createError({
         statusCode: 400,
-        message: 'Root, meaning, and category_id are required'
+        message: 'Root, meaning, and category_id are required',
       })
     }
 
     const term = await createTerm({ root, meaning, category_id })
     return term
-  }
-  catch (error: unknown) {
+  } catch (error: unknown) {
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error
     }
     throw createError({
       statusCode: 500,
-      message: 'Failed to create term'
+      message: 'Failed to create term',
     })
   }
 })

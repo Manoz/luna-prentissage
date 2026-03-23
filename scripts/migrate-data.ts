@@ -78,7 +78,7 @@ async function migrate() {
          VALUES ($1, $2, $3)
          ON CONFLICT (name) DO UPDATE SET color = $2, description = $3
          RETURNING id`,
-        [category.name, category.color, category.description]
+        [category.name, category.color, category.description],
       )
       categoryMap.set(category.name, result[0].id as number)
       console.log(`Inserted category: ${category.name}`)
@@ -101,7 +101,7 @@ async function migrate() {
       await sql.query('INSERT INTO terms (root, meaning, category_id) VALUES ($1, $2, $3)', [
         term.root,
         term.meaning,
-        categoryId
+        categoryId,
       ])
       termCount++
 
@@ -120,7 +120,6 @@ async function migrate() {
     console.log('\nDatabase statistics:')
     console.log(`Total categories: ${categoryCountResult[0].count}`)
     console.log(`Total terms: ${termCountResult[0].count}`)
-
   } catch (error) {
     console.error('Migration failed:', error)
     throw error

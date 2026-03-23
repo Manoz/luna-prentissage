@@ -7,17 +7,16 @@ export default defineEventHandler(async (event) => {
     if (Number.isNaN(id)) {
       throw createError({
         statusCode: 400,
-        message: 'Invalid term ID'
+        message: 'Invalid term ID',
       })
     }
 
     await deleteTerm(id)
     return { success: true }
-  }
-  catch {
+  } catch {
     throw createError({
       statusCode: 500,
-      message: 'Failed to delete term'
+      message: 'Failed to delete term',
     })
   }
 })

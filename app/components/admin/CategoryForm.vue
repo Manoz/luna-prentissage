@@ -15,9 +15,7 @@
     </div>
 
     <div>
-      <label for="color" class="block text-sm font-medium text-gray-700 mb-1">
-        Couleur *
-      </label>
+      <label for="color" class="block text-sm font-medium text-gray-700 mb-1"> Couleur * </label>
       <div class="flex gap-3">
         <input
           id="color-picker"
@@ -40,10 +38,7 @@
     </div>
 
     <div>
-      <label
-        for="description"
-        class="block text-sm font-medium text-gray-700 mb-1"
-      >
+      <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
         Description
       </label>
       <textarea
@@ -61,7 +56,7 @@
         :disabled="loading"
         class="flex-1 px-6 py-3 bg-deep-teal text-white font-semibold rounded-lg hover:bg-deep-teal/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
-        {{ loading ? "En cours..." : isEdit ? "Modifier" : "Créer" }}
+        {{ loading ? 'En cours...' : isEdit ? 'Modifier' : 'Créer' }}
       </button>
       <button
         type="button"
@@ -78,42 +73,42 @@
 </template>
 
 <script setup lang="ts">
-import type { Category } from "~/types";
+import type { Category } from '~/types'
 
 interface Props {
-  category?: Category | null;
-  isEdit?: boolean;
+  category?: Category | null
+  isEdit?: boolean
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 const emit = defineEmits<{
-  submit: [data: { name: string; color: string; description?: string }];
-  cancel: [];
-}>();
+  submit: [data: { name: string; color: string; description?: string }]
+  cancel: []
+}>()
 
-const loading = ref(false);
-const error = ref<string | null>(null);
+const loading = ref(false)
+const error = ref<string | null>(null)
 
 const formData = reactive({
-  name: props.category?.name || "",
-  color: props.category?.color || "#D4A574",
-  description: props.category?.description || "",
-});
+  name: props.category?.name || '',
+  color: props.category?.color || '#D4A574',
+  description: props.category?.description || '',
+})
 
 async function handleSubmit() {
-  loading.value = true;
-  error.value = null;
+  loading.value = true
+  error.value = null
 
   try {
-    emit("submit", {
+    emit('submit', {
       name: formData.name,
       color: formData.color,
       description: formData.description || undefined,
-    });
+    })
   } catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : "Une erreur est survenue";
+    error.value = e instanceof Error ? e.message : 'Une erreur est survenue'
   } finally {
-    loading.value = false;
+    loading.value = false
   }
 }
 
@@ -122,10 +117,10 @@ watch(
   () => props.category,
   (newCategory) => {
     if (newCategory) {
-      formData.name = newCategory.name;
-      formData.color = newCategory.color;
-      formData.description = newCategory.description || "";
+      formData.name = newCategory.name
+      formData.color = newCategory.color
+      formData.description = newCategory.description || ''
     }
   },
-);
+)
 </script>

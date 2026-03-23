@@ -1,6 +1,11 @@
 <template>
   <div class="min-h-screen bg-warm-cream flex items-center justify-center px-6">
-    <div class="fixed inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E')" />
+    <div
+      class="fixed inset-0 opacity-[0.03] pointer-events-none"
+      style="
+        background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E');
+      "
+    />
 
     <div class="relative text-center max-w-2xl">
       <div class="mb-8">
@@ -69,15 +74,15 @@ const errorTitle = computed(() => {
 const errorMessage = computed(() => {
   switch (props.error.statusCode) {
     case 404:
-      return 'La page que vous recherchez n\'existe pas ou a été déplacée.'
+      return "La page que vous recherchez n'existe pas ou a été déplacée."
     case 401:
       return 'Vous devez être connecté pour accéder à cette page.'
     case 403:
-      return 'Vous n\'avez pas les permissions nécessaires pour accéder à cette page.'
+      return "Vous n'avez pas les permissions nécessaires pour accéder à cette page."
     case 500:
-      return 'Une erreur s\'est produite sur le serveur. Veuillez réessayer plus tard.'
+      return "Une erreur s'est produite sur le serveur. Veuillez réessayer plus tard."
     default:
-      return props.error.message || 'Une erreur inattendue s\'est produite.'
+      return props.error.message || "Une erreur inattendue s'est produite."
   }
 })
 
@@ -88,10 +93,8 @@ function handleError() {
 function goBack() {
   if (window.history.length > 1) {
     window.history.back()
-  }
-  else {
+  } else {
     handleError()
   }
 }
 </script>
-

@@ -52,7 +52,14 @@
           :class="getTrueFalseClass(true)"
           @click="selectAnswer(true)"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6"
+          >
             <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
           </svg>
 
@@ -65,7 +72,14 @@
           :class="getTrueFalseClass(false)"
           @click="selectAnswer(false)"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6"
+          >
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
           </svg>
 
@@ -75,7 +89,11 @@
     </div>
 
     <!-- Feedback -->
-    <div v-if="answered" class="mt-8 p-4 rounded-lg" :class="isCorrect ? 'bg-green-50' : 'bg-red-50'">
+    <div
+      v-if="answered"
+      class="mt-8 p-4 rounded-lg"
+      :class="isCorrect ? 'bg-green-50' : 'bg-red-50'"
+    >
       <p class="text-lg font-semibold" :class="isCorrect ? 'text-green-700' : 'text-red-700'">
         {{ isCorrect ? '✓ Correct !' : '✗ Incorrect' }}
       </p>
@@ -152,9 +170,12 @@ function getTrueFalseClass(value: boolean) {
 }
 
 // Reset when question changes
-watch(() => props.question, () => {
-  answered.value = false
-  selectedAnswer.value = null
-  isCorrect.value = false
-})
+watch(
+  () => props.question,
+  () => {
+    answered.value = false
+    selectedAnswer.value = null
+    isCorrect.value = false
+  },
+)
 </script>

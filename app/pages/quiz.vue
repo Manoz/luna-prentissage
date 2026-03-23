@@ -13,16 +13,8 @@
         <div class="container mx-auto px-6 py-6">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
-              <NuxtLink
-                to="/"
-                class="text-deep-teal/60 hover:text-deep-teal transition-colors"
-              >
-                <svg
-                  class="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
+              <NuxtLink to="/" class="text-deep-teal/60 hover:text-deep-teal transition-colors">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -31,9 +23,7 @@
                   />
                 </svg>
               </NuxtLink>
-              <h1 class="text-2xl font-serif font-bold text-deep-teal">
-                Mode Quiz
-              </h1>
+              <h1 class="text-2xl font-serif font-bold text-deep-teal">Mode Quiz</h1>
             </div>
           </div>
         </div>
@@ -43,30 +33,21 @@
         <!-- Setup Screen -->
         <div v-if="quizState === 'setup'" class="max-w-2xl mx-auto">
           <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-            <h2 class="text-3xl font-serif font-bold text-deep-teal mb-2">
-              Configurer votre quiz
-            </h2>
+            <h2 class="text-3xl font-serif font-bold text-deep-teal mb-2">Configurer votre quiz</h2>
             <p class="text-deep-teal/60 mb-8">
-              Choisissez les paramètres pour personnaliser votre session de
-              quiz.
+              Choisissez les paramètres pour personnaliser votre session de quiz.
             </p>
 
             <div class="space-y-8">
               <!-- Category Selection -->
               <div>
-                <label class="block text-sm font-semibold text-deep-teal mb-3">
-                  Catégorie
-                </label>
+                <label class="block text-sm font-semibold text-deep-teal mb-3"> Catégorie </label>
                 <select
                   v-model="selectedCategoryId"
                   class="w-full px-4 py-3 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
                 >
                   <option :value="null">Toutes les catégories</option>
-                  <option
-                    v-for="category in categories"
-                    :key="category.id"
-                    :value="category.id"
-                  >
+                  <option v-for="category in categories" :key="category.id" :value="category.id">
                     {{ category.name }}
                   </option>
                 </select>
@@ -82,8 +63,7 @@
                     type="button"
                     class="p-4 rounded-lg border-2 transition-all cursor-pointer"
                     :class="{
-                      'border-terracotta text-terracotta':
-                        quizType === 'multiple-choice',
+                      'border-terracotta text-terracotta': quizType === 'multiple-choice',
                       'border-deep-teal/20 text-deep-teal/60 hover:border-deep-teal/40':
                         quizType !== 'multiple-choice',
                     }"
@@ -98,8 +78,7 @@
                     type="button"
                     class="p-4 rounded-lg border-2 transition-all cursor-pointer"
                     :class="{
-                      'border-terracotta text-terracotta':
-                        quizType === 'true-false',
+                      'border-terracotta text-terracotta': quizType === 'true-false',
                       'border-deep-teal/20 text-deep-teal/60 hover:border-deep-teal/40':
                         quizType !== 'true-false',
                     }"
@@ -142,13 +121,9 @@
                     class="slider w-full"
                   />
                 </div>
-                <div
-                  class="flex justify-between text-sm text-deep-teal/60 mt-2"
-                >
+                <div class="flex justify-between text-sm text-deep-teal/60 mt-2">
                   <span>5</span>
-                  <span class="text-lg font-semibold text-deep-teal">{{
-                    questionCount
-                  }}</span>
+                  <span class="text-lg font-semibold text-deep-teal">{{ questionCount }}</span>
                   <span>50</span>
                 </div>
               </div>
@@ -175,10 +150,7 @@
         </div>
 
         <!-- Quiz Screen -->
-        <div
-          v-else-if="quizState === 'quiz' && currentQuestion"
-          class="max-w-4xl mx-auto"
-        >
+        <div v-else-if="quizState === 'quiz' && currentQuestion" class="max-w-4xl mx-auto">
           <QuizQuestion
             :question="currentQuestion"
             :current-question="currentIndex"
@@ -218,8 +190,7 @@
                 class="w-32 h-32 rounded-full mx-auto mb-6 flex items-center justify-center text-6xl font-serif font-bold"
                 :class="{
                   'bg-green-100 text-green-600': percentage >= 70,
-                  'bg-yellow-100 text-yellow-600':
-                    percentage >= 50 && percentage < 70,
+                  'bg-yellow-100 text-yellow-600': percentage >= 50 && percentage < 70,
                   'bg-red-100 text-red-600': percentage < 50,
                 }"
               >
@@ -232,9 +203,7 @@
 
               <p class="text-xl text-deep-teal/70">
                 Vous avez obtenu
-                <span class="font-semibold text-deep-teal"
-                  >{{ score }}/{{ questions.length }}</span
-                >
+                <span class="font-semibold text-deep-teal">{{ score }}/{{ questions.length }}</span>
                 bonnes réponses
               </p>
             </div>
@@ -278,11 +247,11 @@
 </template>
 
 <script setup lang="ts">
-import confetti from "canvas-confetti";
-import type { TermWithCategory } from "~/types";
+import confetti from 'canvas-confetti'
+import type { TermWithCategory } from '~/types'
 
-const { categories, fetchCategories } = useCategories();
-const { terms, fetchTerms, loading: termsLoading } = useTerms();
+const { categories, fetchCategories } = useCategories()
+const { terms, fetchTerms, loading: termsLoading } = useTerms()
 const {
   questions,
   currentIndex,
@@ -292,122 +261,116 @@ const {
   submitAnswer,
   nextQuestion: quizNextQuestion,
   resetQuiz: quizReset,
-} = useQuiz();
+} = useQuiz()
 
-const quizState = ref<"setup" | "quiz" | "results">("setup");
-const selectedCategoryId = ref<number | null>(null);
-const quizType = ref<"multiple-choice" | "true-false" | "mixed">("mixed");
-const questionCount = ref(10);
-const hasAnswered = ref(false);
+const quizState = ref<'setup' | 'quiz' | 'results'>('setup')
+const selectedCategoryId = ref<number | null>(null)
+const quizType = ref<'multiple-choice' | 'true-false' | 'mixed'>('mixed')
+const questionCount = ref(10)
+const hasAnswered = ref(false)
 
 const availableTerms = computed(() => {
   if (selectedCategoryId.value === null) {
-    return terms.value;
+    return terms.value
   }
-  return terms.value.filter(
-    (t: TermWithCategory) => t.category_id === selectedCategoryId.value,
-  );
-});
+  return terms.value.filter((t: TermWithCategory) => t.category_id === selectedCategoryId.value)
+})
 
 const currentQuestion = computed(() => {
-  return questions.value[currentIndex.value];
-});
+  return questions.value[currentIndex.value]
+})
 
 const percentage = computed(() => {
-  return Math.round((score.value / questions.value.length) * 100);
-});
+  return Math.round((score.value / questions.value.length) * 100)
+})
 
 onMounted(async () => {
-  await Promise.all([fetchCategories(), fetchTerms()]);
-});
+  await Promise.all([fetchCategories(), fetchTerms()])
+})
 
 function startQuiz() {
-  if (availableTerms.value.length === 0) return;
+  if (availableTerms.value.length === 0) return
 
-  generateQuestions(
-    [...availableTerms.value],
-    quizType.value,
-    questionCount.value,
-  );
-  quizState.value = "quiz";
-  hasAnswered.value = false;
+  generateQuestions([...availableTerms.value], quizType.value, questionCount.value)
+  quizState.value = 'quiz'
+  hasAnswered.value = false
 }
 
 function handleAnswer(answer: string | boolean) {
-  submitAnswer(answer);
-  hasAnswered.value = true;
+  submitAnswer(answer)
+  hasAnswered.value = true
 }
 
 function nextQuestion() {
-  quizNextQuestion();
-  hasAnswered.value = false;
+  quizNextQuestion()
+  hasAnswered.value = false
 }
 
 function finishQuiz() {
-  quizState.value = "results";
+  quizState.value = 'results'
   // Trigger confetti animation after a small delay
   setTimeout(() => {
-    triggerConfetti(percentage.value);
-  }, 300);
+    triggerConfetti(percentage.value)
+  }, 300)
 }
 
 function resetQuiz() {
-  quizReset();
-  quizState.value = "setup";
-  hasAnswered.value = false;
+  quizReset()
+  quizState.value = 'setup'
+  hasAnswered.value = false
 }
 
 function getResultTitle() {
-  if (percentage.value >= 90) return "Excellent !";
-  if (percentage.value >= 70) return "Très bien !";
-  if (percentage.value >= 50) return "Pas mal !";
-  return "Continuez à vous entraîner !";
+  if (percentage.value >= 90) return 'Excellent !'
+  if (percentage.value >= 70) return 'Très bien !'
+  if (percentage.value >= 50) return 'Pas mal !'
+  return 'Continuez à vous entraîner !'
 }
 
 function triggerConfetti(percentage: number) {
   if (percentage >= 90) {
-    const count = 200;
+    const count = 200
     const defaults = {
       origin: { y: 0.7 },
       zIndex: 9999,
-    };
+    }
 
     function fire(particleRatio: number, opts: confetti.Options) {
       confetti({
         ...defaults,
         ...opts,
         particleCount: Math.floor(count * particleRatio),
-      });
+      })
     }
 
     fire(0.25, {
       spread: 26,
       startVelocity: 55,
-    });
+    })
     fire(0.2, {
       spread: 60,
-    });
+    })
     fire(0.35, {
       spread: 100,
       decay: 0.91,
       scalar: 0.8,
-    });
+    })
     fire(0.1, {
       spread: 120,
       startVelocity: 25,
       decay: 0.92,
       scalar: 1.2,
-    });
+    })
     fire(0.1, {
       spread: 120,
       startVelocity: 45,
-    });
+    })
   } else if (percentage >= 70) {
     // Bon résultat: Stars and emojis
-    const scalar = 2;
-    const star = confetti.shapeFromText({ text: "⭐", scalar });
-    const party = confetti.shapeFromText({ text: "🎉", scalar });
-    const fire = confetti.shapeFromText({ text: "🔥", scalar });
+    const scalar = 2
+    const star = confetti.shapeFromText({ text: '⭐', scalar })
+    const party = confetti.shapeFromText({ text: '🎉', scalar })
+    const fire = confetti.shapeFromText({ text: '🔥', scalar })
 
     confetti({
       shapes: [star, party, fire],
@@ -416,13 +379,13 @@ function triggerConfetti(percentage: number) {
       particleCount: 50,
       origin: { y: 0.6 },
       zIndex: 9999,
-    });
+    })
   } else if (percentage >= 50) {
     // Résultat moyen: Thumbs up and OK emojis
-    const scalar = 2;
-    const thumbsup = confetti.shapeFromText({ text: "👍", scalar });
-    const ok = confetti.shapeFromText({ text: "👌", scalar });
-    const smile = confetti.shapeFromText({ text: "😊", scalar });
+    const scalar = 2
+    const thumbsup = confetti.shapeFromText({ text: '👍', scalar })
+    const ok = confetti.shapeFromText({ text: '👌', scalar })
+    const smile = confetti.shapeFromText({ text: '😊', scalar })
 
     confetti({
       shapes: [thumbsup, ok, smile],
@@ -431,11 +394,11 @@ function triggerConfetti(percentage: number) {
       particleCount: 30,
       origin: { y: 0.6 },
       zIndex: 9999,
-    });
+    })
   } else {
     // Mauvais résultat: Poop emoji
-    const scalar = 3.5;
-    const poop = confetti.shapeFromText({ text: "💩", scalar });
+    const scalar = 3.5
+    const poop = confetti.shapeFromText({ text: '💩', scalar })
 
     confetti({
       shapes: [poop],
@@ -444,7 +407,7 @@ function triggerConfetti(percentage: number) {
       particleCount: 80,
       origin: { y: 0.6 },
       zIndex: 9999,
-    });
+    })
   }
 }
 </script>

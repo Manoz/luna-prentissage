@@ -13,18 +13,16 @@ export function useTerms() {
       const params = categoryId ? { categoryId: categoryId.toString() } : {}
       const data = await $fetch<TermWithCategory[]>('/api/terms', { params })
       terms.value = data
-    }
-    catch (e) {
+    } catch (e) {
       error.value = 'Failed to load terms'
       console.error(e)
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }
 
   function getTermsByCategory(categoryId: number) {
-    return computed(() => terms.value.filter(t => t.category_id === categoryId))
+    return computed(() => terms.value.filter((t) => t.category_id === categoryId))
   }
 
   function shuffleTerms() {
@@ -37,6 +35,6 @@ export function useTerms() {
     error: readonly(error),
     fetchTerms,
     getTermsByCategory,
-    shuffleTerms
+    shuffleTerms,
   }
 }

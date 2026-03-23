@@ -8,20 +8,19 @@ export default defineEventHandler(async (event) => {
     if (!name || !color) {
       throw createError({
         statusCode: 400,
-        message: 'Name and color are required'
+        message: 'Name and color are required',
       })
     }
 
     const category = await createCategory({ name, color, description })
     return category
-  }
-  catch (error: unknown) {
+  } catch (error: unknown) {
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error
     }
     throw createError({
       statusCode: 500,
-      message: 'Failed to create category'
+      message: 'Failed to create category',
     })
   }
 })

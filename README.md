@@ -4,14 +4,14 @@ Application web d'apprentissage de la terminologie médicale. Étudiez les radic
 
 ## Stack technique
 
-| Couche | Technologie |
-|--------|------------|
-| Framework | [Nuxt 4](https://nuxt.com) (Vue 3, TypeScript) |
-| Styling | [Tailwind CSS 4](https://tailwindcss.com) |
-| Base de données | [Neon PostgreSQL](https://neon.tech) (serverless) |
-| Fonts | Crimson Pro (serif), DM Sans (sans-serif) via `@nuxt/fonts` |
-| Auth | Sessions H3 (cookie chiffré, 7 jours) |
-| Package manager | pnpm |
+| Couche          | Technologie                                                 |
+| --------------- | ----------------------------------------------------------- |
+| Framework       | [Nuxt 4](https://nuxt.com) (Vue 3, TypeScript)              |
+| Styling         | [Tailwind CSS 4](https://tailwindcss.com)                   |
+| Base de données | [Neon PostgreSQL](https://neon.tech) (serverless)           |
+| Fonts           | Crimson Pro (serif), DM Sans (sans-serif) via `@nuxt/fonts` |
+| Auth            | Sessions H3 (cookie chiffré, 7 jours)                       |
+| Package manager | pnpm                                                        |
 
 ## Pré-requis
 
@@ -149,29 +149,29 @@ server/
 
 ### API
 
-| Méthode | Endpoint | Auth | Description |
-|---------|----------|------|-------------|
-| GET | `/api/categories` | Non | Liste toutes les catégories |
-| GET | `/api/terms` | Non | Liste les termes (filtre optionnel `?categoryId=N`) |
-| GET | `/api/terms/:id` | Non | Détail d'un terme |
-| POST | `/api/admin/auth/login` | Non | Connexion (`{ username, password }`) |
-| POST | `/api/admin/auth/logout` | Oui | Déconnexion |
-| GET | `/api/admin/auth/status` | Oui | Vérifier la session |
-| POST | `/api/admin/categories` | Oui | Créer une catégorie |
-| PUT | `/api/admin/categories/:id` | Oui | Modifier une catégorie |
-| DELETE | `/api/admin/categories/:id` | Oui | Supprimer une catégorie |
-| POST | `/api/admin/terms` | Oui | Créer un terme |
-| PUT | `/api/admin/terms/:id` | Oui | Modifier un terme |
-| DELETE | `/api/admin/terms/:id` | Oui | Supprimer un terme |
+| Méthode | Endpoint                    | Auth | Description                                         |
+| ------- | --------------------------- | ---- | --------------------------------------------------- |
+| GET     | `/api/categories`           | Non  | Liste toutes les catégories                         |
+| GET     | `/api/terms`                | Non  | Liste les termes (filtre optionnel `?categoryId=N`) |
+| GET     | `/api/terms/:id`            | Non  | Détail d'un terme                                   |
+| POST    | `/api/admin/auth/login`     | Non  | Connexion (`{ username, password }`)                |
+| POST    | `/api/admin/auth/logout`    | Oui  | Déconnexion                                         |
+| GET     | `/api/admin/auth/status`    | Oui  | Vérifier la session                                 |
+| POST    | `/api/admin/categories`     | Oui  | Créer une catégorie                                 |
+| PUT     | `/api/admin/categories/:id` | Oui  | Modifier une catégorie                              |
+| DELETE  | `/api/admin/categories/:id` | Oui  | Supprimer une catégorie                             |
+| POST    | `/api/admin/terms`          | Oui  | Créer un terme                                      |
+| PUT     | `/api/admin/terms/:id`      | Oui  | Modifier un terme                                   |
+| DELETE  | `/api/admin/terms/:id`      | Oui  | Supprimer un terme                                  |
 
 ## Design system
 
 Trois couleurs définies dans `@theme` (Tailwind 4) :
 
-| Token | Hex | Usage |
-|-------|-----|-------|
-| `warm-cream` | `#FAF9F6` | Fond de page |
-| `deep-teal` | `#2D5F5D` | Texte principal, boutons, accents |
+| Token        | Hex       | Usage                                              |
+| ------------ | --------- | -------------------------------------------------- |
+| `warm-cream` | `#FAF9F6` | Fond de page                                       |
+| `deep-teal`  | `#2D5F5D` | Texte principal, boutons, accents                  |
 | `terracotta` | `#C1666B` | Alertes, actions destructives, accents secondaires |
 
 Les catégories utilisent chacune une couleur personnalisée stockée en base (champ `color`).
@@ -185,6 +185,7 @@ L'application est conçue pour tourner sur n'importe quelle plateforme supportan
 - **Node.js** : `pnpm build && node .output/server/index.mjs`
 
 Variables d'environnement à configurer sur la plateforme :
+
 - `DATABASE_URL`
 - `ADMIN_USERNAME`
 - `ADMIN_PASSWORD`

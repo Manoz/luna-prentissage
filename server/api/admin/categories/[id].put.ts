@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     if (Number.isNaN(id)) {
       throw createError({
         statusCode: 400,
-        message: 'Invalid category ID'
+        message: 'Invalid category ID',
       })
     }
 
@@ -17,19 +17,18 @@ export default defineEventHandler(async (event) => {
     if (!category) {
       throw createError({
         statusCode: 404,
-        message: 'Category not found'
+        message: 'Category not found',
       })
     }
 
     return category
-  }
-  catch (error: unknown) {
+  } catch (error: unknown) {
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error
     }
     throw createError({
       statusCode: 500,
-      message: 'Failed to update category'
+      message: 'Failed to update category',
     })
   }
 })

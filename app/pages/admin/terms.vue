@@ -1,6 +1,11 @@
 <template>
   <div class="min-h-screen bg-warm-cream">
-    <div class="fixed inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E')" />
+    <div
+      class="fixed inset-0 opacity-[0.03] pointer-events-none"
+      style="
+        background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E');
+      "
+    />
 
     <div class="relative">
       <!-- Header -->
@@ -8,14 +13,20 @@
         <div class="container mx-auto px-6 py-4">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
-              <NuxtLink to="/admin" class="text-deep-teal/60 hover:text-deep-teal transition-colors">
+              <NuxtLink
+                to="/admin"
+                class="text-deep-teal/60 hover:text-deep-teal transition-colors"
+              >
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
                 </svg>
               </NuxtLink>
-              <h1 class="text-2xl font-serif font-bold text-deep-teal">
-                Termes médicaux
-              </h1>
+              <h1 class="text-2xl font-serif font-bold text-deep-teal">Termes médicaux</h1>
             </div>
 
             <button
@@ -34,15 +45,13 @@
         <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-deep-teal mb-2">
-                Rechercher
-              </label>
+              <label class="block text-sm font-medium text-deep-teal mb-2"> Rechercher </label>
               <input
                 v-model="searchQuery"
                 type="text"
                 placeholder="Rechercher par radical ou signification..."
                 class="w-full px-4 py-2 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
-              >
+              />
             </div>
 
             <div>
@@ -54,11 +63,7 @@
                 class="w-full px-4 py-2 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
               >
                 <option :value="null">Toutes les catégories</option>
-                <option
-                  v-for="category in categories"
-                  :key="category.id"
-                  :value="category.id"
-                >
+                <option v-for="category in categories" :key="category.id" :value="category.id">
                   {{ category.name }}
                 </option>
               </select>
@@ -74,7 +79,9 @@
         <!-- Loading State -->
         <div v-if="loading" class="flex items-center justify-center py-20">
           <div class="text-center">
-            <div class="w-16 h-16 border-4 border-deep-teal/20 border-t-deep-teal rounded-full animate-spin mx-auto mb-4" />
+            <div
+              class="w-16 h-16 border-4 border-deep-teal/20 border-t-deep-teal rounded-full animate-spin mx-auto mb-4"
+            />
             <p class="text-deep-teal/60">Chargement...</p>
           </div>
         </div>
@@ -85,18 +92,14 @@
             <table class="w-full">
               <thead class="bg-deep-teal/5 border-b border-deep-teal/10">
                 <tr>
-                  <th class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">
-                    Radical
-                  </th>
+                  <th class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">Radical</th>
                   <th class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">
                     Signification
                   </th>
                   <th class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">
                     Catégorie
                   </th>
-                  <th class="px-6 py-4 text-right text-sm font-semibold text-deep-teal">
-                    Actions
-                  </th>
+                  <th class="px-6 py-4 text-right text-sm font-semibold text-deep-teal">Actions</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-deep-teal/10">
@@ -127,7 +130,12 @@
                         @click="openEditModal(term)"
                       >
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                          />
                         </svg>
                       </button>
                       <button
@@ -136,7 +144,12 @@
                         @click="confirmDelete(term)"
                       >
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
                         </svg>
                       </button>
                     </div>
@@ -166,7 +179,7 @@
                   class="w-10 h-10 rounded-lg font-medium transition-all"
                   :class="{
                     'bg-deep-teal text-white': page === currentPage,
-                    'text-deep-teal hover:bg-deep-teal/5': page !== currentPage
+                    'text-deep-teal hover:bg-deep-teal/5': page !== currentPage,
                   }"
                   @click="currentPage = page"
                 >
@@ -216,9 +229,21 @@
         >
           <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
             <div class="text-center mb-6">
-              <div class="w-16 h-16 bg-terracotta/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8 text-terracotta" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              <div
+                class="w-16 h-16 bg-terracotta/10 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <svg
+                  class="w-8 h-8 text-terracotta"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
                 </svg>
               </div>
               <h3 class="text-xl font-serif font-bold text-deep-teal mb-2">
@@ -258,7 +283,7 @@
 import type { Term, TermWithCategory } from '~/types'
 
 definePageMeta({
-  middleware: 'admin'
+  middleware: 'admin',
 })
 
 const { categories, fetchCategories } = useCategories()
@@ -276,10 +301,7 @@ const termToDelete = ref<TermWithCategory | null>(null)
 const deleting = ref(false)
 
 onMounted(async () => {
-  await Promise.all([
-    fetchCategories(),
-    fetchTerms()
-  ])
+  await Promise.all([fetchCategories(), fetchTerms()])
 })
 
 const filteredTerms = computed(() => {
@@ -294,7 +316,8 @@ const filteredTerms = computed(() => {
   if (searchQuery.value.trim()) {
     const query = searchQuery.value.toLowerCase()
     filtered = filtered.filter(
-      (t: TermWithCategory) => t.root.toLowerCase().includes(query) || t.meaning.toLowerCase().includes(query)
+      (t: TermWithCategory) =>
+        t.root.toLowerCase().includes(query) || t.meaning.toLowerCase().includes(query),
     )
   }
 
@@ -345,7 +368,7 @@ function openEditModal(term: TermWithCategory) {
     meaning: term.meaning,
     category_id: term.category_id,
     created_at: term.created_at,
-    updated_at: term.updated_at
+    updated_at: term.updated_at,
   }
   showModal.value = true
 }
@@ -361,21 +384,19 @@ async function handleSubmit(data: { root: string; meaning: string; category_id: 
       // Update existing term
       await $fetch(`/api/admin/terms/${editingTerm.value.id}`, {
         method: 'PUT',
-        body: data
+        body: data,
       })
-    }
-    else {
+    } else {
       // Create new term
       await $fetch('/api/admin/terms', {
         method: 'POST',
-        body: data
+        body: data,
       })
     }
 
     closeModal()
     await fetchTerms()
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Failed to save term:', error)
   }
 }
@@ -397,18 +418,15 @@ async function handleDelete() {
 
   try {
     await $fetch(`/api/admin/terms/${termToDelete.value.id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
     })
 
     closeDeleteConfirm()
     await fetchTerms()
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Failed to delete term:', error)
-  }
-  finally {
+  } finally {
     deleting.value = false
   }
 }
 </script>
-

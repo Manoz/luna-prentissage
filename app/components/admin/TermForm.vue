@@ -1,9 +1,7 @@
 <template>
   <form class="space-y-6" @submit.prevent="handleSubmit">
     <div>
-      <label for="root" class="block text-sm font-medium text-gray-700 mb-1">
-        Radical *
-      </label>
+      <label for="root" class="block text-sm font-medium text-gray-700 mb-1"> Radical * </label>
       <input
         id="root"
         v-model="formData.root"
@@ -31,10 +29,7 @@
     </div>
 
     <div>
-      <label
-        for="category"
-        class="block text-sm font-medium text-gray-700 mb-1"
-      >
+      <label for="category" class="block text-sm font-medium text-gray-700 mb-1">
         Catégorie *
       </label>
       <select
@@ -44,11 +39,7 @@
         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
       >
         <option value="">Sélectionner une catégorie</option>
-        <option
-          v-for="category in categories"
-          :key="category.id"
-          :value="category.id"
-        >
+        <option v-for="category in categories" :key="category.id" :value="category.id">
           {{ category.name }}
         </option>
       </select>
@@ -60,7 +51,7 @@
         :disabled="loading"
         class="flex-1 px-6 py-3 bg-deep-teal text-white font-semibold rounded-lg hover:bg-deep-teal/80 transition-colors disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
       >
-        {{ loading ? "En cours..." : isEdit ? "Modifier" : "Créer" }}
+        {{ loading ? 'En cours...' : isEdit ? 'Modifier' : 'Créer' }}
       </button>
       <button
         type="button"
@@ -77,43 +68,43 @@
 </template>
 
 <script setup lang="ts">
-import type { Category, Term } from "~/types";
+import type { Category, Term } from '~/types'
 
 interface Props {
-  term?: Term | null;
-  categories: readonly Category[];
-  isEdit?: boolean;
+  term?: Term | null
+  categories: readonly Category[]
+  isEdit?: boolean
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 const emit = defineEmits<{
-  submit: [data: { root: string; meaning: string; category_id: number }];
-  cancel: [];
-}>();
+  submit: [data: { root: string; meaning: string; category_id: number }]
+  cancel: []
+}>()
 
-const loading = ref(false);
-const error = ref<string | null>(null);
+const loading = ref(false)
+const error = ref<string | null>(null)
 
 const formData = reactive({
-  root: props.term?.root || "",
-  meaning: props.term?.meaning || "",
-  category_id: props.term?.category_id || "",
-});
+  root: props.term?.root || '',
+  meaning: props.term?.meaning || '',
+  category_id: props.term?.category_id || '',
+})
 
 async function handleSubmit() {
-  loading.value = true;
-  error.value = null;
+  loading.value = true
+  error.value = null
 
   try {
-    emit("submit", {
+    emit('submit', {
       root: formData.root,
       meaning: formData.meaning,
       category_id: Number(formData.category_id),
-    });
+    })
   } catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : "Une erreur est survenue";
+    error.value = e instanceof Error ? e.message : 'Une erreur est survenue'
   } finally {
-    loading.value = false;
+    loading.value = false
   }
 }
 
@@ -122,10 +113,10 @@ watch(
   () => props.term,
   (newTerm) => {
     if (newTerm) {
-      formData.root = newTerm.root;
-      formData.meaning = newTerm.meaning;
-      formData.category_id = newTerm.category_id;
+      formData.root = newTerm.root
+      formData.meaning = newTerm.meaning
+      formData.category_id = newTerm.category_id
     }
   },
-);
+)
 </script>
