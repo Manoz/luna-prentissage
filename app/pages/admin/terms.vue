@@ -74,7 +74,7 @@
         <!-- Loading State -->
         <div v-if="loading" class="flex items-center justify-center py-20">
           <div class="text-center">
-            <div class="w-16 h-16 border-4 border-deep-teal/20 border-t-deepTeal rounded-full animate-spin mx-auto mb-4" />
+            <div class="w-16 h-16 border-4 border-deep-teal/20 border-t-deep-teal rounded-full animate-spin mx-auto mb-4" />
             <p class="text-deep-teal/60">Chargement...</p>
           </div>
         </div>
@@ -99,7 +99,7 @@
                   </th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-deepTeal/10">
+              <tbody class="divide-y divide-deep-teal/10">
                 <tr
                   v-for="term in paginatedTerms"
                   :key="term.id"
@@ -412,14 +412,3 @@ async function handleDelete() {
 }
 </script>
 
-<style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700;900&family=DM+Sans:wght@400;500;600;700&display=swap');
-
-* {
-  font-family: 'DM Sans', sans-serif;
-}
-
-.font-serif {
-  font-family: 'Crimson Pro', serif;
-}
-</style>

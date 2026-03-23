@@ -80,7 +80,7 @@
             <div v-if="loading" class="flex items-center justify-center py-20">
               <div class="text-center">
                 <div
-                  class="w-16 h-16 border-4 border-deep-teal/20 border-t-deepTeal rounded-full animate-spin mx-auto mb-4"
+                  class="w-16 h-16 border-4 border-deep-teal/20 border-t-deep-teal rounded-full animate-spin mx-auto mb-4"
                 />
                 <p class="text-deep-teal/60">Chargement...</p>
               </div>
@@ -150,7 +150,7 @@
                 class="w-full h-2 bg-deep-teal/10 rounded-full overflow-hidden"
               >
                 <div
-                  class="h-full bg-gradient-to-r from-deepTeal to-terracotta transition-all duration-300"
+                  class="h-full bg-gradient-to-r from-deep-teal to-terracotta transition-all duration-300"
                   :style="{
                     width: `${((currentIndex + 1) / filteredTerms.length) * 100}%`,
                   }"

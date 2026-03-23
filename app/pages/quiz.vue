@@ -366,7 +366,6 @@ function getResultTitle() {
 
 function triggerConfetti(percentage: number) {
   if (percentage >= 90) {
-    // Excellent: Multiple colorful confetti bursts
     const count = 200;
     const defaults = {
       origin: { y: 0.7 },
@@ -435,18 +434,16 @@ function triggerConfetti(percentage: number) {
     });
   } else {
     // Mauvais résultat: Poop emoji
-    const scalar = 2.5;
+    const scalar = 3.5;
     const poop = confetti.shapeFromText({ text: "💩", scalar });
-    const sad = confetti.shapeFromText({ text: "😅", scalar });
 
     confetti({
-      shapes: [poop, sad],
+      shapes: [poop],
       scalar,
-      spread: 60,
-      particleCount: 20,
+      spread: 120,
+      particleCount: 80,
       origin: { y: 0.6 },
       zIndex: 9999,
-      colors: ["#8B4513", "#A0522D"],
     });
   }
 }

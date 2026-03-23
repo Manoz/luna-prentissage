@@ -172,14 +172,3 @@ async function handleLogout() {
 }
 </script>
 
-<style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700;900&family=DM+Sans:wght@400;500;600;700&display=swap');
-
-* {
-  font-family: 'DM Sans', sans-serif;
-}
-
-.font-serif {
-  font-family: 'Crimson Pro', serif;
-}
-</style>
