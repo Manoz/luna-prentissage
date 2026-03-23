@@ -3,16 +3,16 @@
     <!-- Progress Bar -->
     <div class="mb-8">
       <div class="flex justify-between items-center mb-2">
-        <span class="text-sm font-medium text-gray-600">
+        <span class="text-sm font-medium text-deep-teal/60">
           Question {{ currentQuestion + 1 }} sur {{ totalQuestions }}
         </span>
-        <span class="text-sm font-medium text-gray-600">
+        <span class="text-sm font-medium text-deep-teal/60">
           Score: {{ score }}/{{ currentQuestion + (answered ? 1 : 0) }}
         </span>
       </div>
       <div class="w-full bg-gray-200 rounded-full h-2">
         <div
-          class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
+          class="bg-gradient-to-r from-deep-teal to-terracotta h-2 rounded-full transition-all duration-300"
           :style="{ width: `${progress}%` }"
         />
       </div>
@@ -20,8 +20,8 @@
 
     <!-- Multiple Choice Question -->
     <div v-if="question.type === 'multiple-choice'" class="space-y-6">
-      <h3 class="text-2xl font-bold text-gray-900 mb-6">
-        Que signifie <span class="text-purple-600">"{{ question.term.root }}"</span> ?
+      <h3 class="text-2xl font-bold text-deep-teal mb-6">
+        Que signifie <span class="text-terracotta">"{{ question.term.root }}"</span> ?
       </h3>
       <div class="space-y-3">
         <button
@@ -40,9 +40,9 @@
 
     <!-- True/False Question -->
     <div v-else-if="question.type === 'true-false'" class="space-y-6">
-      <h3 class="text-2xl font-bold text-gray-900 mb-6">
-        <span class="text-purple-600">"{{ question.term.root }}"</span> signifie
-        <span class="text-purple-600">"{{ question.statement }}"</span>
+      <h3 class="text-2xl font-bold text-deep-teal mb-6">
+        <span class="text-terracotta">"{{ question.term.root }}"</span> signifie
+        <span class="text-terracotta">"{{ question.statement }}"</span>
       </h3>
       <div class="grid grid-cols-2 gap-4">
         <button
@@ -100,7 +100,7 @@
       <p v-if="!isCorrect" class="mt-2 text-gray-700">
         La bonne réponse est : <span class="font-semibold">{{ question.correctAnswer }}</span>
       </p>
-      <p class="mt-3 text-sm text-gray-600">
+      <p class="mt-3 text-sm text-deep-teal/60">
         Catégorie : <span class="font-medium">{{ question.term.category_name }}</span>
       </p>
     </div>
@@ -139,7 +139,7 @@ function selectAnswer(answer: string | boolean) {
 
 function getOptionClass(option: string) {
   if (!answered.value) {
-    return 'border-gray-300 hover:border-purple-500 hover:bg-purple-50'
+    return 'border-gray-300 hover:border-deep-teal hover:bg-deep-teal/5'
   }
 
   if (option === props.question.correctAnswer) {
@@ -155,7 +155,7 @@ function getOptionClass(option: string) {
 
 function getTrueFalseClass(value: boolean) {
   if (!answered.value) {
-    return 'border-gray-300 hover:border-purple-500 hover:bg-purple-50'
+    return 'border-gray-300 hover:border-deep-teal hover:bg-deep-teal/5'
   }
 
   if (value === props.question.correctAnswer) {

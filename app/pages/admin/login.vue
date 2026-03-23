@@ -31,7 +31,7 @@
               type="text"
               required
               class="w-full px-4 py-3 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none transition-colors"
-              placeholder="admin"
+              placeholder=""
             />
           </div>
 
@@ -43,9 +43,10 @@
               id="password"
               v-model="credentials.password"
               type="password"
+              autocomplete="current-password"
               required
               class="w-full px-4 py-3 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none transition-colors"
-              placeholder="••••••••"
+              placeholder=""
             />
           </div>
 

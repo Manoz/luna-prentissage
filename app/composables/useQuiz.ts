@@ -34,9 +34,16 @@ export function useQuiz() {
     term: TermWithCategory,
     allTerms: TermWithCategory[],
   ): QuizQuestion {
-    const wrongAnswers = allTerms
+    // Priorité aux termes de la même catégorie, puis compléter avec d'autres
+    const sameCategoryTerms = allTerms
       .filter((t) => t.id !== term.id && t.category_id === term.category_id)
       .sort(() => Math.random() - 0.5)
+
+    const otherCategoryTerms = allTerms
+      .filter((t) => t.id !== term.id && t.category_id !== term.category_id)
+      .sort(() => Math.random() - 0.5)
+
+    const wrongAnswers = [...sameCategoryTerms, ...otherCategoryTerms]
       .slice(0, 3)
       .map((t) => t.meaning)
 
@@ -54,16 +61,14 @@ export function useQuiz() {
     term: TermWithCategory,
     allTerms: TermWithCategory[],
   ): QuizQuestion {
-    const isTrue = Math.random() > 0.5
-    const sameCategoryTerms = allTerms.filter(
-      (t) => t.id !== term.id && t.category_id === term.category_id,
-    )
+    const otherTerms = allTerms.filter((t) => t.id !== term.id)
+
+    // Si pas d'autres termes dispo, on force une question "vrai"
+    const isTrue = otherTerms.length === 0 ? true : Math.random() > 0.5
 
     const statement = isTrue
       ? term.meaning
-      : sameCategoryTerms.length > 0
-        ? sameCategoryTerms[Math.floor(Math.random() * sameCategoryTerms.length)]!.meaning
-        : term.meaning
+      : otherTerms[Math.floor(Math.random() * otherTerms.length)]!.meaning
 
     return {
       term,
@@ -99,6 +104,7 @@ export function useQuiz() {
   }
 
   const progress = computed(() => {
+    if (questions.value.length === 0) return 0
     return ((currentIndex.value + 1) / questions.value.length) * 100
   })
 
