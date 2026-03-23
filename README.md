@@ -2,8 +2,6 @@
 
 Application web d'apprentissage de la terminologie médicale. Étudiez les radicaux, préfixes et suffixes médicaux via des flashcards interactives et des quiz configurables.
 
-![Luna-Prentissage](docs/luna-1.jpeg)
-
 ## Stack technique
 
 | Couche | Technologie |
