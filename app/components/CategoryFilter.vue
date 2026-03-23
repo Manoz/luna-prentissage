@@ -1,7 +1,29 @@
 <template>
   <div class="category-filter">
-    <h3 class="text-lg font-semibold text-deep-teal mb-4">Filtrer par catégorie</h3>
-    <div class="space-y-2">
+    <h3 class="text-lg font-semibold text-deep-teal mb-4 lg:block hidden">
+      Filtrer par catégorie
+    </h3>
+
+    <!-- Mobile: compact select dropdown -->
+    <div class="lg:hidden">
+      <select
+        class="w-full p-3 rounded-lg border-2 border-deep-teal/20 bg-white text-deep-teal font-medium focus:border-deep-teal focus:outline-none"
+        :value="selectedCategoryId ?? ''"
+        @change="handleSelectChange"
+      >
+        <option value="">Toutes les catégories</option>
+        <option
+          v-for="category in categories"
+          :key="category.id"
+          :value="category.id"
+        >
+          {{ category.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Desktop: full button list -->
+    <div class="hidden lg:block space-y-2">
       <button
         type="button"
         class="w-full p-3 text-left rounded-lg border-2 transition-all font-medium"
@@ -54,5 +76,10 @@ const emit = defineEmits<{
 
 function selectCategory(categoryId: number | null) {
   emit('select', categoryId)
+}
+
+function handleSelectChange(event: Event) {
+  const value = (event.target as HTMLSelectElement).value
+  emit('select', value === '' ? null : Number(value))
 }
 </script>

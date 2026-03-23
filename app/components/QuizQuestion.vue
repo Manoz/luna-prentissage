@@ -98,7 +98,7 @@
         {{ isCorrect ? '✓ Correct !' : '✗ Incorrect' }}
       </p>
       <p v-if="!isCorrect" class="mt-2 text-gray-700">
-        La bonne réponse est : <span class="font-semibold">{{ question.correctAnswer }}</span>
+        La bonne réponse est : <span class="font-semibold">{{ formatAnswer(question.correctAnswer) }}</span>
       </p>
       <p class="mt-3 text-sm text-deep-teal/60">
         Catégorie : <span class="font-medium">{{ question.term.category_name }}</span>
@@ -126,6 +126,11 @@ const emit = defineEmits<{
 const answered = ref(false)
 const selectedAnswer = ref<string | boolean | null>(null)
 const isCorrect = ref(false)
+
+function formatAnswer(answer: string | boolean) {
+  if (typeof answer === 'boolean') return answer ? 'Vrai' : 'Faux'
+  return answer
+}
 
 function selectAnswer(answer: string | boolean) {
   if (answered.value) return

@@ -9,7 +9,7 @@
           </h1>
           <NuxtLink
             to="/admin"
-            class="text-sm text-deep-teal/60 hover:text-deep-teal hover:underline transition-colors"
+            class="hidden sm:inline text-sm text-deep-teal/60 hover:text-deep-teal hover:underline transition-colors"
           >
             Administration
           </NuxtLink>
@@ -17,7 +17,7 @@
       </nav>
 
       <!-- Hero Section -->
-      <section class="py-20">
+      <section class="py-12 sm:py-20">
         <div class="container mx-auto px-6">
           <div class="max-w-4xl mx-auto text-center">
             <div class="inline-block mb-6">
@@ -27,14 +27,14 @@
             </div>
 
             <h2
-              class="text-6xl md:text-7xl lg:text-8xl font-serif font-bold text-gray-900 leading-[0.95] mb-8"
+              class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-bold text-gray-900 leading-[0.95] mb-8"
             >
               Maîtrisez les
               <span class="block mt-2 italic text-gray-900">radicaux</span>
               médicaux
             </h2>
 
-            <p class="text-xl text-gray-900 max-w-2xl mx-auto mb-12 leading-relaxed">
+            <p class="text-base sm:text-xl text-gray-900 max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed">
               Une approche moderne pour apprendre et mémoriser les préfixes, suffixes et radicaux de
               la terminologie médicale.
             </p>

@@ -160,7 +160,7 @@
             @answer="handleAnswer"
           />
 
-          <div class="text-center mt-8">
+          <div ref="nextButtonRef" class="text-center mt-8">
             <button
               v-if="currentIndex < questions.length - 1"
               type="button"
@@ -224,7 +224,7 @@
               </div>
             </div>
 
-            <div class="flex gap-3">
+            <div class="flex flex-col sm:flex-row gap-3">
               <button
                 type="button"
                 class="flex-1 px-6 py-3 bg-deep-teal text-white font-semibold rounded-full hover:bg-deep-teal/90 transition-all cursor-pointer"
@@ -234,7 +234,7 @@
               </button>
               <NuxtLink
                 to="/"
-                class="flex-1 px-6 py-3 border-2 border-deep-teal/20 text-deep-teal font-semibold rounded-full hover:bg-deep-teal/5 transition-all inline-block"
+                class="flex-1 px-6 py-3 border-2 border-deep-teal/20 text-deep-teal font-semibold rounded-full hover:bg-deep-teal/5 transition-all text-center"
               >
                 Retour à l'accueil
               </NuxtLink>
@@ -268,6 +268,7 @@ const selectedCategoryId = ref<number | null>(null)
 const quizType = ref<'multiple-choice' | 'true-false' | 'mixed'>('mixed')
 const questionCount = ref(10)
 const hasAnswered = ref(false)
+const nextButtonRef = ref<HTMLElement | null>(null)
 
 const availableTerms = computed(() => {
   if (selectedCategoryId.value === null) {
@@ -299,6 +300,9 @@ function startQuiz() {
 function handleAnswer(answer: string | boolean) {
   submitAnswer(answer)
   hasAnswered.value = true
+  nextTick(() => {
+    nextButtonRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  })
 }
 
 function nextQuestion() {

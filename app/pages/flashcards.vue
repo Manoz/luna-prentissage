@@ -107,7 +107,7 @@
                   <span class="font-semibold">{{ currentIndex + 1 }}</span> sur
                   <span class="font-semibold">{{ filteredTerms.length }}</span>
                 </div>
-                <div class="flex items-center gap-2 text-xs text-deep-teal/60">
+                <div class="hidden md:flex items-center gap-2 text-xs text-deep-teal/60">
                   <kbd class="px-2 py-1 bg-white rounded border border-deep-teal/20">←</kbd>
                   <kbd class="px-2 py-1 bg-white rounded border border-deep-teal/20">→</kbd>
                   <span>pour naviguer</span>
