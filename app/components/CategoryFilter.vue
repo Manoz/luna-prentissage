@@ -47,7 +47,7 @@ interface Props {
   selectedCategoryId?: number | null
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 const emit = defineEmits<{
   select: [categoryId: number | null]
 }>()

@@ -1,7 +1,112 @@
 @import "tailwindcss";
 
-@theme {
-  --color-warm-cream: #FAF9F6;
-  --color-deep-teal: #2D5F5D;
-  --color-terracotta: #C1666B;
+@layer base {
+  * {
+    font-family: "DM Sans", sans-serif;
+  }
+
+  .font-serif {
+    font-family: "Crimson Pro", serif;
+  }
+}
+
+@layer theme {
+  * {
+    --color-warm-cream: 250 249 246;
+    --color-deep-teal: 45 95 93;
+    --color-terracotta: 193 102 107;
+  }
+}
+
+@layer utilities {
+  .bg-warm-cream {
+    background-color: rgb(var(--color-warm-cream));
+  }
+  .text-warm-cream {
+    color: rgb(var(--color-warm-cream));
+  }
+  .bg-deep-teal {
+    background-color: rgb(var(--color-deep-teal));
+  }
+  .text-deep-teal {
+    color: rgb(var(--color-deep-teal));
+  }
+  .border-deep-teal {
+    border-color: rgb(var(--color-deep-teal));
+  }
+  .bg-terracotta {
+    background-color: rgb(var(--color-terracotta));
+  }
+  .text-terracotta {
+    color: rgb(var(--color-terracotta));
+  }
+
+  /* Opacity variants */
+  .bg-deep-teal\/5 {
+    background-color: rgb(var(--color-deep-teal) / 0.05);
+  }
+  .bg-deep-teal\/10 {
+    background-color: rgb(var(--color-deep-teal) / 0.1);
+  }
+  .bg-deep-teal\/20 {
+    background-color: rgb(var(--color-deep-teal) / 0.2);
+  }
+  .bg-deep-teal\/90 {
+    background-color: rgb(var(--color-deep-teal) / 0.9);
+  }
+  .text-deep-teal\/40 {
+    color: rgb(var(--color-deep-teal) / 0.4);
+  }
+  .text-deep-teal\/60 {
+    color: rgb(var(--color-deep-teal) / 0.6);
+  }
+  .text-deep-teal\/70 {
+    color: rgb(var(--color-deep-teal) / 0.7);
+  }
+  .border-deep-teal\/10 {
+    border-color: rgb(var(--color-deep-teal) / 0.1);
+  }
+  .border-deep-teal\/20 {
+    border-color: rgb(var(--color-deep-teal) / 0.2);
+  }
+  .hover\:bg-deep-teal\/5:hover {
+    background-color: rgb(var(--color-deep-teal) / 0.05);
+  }
+  .hover\:bg-deep-teal\/20:hover {
+    background-color: rgb(var(--color-deep-teal) / 0.2);
+  }
+  .hover\:text-deep-teal:hover {
+    color: rgb(var(--color-deep-teal));
+  }
+
+  .bg-terracotta\/5 {
+    background-color: rgb(var(--color-terracotta) / 0.05);
+  }
+  .bg-terracotta\/10 {
+    background-color: rgb(var(--color-terracotta) / 0.1);
+  }
+  .bg-terracotta\/20 {
+    background-color: rgb(var(--color-terracotta) / 0.2);
+  }
+  .bg-terracotta\/90 {
+    background-color: rgb(var(--color-terracotta) / 0.9);
+  }
+  .text-terracotta\/60 {
+    color: rgb(var(--color-terracotta) / 0.6);
+  }
+  .hover\:bg-terracotta\/90:hover {
+    background-color: rgb(var(--color-terracotta) / 0.9);
+  }
+  .hover\:text-terracotta:hover {
+    color: rgb(var(--color-terracotta));
+  }
+  .hover\:bg-warm-cream:hover {
+    background-color: rgb(var(--color-warm-cream));
+  }
+  .hover\:bg-terracotta:hover {
+    background-color: rgb(var(--color-terracotta));
+  }
+  .hover\:text-white:hover {
+    color: white;
+  }
 }

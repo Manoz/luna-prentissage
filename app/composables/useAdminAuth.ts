@@ -17,10 +17,10 @@ export function useAdminAuth() {
 
       return response
     }
-    catch (error) {
+    catch (_error) {
       isAuthenticated.value = false
       username.value = null
-      throw error
+      throw _error
     }
     finally {
       loading.value = false
@@ -45,7 +45,7 @@ export function useAdminAuth() {
       isAuthenticated.value = response.authenticated
       username.value = response.username || null
     }
-    catch (error) {
+    catch {
       isAuthenticated.value = false
       username.value = null
     }

@@ -3,7 +3,7 @@ export default defineEventHandler(async () => {
     const categories = await getAllCategories()
     return categories
   }
-  catch (error) {
+  catch {
     throw createError({
       statusCode: 500,
       message: 'Failed to fetch categories'

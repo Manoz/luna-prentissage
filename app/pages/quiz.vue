@@ -1,6 +1,11 @@
 <template>
   <div class="min-h-screen bg-warm-cream">
-    <div class="fixed inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E')" />
+    <div
+      class="fixed inset-0 opacity-[0.03] pointer-events-none"
+      style="
+        background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E');
+      "
+    />
 
     <div class="relative">
       <!-- Header -->
@@ -8,9 +13,22 @@
         <div class="container mx-auto px-6 py-6">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
-              <NuxtLink to="/" class="text-deep-teal/60 hover:text-deep-teal transition-colors">
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              <NuxtLink
+                to="/"
+                class="text-deep-teal/60 hover:text-deep-teal transition-colors"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
                 </svg>
               </NuxtLink>
               <h1 class="text-2xl font-serif font-bold text-deep-teal">
@@ -29,7 +47,8 @@
               Configurer votre quiz
             </h2>
             <p class="text-deep-teal/60 mb-8">
-              Choisissez les paramètres pour personnaliser votre session de quiz.
+              Choisissez les paramètres pour personnaliser votre session de
+              quiz.
             </p>
 
             <div class="space-y-8">
@@ -63,8 +82,10 @@
                     type="button"
                     class="p-4 rounded-lg border-2 transition-all cursor-pointer"
                     :class="{
-                      'border-terracotta text-terracotta': quizType === 'multiple-choice',
-                      'border-deep-teal/20 text-deep-teal/60 hover:border-deep-teal/40': quizType !== 'multiple-choice'
+                      'border-terracotta text-terracotta':
+                        quizType === 'multiple-choice',
+                      'border-deep-teal/20 text-deep-teal/60 hover:border-deep-teal/40':
+                        quizType !== 'multiple-choice',
                     }"
                     @click="quizType = 'multiple-choice'"
                   >
@@ -77,8 +98,10 @@
                     type="button"
                     class="p-4 rounded-lg border-2 transition-all cursor-pointer"
                     :class="{
-                      'border-terracotta text-terracotta': quizType === 'true-false',
-                      'border-deep-teal/20 text-deep-teal/60 hover:border-deep-teal/40': quizType !== 'true-false'
+                      'border-terracotta text-terracotta':
+                        quizType === 'true-false',
+                      'border-deep-teal/20 text-deep-teal/60 hover:border-deep-teal/40':
+                        quizType !== 'true-false',
                     }"
                     @click="quizType = 'true-false'"
                   >
@@ -92,7 +115,8 @@
                     class="p-4 rounded-lg border-2 transition-all cursor-pointer"
                     :class="{
                       'border-terracotta text-terracotta': quizType === 'mixed',
-                      'border-deep-teal/40 text-deep-teal/60 hover:border-deep-teal/40': quizType !== 'mixed'
+                      'border-deep-teal/40 text-deep-teal/60 hover:border-deep-teal/40':
+                        quizType !== 'mixed',
                     }"
                     @click="quizType = 'mixed'"
                   >
@@ -116,11 +140,15 @@
                     max="50"
                     step="5"
                     class="slider w-full"
-                  >
+                  />
                 </div>
-                <div class="flex justify-between text-sm text-deep-teal/60 mt-2">
+                <div
+                  class="flex justify-between text-sm text-deep-teal/60 mt-2"
+                >
                   <span>5</span>
-                  <span class="text-lg font-semibold text-deep-teal">{{ questionCount }}</span>
+                  <span class="text-lg font-semibold text-deep-teal">{{
+                    questionCount
+                  }}</span>
                   <span>50</span>
                 </div>
               </div>
@@ -128,14 +156,18 @@
               <!-- Start Button -->
               <button
                 type="button"
-                :disabled="availableTerms.length === 0"
+                :disabled="termsLoading || availableTerms.length === 0"
                 class="w-full py-4 bg-deep-teal text-white font-semibold rounded-full hover:bg-deep-teal/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 @click="startQuiz"
               >
-                Commencer le quiz
+                <span v-if="termsLoading">Chargement...</span>
+                <span v-else>Commencer le quiz</span>
               </button>
 
-              <p v-if="availableTerms.length === 0" class="text-center text-terracotta text-sm">
+              <p
+                v-if="!termsLoading && availableTerms.length === 0"
+                class="text-center text-terracotta text-sm"
+              >
                 Aucun terme disponible pour cette catégorie
               </p>
             </div>
@@ -143,7 +175,10 @@
         </div>
 
         <!-- Quiz Screen -->
-        <div v-else-if="quizState === 'quiz' && currentQuestion" class="max-w-4xl mx-auto">
+        <div
+          v-else-if="quizState === 'quiz' && currentQuestion"
+          class="max-w-4xl mx-auto"
+        >
           <QuizQuestion
             :question="currentQuestion"
             :current-question="currentIndex"
@@ -167,7 +202,7 @@
               v-else
               type="button"
               :disabled="!hasAnswered"
-              class="px-8 py-3 bg-terracotta text-warm-cream font-semibold rounded-full hover:bg-terracotta/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              class="px-8 py-3 bg-terracotta text-warm-cream font-semibold rounded-full hover:bg-terracotta/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               @click="finishQuiz"
             >
               Voir les résultats
@@ -183,8 +218,9 @@
                 class="w-32 h-32 rounded-full mx-auto mb-6 flex items-center justify-center text-6xl font-serif font-bold"
                 :class="{
                   'bg-green-100 text-green-600': percentage >= 70,
-                  'bg-yellow-100 text-yellow-600': percentage >= 50 && percentage < 70,
-                  'bg-red-100 text-red-600': percentage < 50
+                  'bg-yellow-100 text-yellow-600':
+                    percentage >= 50 && percentage < 70,
+                  'bg-red-100 text-red-600': percentage < 50,
                 }"
               >
                 {{ percentage }}%
@@ -195,7 +231,11 @@
               </h2>
 
               <p class="text-xl text-deep-teal/70">
-                Vous avez obtenu <span class="font-semibold text-deep-teal">{{ score }}/{{ questions.length }}</span> bonnes réponses
+                Vous avez obtenu
+                <span class="font-semibold text-deep-teal"
+                  >{{ score }}/{{ questions.length }}</span
+                >
+                bonnes réponses
               </p>
             </div>
 
@@ -218,7 +258,7 @@
             <div class="flex gap-3">
               <button
                 type="button"
-                class="flex-1 px-6 py-3 bg-deep-teal text-white font-semibold rounded-full hover:bg-deep-teal/90 transition-all"
+                class="flex-1 px-6 py-3 bg-deep-teal text-white font-semibold rounded-full hover:bg-deep-teal/90 transition-all cursor-pointer"
                 @click="resetQuiz"
               >
                 Recommencer
@@ -238,136 +278,137 @@
 </template>
 
 <script setup lang="ts">
-import confetti from 'canvas-confetti'
-import type { TermWithCategory } from '~/types'
+import confetti from "canvas-confetti";
+import type { TermWithCategory } from "~/types";
 
-const { categories, fetchCategories } = useCategories()
-const { terms, fetchTerms, loading } = useTerms()
+const { categories, fetchCategories } = useCategories();
+const { terms, fetchTerms, loading: termsLoading } = useTerms();
 const {
   questions,
   currentIndex,
   score,
   progress,
-  isComplete,
   generateQuestions,
   submitAnswer,
   nextQuestion: quizNextQuestion,
-  resetQuiz: quizReset
-} = useQuiz()
+  resetQuiz: quizReset,
+} = useQuiz();
 
-const quizState = ref<'setup' | 'quiz' | 'results'>('setup')
-const selectedCategoryId = ref<number | null>(null)
-const quizType = ref<'multiple-choice' | 'true-false' | 'mixed'>('mixed')
-const questionCount = ref(10)
-const hasAnswered = ref(false)
+const quizState = ref<"setup" | "quiz" | "results">("setup");
+const selectedCategoryId = ref<number | null>(null);
+const quizType = ref<"multiple-choice" | "true-false" | "mixed">("mixed");
+const questionCount = ref(10);
+const hasAnswered = ref(false);
 
 const availableTerms = computed(() => {
   if (selectedCategoryId.value === null) {
-    return terms.value
+    return terms.value;
   }
-  return terms.value.filter((t: TermWithCategory) => t.category_id === selectedCategoryId.value)
-})
+  return terms.value.filter(
+    (t: TermWithCategory) => t.category_id === selectedCategoryId.value,
+  );
+});
 
 const currentQuestion = computed(() => {
-  return questions.value[currentIndex.value]
-})
+  return questions.value[currentIndex.value];
+});
 
 const percentage = computed(() => {
-  return Math.round((score.value / questions.value.length) * 100)
-})
+  return Math.round((score.value / questions.value.length) * 100);
+});
 
 onMounted(async () => {
-  await Promise.all([
-    fetchCategories(),
-    fetchTerms()
-  ])
-})
+  await Promise.all([fetchCategories(), fetchTerms()]);
+});
 
 function startQuiz() {
-  if (availableTerms.value.length === 0) return
+  if (availableTerms.value.length === 0) return;
 
-  generateQuestions([...availableTerms.value], quizType.value, questionCount.value)
-  quizState.value = 'quiz'
-  hasAnswered.value = false
+  generateQuestions(
+    [...availableTerms.value],
+    quizType.value,
+    questionCount.value,
+  );
+  quizState.value = "quiz";
+  hasAnswered.value = false;
 }
 
 function handleAnswer(answer: string | boolean) {
-  submitAnswer(answer)
-  hasAnswered.value = true
+  submitAnswer(answer);
+  hasAnswered.value = true;
 }
 
 function nextQuestion() {
-  quizNextQuestion()
-  hasAnswered.value = false
+  quizNextQuestion();
+  hasAnswered.value = false;
 }
 
 function finishQuiz() {
-  quizState.value = 'results'
+  quizState.value = "results";
   // Trigger confetti animation after a small delay
   setTimeout(() => {
-    triggerConfetti(percentage.value)
-  }, 300)
+    triggerConfetti(percentage.value);
+  }, 300);
 }
 
 function resetQuiz() {
-  quizReset()
-  quizState.value = 'setup'
-  hasAnswered.value = false
+  quizReset();
+  quizState.value = "setup";
+  hasAnswered.value = false;
 }
 
 function getResultTitle() {
-  if (percentage.value >= 90) return 'Excellent !'
-  if (percentage.value >= 70) return 'Très bien !'
-  if (percentage.value >= 50) return 'Pas mal !'
-  return 'Continuez à vous entraîner !'
+  if (percentage.value >= 90) return "Excellent !";
+  if (percentage.value >= 70) return "Très bien !";
+  if (percentage.value >= 50) return "Pas mal !";
+  return "Continuez à vous entraîner !";
 }
 
 function triggerConfetti(percentage: number) {
   if (percentage >= 90) {
     // Excellent: Multiple colorful confetti bursts
-    const count = 200
+    const count = 200;
     const defaults = {
       origin: { y: 0.7 },
-      zIndex: 9999
-    }
+      zIndex: 9999,
+    };
 
-    function fire(particleRatio: number, opts: any) {
+    function fire(particleRatio: number, opts: confetti.Options) {
       confetti({
         ...defaults,
         ...opts,
-        particleCount: Math.floor(count * particleRatio)
-      })
+        particleCount: Math.floor(count * particleRatio),
+      });
     }
 
     fire(0.25, {
       spread: 26,
-      startVelocity: 55
-    })
+      startVelocity: 55,
+    });
     fire(0.2, {
-      spread: 60
-    })
+      spread: 60,
+    });
     fire(0.35, {
       spread: 100,
       decay: 0.91,
-      scalar: 0.8
-    })
+      scalar: 0.8,
+    });
     fire(0.1, {
       spread: 120,
       startVelocity: 25,
       decay: 0.92,
-      scalar: 1.2
-    })
+      scalar: 1.2,
+    });
     fire(0.1, {
       spread: 120,
-      startVelocity: 45
-    })
-  }
-  else if (percentage >= 70) {
+      startVelocity: 45,
+    });
+  } else if (percentage >= 70) {
     // Bon résultat: Stars and emojis
-    const scalar = 2
-    const star = confetti.shapeFromText({ text: '⭐', scalar })
-    const party = confetti.shapeFromText({ text: '🎉', scalar })
-    const fire = confetti.shapeFromText({ text: '🔥', scalar })
+    const scalar = 2;
+    const star = confetti.shapeFromText({ text: "⭐", scalar });
+    const party = confetti.shapeFromText({ text: "🎉", scalar });
+    const fire = confetti.shapeFromText({ text: "🔥", scalar });
 
     confetti({
       shapes: [star, party, fire],
@@ -375,15 +416,14 @@ function triggerConfetti(percentage: number) {
       spread: 100,
       particleCount: 50,
       origin: { y: 0.6 },
-      zIndex: 9999
-    })
-  }
-  else if (percentage >= 50) {
+      zIndex: 9999,
+    });
+  } else if (percentage >= 50) {
     // Résultat moyen: Thumbs up and OK emojis
-    const scalar = 2
-    const thumbsup = confetti.shapeFromText({ text: '👍', scalar })
-    const ok = confetti.shapeFromText({ text: '👌', scalar })
-    const smile = confetti.shapeFromText({ text: '😊', scalar })
+    const scalar = 2;
+    const thumbsup = confetti.shapeFromText({ text: "👍", scalar });
+    const ok = confetti.shapeFromText({ text: "👌", scalar });
+    const smile = confetti.shapeFromText({ text: "😊", scalar });
 
     confetti({
       shapes: [thumbsup, ok, smile],
@@ -391,14 +431,13 @@ function triggerConfetti(percentage: number) {
       spread: 80,
       particleCount: 30,
       origin: { y: 0.6 },
-      zIndex: 9999
-    })
-  }
-  else {
+      zIndex: 9999,
+    });
+  } else {
     // Mauvais résultat: Poop emoji
-    const scalar = 2.5
-    const poop = confetti.shapeFromText({ text: '💩', scalar })
-    const sad = confetti.shapeFromText({ text: '😅', scalar })
+    const scalar = 2.5;
+    const poop = confetti.shapeFromText({ text: "💩", scalar });
+    const sad = confetti.shapeFromText({ text: "😅", scalar });
 
     confetti({
       shapes: [poop, sad],
@@ -407,30 +446,20 @@ function triggerConfetti(percentage: number) {
       particleCount: 20,
       origin: { y: 0.6 },
       zIndex: 9999,
-      colors: ['#8B4513', '#A0522D']
-    })
+      colors: ["#8B4513", "#A0522D"],
+    });
   }
 }
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700;900&family=DM+Sans:wght@400;500;600;700&display=swap');
-
-* {
-  font-family: 'DM Sans', sans-serif;
-}
-
-.font-serif {
-  font-family: 'Crimson Pro', serif;
-}
-
 /* Custom range input styling */
 .slider {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
   height: 8px;
-  background: #2D5F5D20;
+  background: #2d5f5d20;
   border-radius: 8px;
   outline: none;
   cursor: pointer;
@@ -440,7 +469,7 @@ function triggerConfetti(percentage: number) {
 .slider::-webkit-slider-track {
   width: 100%;
   height: 8px;
-  background: #2D5F5D20;
+  background: #2d5f5d20;
   border-radius: 8px;
 }
 
@@ -449,7 +478,7 @@ function triggerConfetti(percentage: number) {
   appearance: none;
   width: 24px;
   height: 24px;
-  background: #2D5F5D;
+  background: #2d5f5d;
   border: 4px solid white;
   border-radius: 50%;
   box-shadow: 0 2px 6px rgba(45, 95, 93, 0.3);
@@ -470,14 +499,14 @@ function triggerConfetti(percentage: number) {
 .slider::-moz-range-track {
   width: 100%;
   height: 8px;
-  background: #2D5F5D20;
+  background: #2d5f5d20;
   border-radius: 8px;
 }
 
 .slider::-moz-range-thumb {
   width: 20px;
   height: 20px;
-  background: #2D5F5D;
+  background: #2d5f5d;
   border: 4px solid white;
   border-radius: 50%;
   box-shadow: 0 2px 6px rgba(45, 95, 93, 0.3);
@@ -504,19 +533,19 @@ function triggerConfetti(percentage: number) {
 }
 
 .slider::-ms-fill-lower {
-  background: #2D5F5D;
+  background: #2d5f5d;
   border-radius: 8px;
 }
 
 .slider::-ms-fill-upper {
-  background: #2D5F5D20;
+  background: #2d5f5d20;
   border-radius: 8px;
 }
 
 .slider::-ms-thumb {
   width: 20px;
   height: 20px;
-  background: #2D5F5D;
+  background: #2d5f5d;
   border: 4px solid white;
   border-radius: 50%;
   box-shadow: 0 2px 6px rgba(45, 95, 93, 0.3);

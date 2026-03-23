@@ -30,8 +30,3 @@ export interface QuizQuestion {
   statement?: string
   correctAnswer: string | boolean
 }
-
-export interface AdminSession {
-  authenticated: boolean
-  username?: string
-}

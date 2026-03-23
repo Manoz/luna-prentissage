@@ -78,7 +78,7 @@ import type { Category, Term } from '~/types'
 
 interface Props {
   term?: Term | null
-  categories: Category[]
+  categories: readonly Category[]
   isEdit?: boolean
 }
 

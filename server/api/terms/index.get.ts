@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     const terms = await getAllTerms()
     return terms
   }
-  catch (error) {
+  catch {
     throw createError({
       statusCode: 500,
       message: 'Failed to fetch terms'

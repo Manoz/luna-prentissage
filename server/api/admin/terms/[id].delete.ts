@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     await deleteTerm(id)
     return { success: true }
   }
-  catch (error: unknown) {
+  catch {
     throw createError({
       statusCode: 500,
       message: 'Failed to delete term'
