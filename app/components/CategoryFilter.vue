@@ -1,8 +1,6 @@
 <template>
   <div class="category-filter">
-    <h3 class="text-lg font-semibold text-deep-teal mb-4 lg:block hidden">
-      Filtrer par catégorie
-    </h3>
+    <h3 class="text-lg font-semibold text-deep-teal mb-4 lg:block hidden">Filtrer par catégorie</h3>
 
     <!-- Mobile: compact select dropdown -->
     <div class="lg:hidden">
@@ -12,11 +10,7 @@
         @change="handleSelectChange"
       >
         <option value="">Toutes les catégories</option>
-        <option
-          v-for="category in categories"
-          :key="category.id"
-          :value="category.id"
-        >
+        <option v-for="category in categories" :key="category.id" :value="category.id">
           {{ category.name }}
         </option>
       </select>
@@ -34,7 +28,7 @@
         @click="selectCategory(null)"
       >
         <span class="flex items-center gap-3">
-          <span class="w-4 h-4 rounded-full bg-gradient-to-r from-deep-teal to-terracotta" />
+          <span class="w-4 h-4 rounded-full bg-linear-to-r from-deep-teal to-terracotta" />
           Toutes les catégories
         </span>
       </button>
@@ -51,7 +45,7 @@
       >
         <span class="flex items-center gap-3">
           <span
-            class="w-4 h-4 rounded-full flex-shrink-0"
+            class="w-4 h-4 rounded-full shrink-0"
             :style="{ backgroundColor: category.color }"
           />
           <span class="flex-1">{{ category.name }}</span>
