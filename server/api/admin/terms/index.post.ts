@@ -3,14 +3,8 @@ export default defineEventHandler(async (event) => {
 
   try {
     const body = await readBody(event)
+    validateTermInput(body, true)
     const { root, meaning, category_id } = body
-
-    if (!root || !meaning || !category_id) {
-      throw createError({
-        statusCode: 400,
-        message: 'Root, meaning, and category_id are required',
-      })
-    }
 
     const term = await createTerm({ root, meaning, category_id })
     return term

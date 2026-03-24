@@ -1,14 +1,8 @@
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event)
+    validateLoginInput(body)
     const { username, password } = body
-
-    if (!username || !password) {
-      throw createError({
-        statusCode: 400,
-        message: 'Username and password are required',
-      })
-    }
 
     if (verifyAdminCredentials(username, password)) {
       await setAdminSession(event, username)

@@ -3,14 +3,8 @@ export default defineEventHandler(async (event) => {
 
   try {
     const body = await readBody(event)
+    validateCategoryInput(body, true)
     const { name, color, description } = body
-
-    if (!name || !color) {
-      throw createError({
-        statusCode: 400,
-        message: 'Name and color are required',
-      })
-    }
 
     const category = await createCategory({ name, color, description })
     return category

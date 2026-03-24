@@ -13,9 +13,8 @@ export function useTerms() {
       const params = categoryId ? { categoryId: categoryId.toString() } : {}
       const data = await $fetch<TermWithCategory[]>('/api/terms', { params })
       terms.value = data
-    } catch (e) {
+    } catch {
       error.value = 'Failed to load terms'
-      console.error(e)
     } finally {
       loading.value = false
     }
@@ -26,7 +25,7 @@ export function useTerms() {
   }
 
   function shuffleTerms() {
-    terms.value = [...terms.value].sort(() => Math.random() - 0.5)
+    terms.value = shuffleArray(terms.value)
   }
 
   return {

@@ -12,9 +12,8 @@ export function useCategories() {
     try {
       const data = await $fetch<Category[]>('/api/categories')
       categories.value = data
-    } catch (e) {
+    } catch {
       error.value = 'Failed to load categories'
-      console.error(e)
     } finally {
       loading.value = false
     }

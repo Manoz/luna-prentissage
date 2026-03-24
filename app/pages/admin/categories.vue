@@ -249,8 +249,8 @@ async function handleSubmit(data: { name: string; color: string; description?: s
 
     closeModal()
     await fetchCategories()
-  } catch (error) {
-    console.error('Failed to save category:', error)
+  } catch {
+    // TODO: show user feedback on save failure
   }
 }
 
@@ -279,8 +279,7 @@ async function handleDelete() {
 
     closeDeleteConfirm()
     await fetchCategories()
-  } catch (error) {
-    console.error('Failed to delete category:', error)
+  } catch {
     deleteError.value =
       'Impossible de supprimer cette catégorie. Elle contient peut-être des termes.'
   } finally {
