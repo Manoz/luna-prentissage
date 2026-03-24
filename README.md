@@ -6,14 +6,14 @@ A web application for learning medical terminology. Study medical roots, prefixe
 
 ## Tech Stack
 
-| Layer           | Technology                                                   |
-| --------------- | ------------------------------------------------------------ |
+| Layer           | Technology                                                  |
+| --------------- | ----------------------------------------------------------- |
 | Framework       | [Nuxt 4](https://nuxt.com) (Vue 3, TypeScript)              |
-| Styling         | [Tailwind CSS 4](https://tailwindcss.com)                    |
-| Database        | [Neon PostgreSQL](https://neon.tech) (serverless)            |
-| Fonts           | Crimson Pro (serif), DM Sans (sans-serif) via `@nuxt/fonts`  |
-| Auth            | H3 sessions (encrypted cookie, 7-day expiry)                 |
-| Package manager | pnpm                                                         |
+| Styling         | [Tailwind CSS 4](https://tailwindcss.com)                   |
+| Database        | [Neon PostgreSQL](https://neon.tech) (serverless)           |
+| Fonts           | Crimson Pro (serif), DM Sans (sans-serif) via `@nuxt/fonts` |
+| Auth            | H3 sessions (encrypted cookie, 7-day expiry)                |
+| Package manager | pnpm                                                        |
 
 ## Prerequisites
 

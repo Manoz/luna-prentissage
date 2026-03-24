@@ -40,6 +40,7 @@ Thanks for your interest in this project! Here's how to contribute.
 ## Reporting a Bug
 
 Open an [issue](../../issues) with:
+
 - Description of the problem
 - Steps to reproduce
 - Expected vs actual behavior

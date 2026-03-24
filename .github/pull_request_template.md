@@ -8,7 +8,7 @@ Briefly describe the changes.
 - [ ] New feature
 - [ ] Refactoring
 - [ ] Documentation
-- [ ] Other: ___
+- [ ] Other: \_\_\_
 
 ## Checklist
 
