@@ -1,7 +1,30 @@
 {
   "name": "luna-prentissage",
+  "version": "1.0.0",
+  "description": "Medical terminology learning app — flashcards and quizzes",
+  "author": "Manoz",
+  "license": "MIT",
   "type": "module",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Manoz/luna-prentissage.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Manoz/luna-prentissage/issues"
+  },
+  "homepage": "https://github.com/Manoz/luna-prentissage#readme",
+  "keywords": [
+    "medical-terminology",
+    "flashcards",
+    "quiz",
+    "nuxt",
+    "vue",
+    "education",
+    "french"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",

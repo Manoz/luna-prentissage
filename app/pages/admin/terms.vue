@@ -396,8 +396,8 @@ async function handleSubmit(data: { root: string; meaning: string; category_id: 
 
     closeModal()
     await fetchTerms()
-  } catch (error) {
-    console.error('Failed to save term:', error)
+  } catch {
+    // TODO: show user feedback on save failure
   }
 }
 
@@ -423,8 +423,8 @@ async function handleDelete() {
 
     closeDeleteConfirm()
     await fetchTerms()
-  } catch (error) {
-    console.error('Failed to delete term:', error)
+  } catch {
+    // TODO: show user feedback on delete failure
   } finally {
     deleting.value = false
   }

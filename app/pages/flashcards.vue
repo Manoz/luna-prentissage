@@ -201,7 +201,7 @@ const currentTerm = computed(() => {
   return filteredTerms.value[currentIndex.value]
 })
 
-// Fetch data on mount
+// Fetch data on mount + keyboard navigation
 onMounted(async () => {
   await Promise.all([fetchCategories(), fetchTerms()])
 
@@ -213,6 +213,24 @@ onMounted(async () => {
       selectedCategoryId.value = categoryId
     }
   }
+
+  // Keyboard navigation
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.key === 'ArrowRight') {
+      nextCard()
+    } else if (e.key === 'ArrowLeft') {
+      previousCard()
+    } else if (e.key === ' ') {
+      e.preventDefault()
+      flashcardRef.value?.flip()
+    }
+  }
+
+  window.addEventListener('keydown', handleKeyPress)
+
+  onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeyPress)
+  })
 })
 
 function handleCategorySelect(categoryId: number | null) {
@@ -236,26 +254,6 @@ function handleShuffle() {
   shuffleTerms()
   currentIndex.value = 0
 }
-
-// Keyboard navigation
-onMounted(() => {
-  const handleKeyPress = (e: KeyboardEvent) => {
-    if (e.key === 'ArrowRight') {
-      nextCard()
-    } else if (e.key === 'ArrowLeft') {
-      previousCard()
-    } else if (e.key === ' ') {
-      e.preventDefault()
-      flashcardRef.value?.flip()
-    }
-  }
-
-  window.addEventListener('keydown', handleKeyPress)
-
-  onUnmounted(() => {
-    window.removeEventListener('keydown', handleKeyPress)
-  })
-})
 
 // Reset index when filtered terms change
 watch(filteredTerms, () => {

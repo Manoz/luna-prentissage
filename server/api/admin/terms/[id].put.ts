@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const body = await readBody(event)
+    validateTermInput(body, false)
     const term = await updateTerm(id, body)
 
     if (!term) {

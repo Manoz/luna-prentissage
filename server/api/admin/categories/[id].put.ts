@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const body = await readBody(event)
+    validateCategoryInput(body, false)
     const category = await updateCategory(id, body)
 
     if (!category) {

@@ -1,4 +1,5 @@
 import type { QuizQuestion, TermWithCategory } from '~/types'
+import { shuffleArray } from '~/utils/shuffle'
 
 export function useQuiz() {
   const questions = useState<QuizQuestion[]>('quiz-questions', () => [])
@@ -11,7 +12,7 @@ export function useQuiz() {
     type: 'multiple-choice' | 'true-false' | 'mixed',
     count: number = 10,
   ) {
-    const shuffled = [...terms].sort(() => Math.random() - 0.5)
+    const shuffled = shuffleArray(terms)
     const selectedTerms = shuffled.slice(0, Math.min(count, shuffled.length))
 
     questions.value = selectedTerms.map((term) => {
@@ -34,20 +35,20 @@ export function useQuiz() {
     term: TermWithCategory,
     allTerms: TermWithCategory[],
   ): QuizQuestion {
-    // Priorité aux termes de la même catégorie, puis compléter avec d'autres
-    const sameCategoryTerms = allTerms
-      .filter((t) => t.id !== term.id && t.category_id === term.category_id)
-      .sort(() => Math.random() - 0.5)
+    // Prioritize terms from the same category, then fill with others
+    const sameCategoryTerms = shuffleArray(
+      allTerms.filter((t) => t.id !== term.id && t.category_id === term.category_id),
+    )
 
-    const otherCategoryTerms = allTerms
-      .filter((t) => t.id !== term.id && t.category_id !== term.category_id)
-      .sort(() => Math.random() - 0.5)
+    const otherCategoryTerms = shuffleArray(
+      allTerms.filter((t) => t.id !== term.id && t.category_id !== term.category_id),
+    )
 
     const wrongAnswers = [...sameCategoryTerms, ...otherCategoryTerms]
       .slice(0, 3)
       .map((t) => t.meaning)
 
-    const options = [term.meaning, ...wrongAnswers].sort(() => Math.random() - 0.5)
+    const options = shuffleArray([term.meaning, ...wrongAnswers])
 
     return {
       term,
@@ -63,7 +64,7 @@ export function useQuiz() {
   ): QuizQuestion {
     const otherTerms = allTerms.filter((t) => t.id !== term.id)
 
-    // Si pas d'autres termes dispo, on force une question "vrai"
+    // If no other terms available, force a "true" question
     const isTrue = otherTerms.length === 0 ? true : Math.random() > 0.5
 
     const statement = isTrue

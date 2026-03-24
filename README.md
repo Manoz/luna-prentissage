@@ -1,65 +1,67 @@
 # Luna-Prentissage
 
-Application web d'apprentissage de la terminologie médicale. Étudiez les radicaux, préfixes et suffixes médicaux via des flashcards interactives et des quiz configurables.
+A web application for learning medical terminology. Study medical roots, prefixes and suffixes through interactive flashcards and configurable quizzes.
 
-## Stack technique
+> The application UI is in French. Internationalization (i18n) may be added later.
 
-| Couche          | Technologie                                                 |
-| --------------- | ----------------------------------------------------------- |
+## Tech Stack
+
+| Layer           | Technology                                                   |
+| --------------- | ------------------------------------------------------------ |
 | Framework       | [Nuxt 4](https://nuxt.com) (Vue 3, TypeScript)              |
-| Styling         | [Tailwind CSS 4](https://tailwindcss.com)                   |
-| Base de données | [Neon PostgreSQL](https://neon.tech) (serverless)           |
-| Fonts           | Crimson Pro (serif), DM Sans (sans-serif) via `@nuxt/fonts` |
-| Auth            | Sessions H3 (cookie chiffré, 7 jours)                       |
-| Package manager | pnpm                                                        |
+| Styling         | [Tailwind CSS 4](https://tailwindcss.com)                    |
+| Database        | [Neon PostgreSQL](https://neon.tech) (serverless)            |
+| Fonts           | Crimson Pro (serif), DM Sans (sans-serif) via `@nuxt/fonts`  |
+| Auth            | H3 sessions (encrypted cookie, 7-day expiry)                 |
+| Package manager | pnpm                                                         |
 
-## Pré-requis
+## Prerequisites
 
-- Node.js (version LTS — voir `.node-version`)
+- Node.js >= 22 (see `.node-version`)
 - pnpm
-- Une base PostgreSQL ([Neon](https://neon.tech) recommandé — offre gratuite disponible)
+- A PostgreSQL database ([Neon](https://neon.tech) recommended — free tier available)
 
 ## Installation
 
 ```bash
-# Cloner le repo
+# Clone the repo
 git clone git@github.com:manoz/luna-prentissage.git
 cd luna-prentissage
 
-# Installer les dépendances
+# Install dependencies
 pnpm install
 
-# Configurer l'environnement
+# Set up environment
 cp .env.example .env
 ```
 
-Éditez `.env` avec vos valeurs :
+Edit `.env` with your values:
 
 ```env
 DATABASE_URL="postgresql://user:pass@host.neon.tech:5432/dbname?sslmode=require"
 ADMIN_USERNAME="admin"
-ADMIN_PASSWORD="votre_mot_de_passe"
-SESSION_SECRET="cle_aleatoire_32_caracteres"
+ADMIN_PASSWORD="your_secure_password"
+SESSION_SECRET="random_32_char_hex_string"
 NODE_ENV="development"
 ```
 
-Pour générer un `SESSION_SECRET` :
+To generate a `SESSION_SECRET`:
 
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-## Base de données
+## Database
 
-### Schéma
+### Schema
 
-Deux tables avec une relation `terms.category_id → categories.id` (ON DELETE RESTRICT) :
+Two tables with a `terms.category_id → categories.id` relationship (ON DELETE RESTRICT):
 
 ```sql
 CREATE TABLE categories (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL UNIQUE,
-  color VARCHAR(7) NOT NULL,        -- Couleur hex (#FF5733)
+  color VARCHAR(7) NOT NULL,        -- Hex color (#FF5733)
   description TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -67,8 +69,8 @@ CREATE TABLE categories (
 
 CREATE TABLE terms (
   id SERIAL PRIMARY KEY,
-  root VARCHAR(255) NOT NULL,        -- Le radical médical (ex: "arthro-")
-  meaning VARCHAR(500) NOT NULL,     -- Sa signification (ex: "articulation")
+  root VARCHAR(255) NOT NULL,        -- Medical root (e.g., "arthro-")
+  meaning VARCHAR(500) NOT NULL,     -- Its meaning (e.g., "joint")
   category_id INTEGER NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -77,23 +79,23 @@ CREATE TABLE terms (
 
 ### Migration
 
-Le script de migration crée les tables et injecte les données depuis `docs/categories.json` et `docs/terms.json` :
+The migration script creates tables and seeds data from `docs/categories.json` and `docs/terms.json`:
 
 ```bash
 pnpm migrate
 ```
 
-La migration est idempotente (upsert sur le nom de catégorie, `IF NOT EXISTS` sur les tables).
+The migration is idempotent (upsert on category name, `IF NOT EXISTS` on tables).
 
-## Développement
+## Development
 
 ```bash
-pnpm dev          # Serveur de dev sur http://localhost:3000
-pnpm build        # Build de production (.output/)
-pnpm preview      # Prévisualiser le build
-pnpm typecheck    # Vérification TypeScript
+pnpm dev          # Dev server on http://localhost:3000
+pnpm build        # Production build → .output/
+pnpm preview      # Preview the production build
+pnpm typecheck    # TypeScript check
 pnpm lint         # ESLint
-pnpm lint:fix     # ESLint avec auto-fix
+pnpm lint:fix     # ESLint with auto-fix
 ```
 
 ## Architecture
@@ -103,29 +105,29 @@ pnpm lint:fix     # ESLint avec auto-fix
 ```
 app/
 ├── pages/
-│   ├── index.vue            # Accueil — hero + grille de catégories
-│   ├── flashcards.vue       # Mode flashcards (flip 3D, filtres, navigation clavier)
-│   ├── quiz.vue             # Mode quiz (QCM, Vrai/Faux, Mixte, résultats + confetti)
+│   ├── index.vue            # Home — hero + category grid
+│   ├── flashcards.vue       # Flashcard mode (3D flip, filters, keyboard navigation)
+│   ├── quiz.vue             # Quiz mode (MCQ, True/False, Mixed, results + confetti)
 │   └── admin/
-│       ├── login.vue        # Connexion admin
-│       ├── index.vue        # Dashboard admin
-│       ├── categories.vue   # CRUD catégories
-│       └── terms.vue        # CRUD termes (paginé)
+│       ├── login.vue        # Admin login
+│       ├── index.vue        # Admin dashboard
+│       ├── categories.vue   # Category CRUD
+│       └── terms.vue        # Term CRUD (paginated)
 ├── components/
-│   ├── FlashCard.vue        # Carte avec animation flip 3D
-│   ├── CategoryFilter.vue   # Sidebar de filtrage par catégorie
-│   ├── QuizQuestion.vue     # Affichage question (QCM ou Vrai/Faux)
+│   ├── FlashCard.vue        # Card with 3D flip animation
+│   ├── CategoryFilter.vue   # Category filter sidebar
+│   ├── QuizQuestion.vue     # Question display (MCQ or True/False)
 │   └── admin/
-│       ├── CategoryForm.vue # Formulaire catégorie
-│       └── TermForm.vue     # Formulaire terme
+│       ├── CategoryForm.vue # Category form
+│       └── TermForm.vue     # Term form
 ├── composables/
-│   ├── useAdminAuth.ts      # Login/logout/status session admin
-│   ├── useCategories.ts     # Fetch et cache des catégories
-│   ├── useTerms.ts          # Fetch, filtre et mélange des termes
-│   └── useQuiz.ts           # Génération de quiz, scoring, tracking
+│   ├── useAdminAuth.ts      # Admin session login/logout/status
+│   ├── useCategories.ts     # Fetch and cache categories
+│   ├── useTerms.ts          # Fetch, filter and shuffle terms
+│   └── useQuiz.ts           # Quiz generation, scoring, tracking
 ├── middleware/
-│   └── admin.ts             # Guard : redirige vers /admin/login si non authentifié
-└── assets/css/main.css      # Thème Tailwind (@theme) + fonts globales
+│   └── admin.ts             # Guard: redirects to /admin/login if unauthenticated
+└── assets/css/main.css      # Tailwind theme (@theme) + global fonts
 ```
 
 ### Backend (`server/`)
@@ -137,78 +139,67 @@ server/
 │   ├── terms/
 │   │   ├── index.get.ts              # GET /api/terms(?categoryId=N)
 │   │   └── [id].get.ts               # GET /api/terms/:id
-│   └── admin/                        # Endpoints protégés par session
-│       ├── auth/{login,logout,status} # Authentification
+│   └── admin/                        # Session-protected endpoints
+│       ├── auth/{login,logout,status} # Authentication
 │       ├── categories/               # POST, PUT, DELETE
 │       └── terms/                    # POST, PUT, DELETE
 └── utils/
-    ├── db.ts                         # Connexion Neon (singleton)
-    ├── queries.ts                    # Requêtes SQL paramétrées
-    └── auth.ts                       # Helpers session (requireAuth, etc.)
+    ├── db.ts                         # Neon connection (singleton)
+    ├── queries.ts                    # Parameterized SQL queries
+    ├── validation.ts                 # Input validation helpers
+    └── auth.ts                       # Session helpers (requireAuth, etc.)
 ```
 
 ### API
 
-| Méthode | Endpoint                    | Auth | Description                                         |
-| ------- | --------------------------- | ---- | --------------------------------------------------- |
-| GET     | `/api/categories`           | Non  | Liste toutes les catégories                         |
-| GET     | `/api/terms`                | Non  | Liste les termes (filtre optionnel `?categoryId=N`) |
-| GET     | `/api/terms/:id`            | Non  | Détail d'un terme                                   |
-| POST    | `/api/admin/auth/login`     | Non  | Connexion (`{ username, password }`)                |
-| POST    | `/api/admin/auth/logout`    | Oui  | Déconnexion                                         |
-| GET     | `/api/admin/auth/status`    | Oui  | Vérifier la session                                 |
-| POST    | `/api/admin/categories`     | Oui  | Créer une catégorie                                 |
-| PUT     | `/api/admin/categories/:id` | Oui  | Modifier une catégorie                              |
-| DELETE  | `/api/admin/categories/:id` | Oui  | Supprimer une catégorie                             |
-| POST    | `/api/admin/terms`          | Oui  | Créer un terme                                      |
-| PUT     | `/api/admin/terms/:id`      | Oui  | Modifier un terme                                   |
-| DELETE  | `/api/admin/terms/:id`      | Oui  | Supprimer un terme                                  |
+| Method | Endpoint                    | Auth | Description                                  |
+| ------ | --------------------------- | ---- | -------------------------------------------- |
+| GET    | `/api/categories`           | No   | List all categories                          |
+| GET    | `/api/terms`                | No   | List terms (optional filter `?categoryId=N`) |
+| GET    | `/api/terms/:id`            | No   | Get a single term                            |
+| POST   | `/api/admin/auth/login`     | No   | Login (`{ username, password }`)             |
+| POST   | `/api/admin/auth/logout`    | Yes  | Logout                                       |
+| GET    | `/api/admin/auth/status`    | Yes  | Check session                                |
+| POST   | `/api/admin/categories`     | Yes  | Create a category                            |
+| PUT    | `/api/admin/categories/:id` | Yes  | Update a category                            |
+| DELETE | `/api/admin/categories/:id` | Yes  | Delete a category                            |
+| POST   | `/api/admin/terms`          | Yes  | Create a term                                |
+| PUT    | `/api/admin/terms/:id`      | Yes  | Update a term                                |
+| DELETE | `/api/admin/terms/:id`      | Yes  | Delete a term                                |
 
-## Design system
+## Design System
 
-Trois couleurs définies dans `@theme` (Tailwind 4) :
+Three colors defined in `@theme` (Tailwind 4):
 
-| Token        | Hex       | Usage                                              |
-| ------------ | --------- | -------------------------------------------------- |
-| `warm-cream` | `#FAF9F6` | Fond de page                                       |
-| `deep-teal`  | `#2D5F5D` | Texte principal, boutons, accents                  |
-| `terracotta` | `#C1666B` | Alertes, actions destructives, accents secondaires |
+| Token        | Hex       | Usage                                     |
+| ------------ | --------- | ----------------------------------------- |
+| `warm-cream` | `#FAF9F6` | Page background                           |
+| `deep-teal`  | `#2D5F5D` | Primary text, buttons, accents            |
+| `terracotta` | `#C1666B` | Alerts, destructive actions, accent color |
 
-Les catégories utilisent chacune une couleur personnalisée stockée en base (champ `color`).
+Each category uses a custom color stored in the database (`color` field).
 
-## Hébergement
+## Hosting
 
-L'application est conçue pour tourner sur n'importe quelle plateforme supportant Nuxt/Nitro :
+The app is designed to run on any platform that supports Nuxt/Nitro:
 
-- **Vercel** : déploiement zero-config (auto-détecte Nuxt)
-- **Netlify** : supporté via le preset Nitro
-- **Node.js** : `pnpm build && node .output/server/index.mjs`
+- **Vercel**: zero-config deployment (auto-detects Nuxt)
+- **Netlify**: supported via Nitro preset
+- **Node.js**: `pnpm build && node .output/server/index.mjs`
 
-Variables d'environnement à configurer sur la plateforme :
+Environment variables to configure on the platform:
 
 - `DATABASE_URL`
 - `ADMIN_USERNAME`
 - `ADMIN_PASSWORD`
 - `SESSION_SECRET`
 
-## Données médicales
+## Medical Data
 
-Le jeu de données initial (`docs/`) contient ~180 termes répartis en 11 catégories :
+The initial dataset (`docs/`) contains ~180 terms across 11 categories covering nervous system, cardiovascular, nutrition, pathologies, surgical procedures, and more.
 
-- Système Nerveux et Motricité
-- Système Cardio-Respiratoire
-- Nutrition
-- Constituance, État
-- Couleurs
-- Homéostasie
-- Organisation et Fonctionnement
-- Nombres, Quantités, Position, Forme
-- Pathologies et traitements
-- Gestes Chirurgicaux
-- Analyses, Examens
+Additional terms can be added via the admin interface or directly in the JSON files before running the migration.
 
-Les termes supplémentaires peuvent être ajoutés via l'interface admin ou directement dans les fichiers JSON avant migration.
-
-## Licence
+## License
 
 [MIT](LICENSE)

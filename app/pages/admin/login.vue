@@ -103,8 +103,7 @@ async function handleLogin() {
   try {
     await login(credentials)
     await router.push('/admin')
-  } catch (e: unknown) {
-    console.error(e)
+  } catch {
     error.value = "Nom d'utilisateur ou mot de passe incorrect"
   } finally {
     loading.value = false
