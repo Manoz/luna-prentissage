@@ -34,7 +34,9 @@
               médicaux
             </h2>
 
-            <p class="text-base sm:text-xl text-gray-900 max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed">
+            <p
+              class="text-base sm:text-xl text-gray-900 max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed"
+            >
               Une approche moderne pour apprendre et mémoriser les préfixes, suffixes et radicaux de
               la terminologie médicale.
             </p>
@@ -149,7 +151,7 @@
 
               <!-- Decorative gradient overlay -->
               <div
-                class="absolute inset-0 bg-gradient-to-br from-white/0 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                class="absolute inset-0 bg-linear-to-br from-white/0 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity"
               />
             </NuxtLink>
           </div>
