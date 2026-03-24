@@ -35,7 +35,7 @@ export function useQuiz() {
     term: TermWithCategory,
     allTerms: TermWithCategory[],
   ): QuizQuestion {
-    // Priorité aux termes de la même catégorie, puis compléter avec d'autres
+    // Prioritize terms from the same category, then fill with others
     const sameCategoryTerms = shuffleArray(
       allTerms.filter((t) => t.id !== term.id && t.category_id === term.category_id),
     )
@@ -64,7 +64,7 @@ export function useQuiz() {
   ): QuizQuestion {
     const otherTerms = allTerms.filter((t) => t.id !== term.id)
 
-    // Si pas d'autres termes dispo, on force une question "vrai"
+    // If no other terms available, force a "true" question
     const isTrue = otherTerms.length === 0 ? true : Math.random() > 0.5
 
     const statement = isTrue

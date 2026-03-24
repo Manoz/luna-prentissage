@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Signaler un problème
+about: Report a problem
 title: '[Bug] '
 labels: bug
 assignees: ''
@@ -8,27 +8,27 @@ assignees: ''
 
 ## Description
 
-Description claire et concise du bug.
+A clear and concise description of the bug.
 
-## Étapes pour reproduire
+## Steps to Reproduce
 
-1. Aller sur '...'
-2. Cliquer sur '...'
-3. Voir l'erreur
+1. Go to '...'
+2. Click on '...'
+3. See the error
 
-## Comportement attendu
+## Expected Behavior
 
-Ce qui devrait se passer.
+What should happen.
 
-## Comportement observé
+## Actual Behavior
 
-Ce qui se passe réellement.
+What actually happens.
 
-## Captures d'écran
+## Screenshots
 
-Si applicable, ajoutez des captures d'écran.
+If applicable, add screenshots.
 
-## Environnement
+## Environment
 
-- Navigateur : [ex. Chrome 120]
-- OS : [ex. macOS 15]
+- Browser: [e.g. Chrome 120]
+- OS: [e.g. macOS 15]

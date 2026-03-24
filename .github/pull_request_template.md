@@ -1,19 +1,19 @@
 ## Description
 
-Décrivez brièvement les changements apportés.
+Briefly describe the changes.
 
-## Type de changement
+## Type of Change
 
 - [ ] Bug fix
-- [ ] Nouvelle fonctionnalité
+- [ ] New feature
 - [ ] Refactoring
 - [ ] Documentation
-- [ ] Autre : ___
+- [ ] Other: ___
 
 ## Checklist
 
-- [ ] Le code respecte les conventions du projet
-- [ ] `pnpm lint` passe sans erreur
-- [ ] `pnpm typecheck` passe sans erreur
-- [ ] `pnpm build` réussit
-- [ ] Les changements ont été testés manuellement
+- [ ] Code follows the project conventions
+- [ ] `pnpm lint` passes
+- [ ] `pnpm typecheck` passes
+- [ ] `pnpm build` succeeds
+- [ ] Changes have been manually tested

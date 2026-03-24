@@ -370,7 +370,7 @@ function triggerConfetti(percentage: number) {
       startVelocity: 45,
     })
   } else if (percentage >= 70) {
-    // Bon résultat: Stars and emojis
+    // Good result: Stars and emojis
     const scalar = 2
     const star = confetti.shapeFromText({ text: '⭐', scalar })
     const party = confetti.shapeFromText({ text: '🎉', scalar })
@@ -385,7 +385,7 @@ function triggerConfetti(percentage: number) {
       zIndex: 9999,
     })
   } else if (percentage >= 50) {
-    // Résultat moyen: Thumbs up and OK emojis
+    // Average result: Thumbs up and OK emojis
     const scalar = 2
     const thumbsup = confetti.shapeFromText({ text: '👍', scalar })
     const ok = confetti.shapeFromText({ text: '👌', scalar })
@@ -400,7 +400,7 @@ function triggerConfetti(percentage: number) {
       zIndex: 9999,
     })
   } else {
-    // Mauvais résultat: Poop emoji
+    // Bad result: Poop emoji
     const scalar = 3.5
     const poop = confetti.shapeFromText({ text: '💩', scalar })
 

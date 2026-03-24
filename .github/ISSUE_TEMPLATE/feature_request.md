@@ -1,23 +1,23 @@
 ---
 name: Feature request
-about: Proposer une nouvelle fonctionnalité
+about: Suggest a new feature
 title: '[Feature] '
 labels: enhancement
 assignees: ''
 ---
 
-## Problème
+## Problem
 
-Description du problème ou du besoin.
+Description of the problem or need.
 
-## Solution proposée
+## Proposed Solution
 
-Description de la solution envisagée.
+Description of the proposed solution.
 
-## Alternatives considérées
+## Alternatives Considered
 
-Autres approches envisagées et pourquoi elles ne conviennent pas.
+Other approaches considered and why they don't fit.
 
-## Contexte additionnel
+## Additional Context
 
-Toute information complémentaire.
+Any additional information.

@@ -1,54 +1,54 @@
-# Contribuer à Luna·Prentissage
+# Contributing to Luna·Prentissage
 
-Merci de votre intérêt pour ce projet ! Voici comment contribuer.
+Thanks for your interest in this project! Here's how to contribute.
 
-## Prérequis
+## Prerequisites
 
 - [Node.js](https://nodejs.org/) >= 22
 - [pnpm](https://pnpm.io/) >= 10
-- Une base de données [Neon](https://neon.tech/) PostgreSQL (gratuit)
+- A [Neon](https://neon.tech/) PostgreSQL database (free tier available)
 
-## Mise en place
+## Setup
 
-1. **Fork** et clone le repo
-2. Copiez `.env.example` vers `.env` et renseignez vos variables
-3. Installez les dépendances : `pnpm install`
-4. Lancez les migrations : `pnpm migrate`
-5. Démarrez le serveur de développement : `pnpm dev`
+1. **Fork** and clone the repo
+2. Copy `.env.example` to `.env` and fill in your values
+3. Install dependencies: `pnpm install`
+4. Run migrations: `pnpm migrate`
+5. Start the dev server: `pnpm dev`
 
 ## Workflow
 
-1. Créez une branche depuis `main` : `git checkout -b feat/ma-feature`
-2. Faites vos modifications
-3. Vérifiez que tout passe :
+1. Create a branch from `main`: `git checkout -b feat/my-feature`
+2. Make your changes
+3. Make sure everything passes:
    ```bash
    pnpm lint
    pnpm typecheck
    pnpm build
    ```
-4. Commitez avec un message clair (en anglais de préférence)
-5. Ouvrez une Pull Request vers `main`
+4. Commit with a clear message (in English)
+5. Open a Pull Request against `main`
 
 ## Conventions
 
-- **UI en français**, code et commentaires techniques en anglais
-- **Pas d'ORM** — requêtes SQL paramétrées uniquement
-- **Composables Vue** pour la gestion d'état (pas de Vuex/Pinia)
-- **pnpm** exclusivement comme gestionnaire de paquets
-- Formatage via Prettier, lint via ESLint (configs incluses)
+- **Application UI is in French** — code and technical comments in English
+- **No ORM** — parameterized SQL queries only
+- **Vue composables** for state management (no Vuex/Pinia)
+- **pnpm** exclusively as the package manager
+- Formatting via Prettier, linting via ESLint (configs included)
 
-## Signaler un bug
+## Reporting a Bug
 
-Ouvrez une [issue](../../issues) avec :
-- Description du problème
-- Étapes pour reproduire
-- Comportement attendu vs observé
-- Environnement (navigateur, OS)
+Open an [issue](../../issues) with:
+- Description of the problem
+- Steps to reproduce
+- Expected vs actual behavior
+- Environment (browser, OS)
 
-## Proposer une fonctionnalité
+## Suggesting a Feature
 
-Ouvrez une issue avec le tag `enhancement` pour en discuter avant de coder.
+Open an issue with the `enhancement` label to discuss before coding.
 
-## Code de conduite
+## Code of Conduct
 
-Ce projet suit le [Contributor Covenant](CODE_OF_CONDUCT.md). En participant, vous vous engagez à respecter ces règles.
+This project follows the [Contributor Covenant](CODE_OF_CONDUCT.md). By participating, you agree to uphold these standards.

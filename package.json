@@ -1,7 +1,7 @@
 {
   "name": "luna-prentissage",
   "version": "1.0.0",
-  "description": "Application d'apprentissage de terminologie médicale — flashcards et quiz",
+  "description": "Medical terminology learning app — flashcards and quizzes",
   "author": "Manoz",
   "license": "MIT",
   "type": "module",
