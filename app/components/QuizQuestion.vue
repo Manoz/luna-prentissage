@@ -10,7 +10,14 @@
           Score: {{ score }}/{{ currentQuestion + (answered ? 1 : 0) }}
         </span>
       </div>
-      <div class="w-full bg-gray-200 rounded-full h-2">
+      <div
+        class="w-full bg-gray-200 rounded-full h-2"
+        role="progressbar"
+        aria-label="Progression du quiz"
+        :aria-valuenow="currentQuestion + 1"
+        aria-valuemin="1"
+        :aria-valuemax="totalQuestions"
+      >
         <div
           class="bg-linear-to-r from-deep-teal to-terracotta h-2 rounded-full transition-all duration-300"
           :style="{ width: `${progress}%` }"
@@ -20,7 +27,11 @@
 
     <!-- Multiple Choice Question -->
     <div v-if="question.type === 'multiple-choice'" class="space-y-6">
-      <h3 class="text-2xl font-bold text-deep-teal mb-6">
+      <h3
+        ref="headingRef"
+        tabindex="-1"
+        class="text-2xl font-bold text-deep-teal mb-6 focus:outline-none"
+      >
         Que signifie <span class="text-terracotta">"{{ question.term.root }}"</span> ?
       </h3>
       <div class="space-y-3">
@@ -28,8 +39,8 @@
           v-for="(option, index) in question.options"
           :key="index"
           type="button"
-          :disabled="answered"
-          class="w-full p-4 text-left rounded-lg border-2 transition-all font-medium"
+          :aria-disabled="answered"
+          class="w-full p-4 text-left rounded-lg border-2 transition-all font-medium aria-disabled:cursor-default"
           :class="getOptionClass(option)"
           @click="selectAnswer(option)"
         >
@@ -40,15 +51,19 @@
 
     <!-- True/False Question -->
     <div v-else-if="question.type === 'true-false'" class="space-y-6">
-      <h3 class="text-2xl font-bold text-deep-teal mb-6">
+      <h3
+        ref="headingRef"
+        tabindex="-1"
+        class="text-2xl font-bold text-deep-teal mb-6 focus:outline-none"
+      >
         <span class="text-terracotta">"{{ question.term.root }}"</span> signifie
         <span class="text-terracotta">"{{ question.statement }}"</span>
       </h3>
       <div class="grid grid-cols-2 gap-4">
         <button
           type="button"
-          :disabled="answered"
-          class="p-6 flex items-center justify-center rounded-lg border-2 transition-all font-semibold text-lg"
+          :aria-disabled="answered"
+          class="p-6 flex items-center justify-center rounded-lg border-2 transition-all font-semibold text-lg aria-disabled:cursor-default"
           :class="getTrueFalseClass(true)"
           @click="selectAnswer(true)"
         >
@@ -59,6 +74,8 @@
             stroke-width="1.5"
             stroke="currentColor"
             class="size-6"
+            aria-hidden="true"
+            focusable="false"
           >
             <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
           </svg>
@@ -67,8 +84,8 @@
         </button>
         <button
           type="button"
-          :disabled="answered"
-          class="p-6 flex items-center justify-center rounded-lg border-2 transition-all font-semibold text-lg"
+          :aria-disabled="answered"
+          class="p-6 flex items-center justify-center rounded-lg border-2 transition-all font-semibold text-lg aria-disabled:cursor-default"
           :class="getTrueFalseClass(false)"
           @click="selectAnswer(false)"
         >
@@ -79,6 +96,8 @@
             stroke-width="1.5"
             stroke="currentColor"
             class="size-6"
+            aria-hidden="true"
+            focusable="false"
           >
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
           </svg>
@@ -88,23 +107,26 @@
       </div>
     </div>
 
-    <!-- Feedback -->
-    <div
-      v-if="answered"
-      class="mt-8 p-4 rounded-lg"
-      :class="isCorrect ? 'bg-green-50' : 'bg-red-50'"
-    >
-      <p class="text-lg font-semibold" :class="isCorrect ? 'text-green-700' : 'text-red-700'">
-        <span aria-hidden="true">{{ isCorrect ? '✓' : '✗' }}</span>
-        {{ isCorrect ? 'Correct !' : 'Incorrect' }}
-      </p>
-      <p v-if="!isCorrect" class="mt-2 text-gray-700">
-        La bonne réponse est :
-        <span class="font-semibold">{{ formatAnswer(question.correctAnswer) }}</span>
-      </p>
-      <p class="mt-3 text-sm text-deep-teal/60">
-        Catégorie : <span class="font-medium">{{ question.term.category_name }}</span>
-      </p>
+    <!-- Feedback: the live region stays mounted so announcements are reliable -->
+    <div role="status" aria-live="polite">
+      <div
+        v-if="answered"
+        class="mt-8 p-4 rounded-lg"
+        :class="isCorrect ? 'bg-green-50' : 'bg-red-50'"
+      >
+        <p class="text-lg font-semibold" :class="isCorrect ? 'text-green-700' : 'text-red-700'">
+          <span aria-hidden="true">{{ isCorrect ? '✓' : '✗' }}</span>
+          {{ isCorrect ? 'Correct !' : 'Incorrect' }}
+        </p>
+        <p v-if="!isCorrect" class="mt-2 text-gray-700">
+          La bonne réponse est :
+          <span class="font-semibold">{{ formatAnswer(question.correctAnswer) }}</span>
+        </p>
+        <p class="mt-3 text-sm text-deep-teal/60">
+          Catégorie : <span class="font-medium">{{ question.term.category_name }}</span>
+        </p>
+        <p class="sr-only">Score : {{ score }} sur {{ currentQuestion + 1 }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -128,6 +150,7 @@ const emit = defineEmits<{
 const answered = ref(false)
 const selectedAnswer = ref<string | boolean | null>(null)
 const isCorrect = ref(false)
+const headingRef = ref<HTMLElement | null>(null)
 
 function formatAnswer(answer: string | boolean) {
   if (typeof answer === 'boolean') return answer ? 'Vrai' : 'Faux'
@@ -142,6 +165,10 @@ function selectAnswer(answer: string | boolean) {
   answered.value = true
 
   emit('answer', answer)
+}
+
+function focusHeading() {
+  headingRef.value?.focus()
 }
 
 function getOptionClass(option: string) {
@@ -185,4 +212,8 @@ watch(
     isCorrect.value = false
   },
 )
+
+defineExpose({
+  focusHeading,
+})
 </script>

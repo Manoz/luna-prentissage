@@ -13,8 +13,19 @@
         <div class="container mx-auto px-6 py-6">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
-              <NuxtLink to="/" class="text-deep-teal/60 hover:text-deep-teal transition-colors">
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <NuxtLink
+                to="/"
+                aria-label="Retour à l'accueil"
+                class="text-deep-teal/60 hover:text-deep-teal transition-colors"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -33,7 +44,14 @@
               @click="handleShuffle"
             >
               <span class="flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -82,6 +100,8 @@
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
                   >
                     <path
                       stroke-linecap="round"
@@ -102,7 +122,7 @@
             <div v-else class="space-y-8">
               <!-- Progress -->
               <div class="flex items-center justify-between">
-                <div class="text-sm">
+                <div class="text-sm" aria-live="polite">
                   Carte
                   <span class="font-semibold">{{ currentIndex + 1 }}</span> sur
                   <span class="font-semibold">{{ filteredTerms.length }}</span>
@@ -111,13 +131,18 @@
                   <kbd class="px-2 py-1 bg-white rounded border border-deep-teal/20">←</kbd>
                   <kbd class="px-2 py-1 bg-white rounded border border-deep-teal/20">→</kbd>
                   <span>pour naviguer</span>
-                  <kbd class="px-2 py-1 bg-white rounded border border-deep-teal/20">Espace</kbd>
-                  <span>pour retourner</span>
                 </div>
               </div>
 
               <!-- Progress Bar -->
-              <div class="w-full h-2 bg-deep-teal/10 rounded-full overflow-hidden">
+              <div
+                class="w-full h-2 bg-deep-teal/10 rounded-full overflow-hidden"
+                role="progressbar"
+                aria-label="Progression des cartes"
+                :aria-valuenow="currentIndex + 1"
+                aria-valuemin="1"
+                :aria-valuemax="filteredTerms.length"
+              >
                 <div
                   class="h-full bg-gradient-to-r from-deep-teal to-terracotta transition-all duration-300"
                   :style="{
@@ -140,7 +165,14 @@
                   @click="previousCard"
                 >
                   <span class="flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
                       <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
@@ -160,7 +192,14 @@
                 >
                   <span class="flex items-center gap-2">
                     Suivant
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
                       <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
@@ -188,7 +227,7 @@ const { terms, fetchTerms, shuffleTerms, loading } = useTerms()
 const route = useRoute()
 const selectedCategoryId = ref<number | null>(null)
 const currentIndex = ref(0)
-const flashcardRef = ref()
+const flashcardRef = ref<{ flip: () => void; focus: () => void } | null>(null)
 
 const filteredTerms = computed(() => {
   if (selectedCategoryId.value === null) {
@@ -201,11 +240,25 @@ const currentTerm = computed(() => {
   return filteredTerms.value[currentIndex.value]
 })
 
-// Fetch data on mount + keyboard navigation
+// Arrow keys navigate cards unless the user is inside a form control
+// (where arrows already have a meaning). Flipping is handled natively by
+// the card button (Enter/Space), so no global Space shortcut is needed.
+function handleKeyPress(e: KeyboardEvent) {
+  const target = e.target as HTMLElement | null
+  if (target && ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName)) return
+
+  if (e.key === 'ArrowRight') {
+    nextCard()
+  } else if (e.key === 'ArrowLeft') {
+    previousCard()
+  }
+}
+
 onMounted(async () => {
+  window.addEventListener('keydown', handleKeyPress)
+
   await Promise.all([fetchCategories(), fetchTerms()])
 
-  // Check for category query param
   const categoryParam = route.query.category
   if (categoryParam) {
     const categoryId = parseInt(categoryParam as string, 10)
@@ -213,25 +266,21 @@ onMounted(async () => {
       selectedCategoryId.value = categoryId
     }
   }
-
-  // Keyboard navigation
-  const handleKeyPress = (e: KeyboardEvent) => {
-    if (e.key === 'ArrowRight') {
-      nextCard()
-    } else if (e.key === 'ArrowLeft') {
-      previousCard()
-    } else if (e.key === ' ') {
-      e.preventDefault()
-      flashcardRef.value?.flip()
-    }
-  }
-
-  window.addEventListener('keydown', handleKeyPress)
-
-  onUnmounted(() => {
-    window.removeEventListener('keydown', handleKeyPress)
-  })
 })
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyPress)
+})
+
+// When a nav button becomes disabled under the focused element, the browser
+// drops focus to <body>; move it to the card instead.
+function keepFocusOnCard() {
+  nextTick(() => {
+    if (document.activeElement === document.body) {
+      flashcardRef.value?.focus()
+    }
+  })
+}
 
 function handleCategorySelect(categoryId: number | null) {
   selectedCategoryId.value = categoryId
@@ -241,12 +290,14 @@ function handleCategorySelect(categoryId: number | null) {
 function nextCard() {
   if (currentIndex.value < filteredTerms.value.length - 1) {
     currentIndex.value++
+    keepFocusOnCard()
   }
 }
 
 function previousCard() {
   if (currentIndex.value > 0) {
     currentIndex.value--
+    keepFocusOnCard()
   }
 }
 

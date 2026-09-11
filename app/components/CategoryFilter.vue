@@ -5,6 +5,7 @@
     <!-- Mobile: compact select dropdown -->
     <div class="lg:hidden">
       <select
+        aria-label="Filtrer par catégorie"
         class="w-full p-3 rounded-lg border-2 border-deep-teal/20 bg-white text-deep-teal font-medium focus:border-deep-teal focus:outline-none"
         :value="selectedCategoryId ?? ''"
         @change="handleSelectChange"
@@ -20,6 +21,7 @@
     <div class="hidden lg:block space-y-2">
       <button
         type="button"
+        :aria-pressed="selectedCategoryId === null"
         class="w-full p-3 text-left rounded-lg border-2 transition-all font-medium"
         :class="{
           'border-deep-teal bg-deep-teal/5 text-deep-teal': selectedCategoryId === null,
@@ -28,7 +30,10 @@
         @click="selectCategory(null)"
       >
         <span class="flex items-center gap-3">
-          <span class="w-4 h-4 rounded-full bg-linear-to-r from-deep-teal to-terracotta" />
+          <span
+            class="w-4 h-4 rounded-full bg-linear-to-r from-deep-teal to-terracotta"
+            aria-hidden="true"
+          />
           Toutes les catégories
         </span>
       </button>
@@ -36,6 +41,7 @@
         v-for="category in categories"
         :key="category.id"
         type="button"
+        :aria-pressed="selectedCategoryId === category.id"
         class="w-full p-3 text-left rounded-lg border-2 transition-all font-medium"
         :class="{
           'border-deep-teal bg-deep-teal/5': selectedCategoryId === category.id,
@@ -47,6 +53,7 @@
           <span
             class="w-4 h-4 rounded-full shrink-0"
             :style="{ backgroundColor: category.color }"
+            aria-hidden="true"
           />
           <span class="flex-1">{{ category.name }}</span>
         </span>

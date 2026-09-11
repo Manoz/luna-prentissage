@@ -1,7 +1,10 @@
 <template>
-  <div
-    class="flashcard-container cursor-pointer select-none"
+  <button
+    ref="buttonRef"
+    type="button"
+    class="flashcard-container block w-full text-left select-none rounded-xl focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-deep-teal"
     :style="{ perspective: '1000px' }"
+    :aria-pressed="isFlipped"
     @click="flip"
   >
     <div
@@ -18,10 +21,11 @@
           backgroundColor: term.category_color,
           backfaceVisibility: 'hidden',
         }"
+        :aria-hidden="isFlipped"
       >
         <div class="text-center">
-          <h2 class="text-5xl font-bold text-white mb-4">{{ term.root }}</h2>
-          <p class="text-white/70 text-sm uppercase tracking-wide">Cliquez pour révéler</p>
+          <p class="text-5xl font-bold text-white mb-4">{{ term.root }}</p>
+          <p class="text-white/70 text-sm uppercase tracking-wide">Appuyez pour révéler</p>
         </div>
       </div>
 
@@ -33,14 +37,15 @@
           backfaceVisibility: 'hidden',
           transform: 'rotateY(180deg)',
         }"
+        :aria-hidden="!isFlipped"
       >
         <div class="text-center">
-          <h3 class="text-3xl font-semibold text-white mb-4">{{ term.meaning }}</h3>
+          <p class="text-3xl font-semibold text-white mb-4">{{ term.meaning }}</p>
           <p class="text-white/70 text-sm uppercase tracking-wide mt-6">{{ term.category_name }}</p>
         </div>
       </div>
     </div>
-  </div>
+  </button>
 </template>
 
 <script setup lang="ts">
@@ -52,9 +57,14 @@ interface Props {
 
 const props = defineProps<Props>()
 const isFlipped = ref(false)
+const buttonRef = ref<HTMLButtonElement | null>(null)
 
 function flip() {
   isFlipped.value = !isFlipped.value
+}
+
+function focus() {
+  buttonRef.value?.focus()
 }
 
 // Reset flip when term changes
@@ -65,8 +75,8 @@ watch(
   },
 )
 
-// Expose flip method for parent components
 defineExpose({
   flip,
+  focus,
 })
 </script>
