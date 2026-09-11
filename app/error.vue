@@ -7,7 +7,7 @@
       "
     />
 
-    <div class="relative text-center max-w-2xl">
+    <main class="relative text-center max-w-2xl">
       <div class="mb-8">
         <div class="text-9xl font-serif font-bold text-deep-teal/20 mb-4" aria-hidden="true">
           {{ error.statusCode }}
@@ -40,10 +40,10 @@
       </div>
 
       <div v-if="isDev" class="mt-12 p-6 bg-white rounded-xl shadow-lg text-left">
-        <h3 class="text-lg font-semibold text-deep-teal mb-2">Détails de l'erreur (dev mode)</h3>
+        <h2 class="text-lg font-semibold text-deep-teal mb-2">Détails de l'erreur (dev mode)</h2>
         <pre class="text-sm text-deep-teal-muted overflow-x-auto">{{ error }}</pre>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 

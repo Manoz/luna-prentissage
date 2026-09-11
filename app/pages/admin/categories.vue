@@ -15,9 +15,17 @@
             <div class="flex items-center gap-4">
               <NuxtLink
                 to="/admin"
+                aria-label="Retour au tableau de bord"
                 class="text-deep-teal-muted hover:text-deep-teal transition-colors"
               >
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -40,9 +48,9 @@
         </div>
       </header>
 
-      <div class="container mx-auto px-6 py-12">
+      <main class="container mx-auto px-6 py-12">
         <!-- Loading State -->
-        <div v-if="loading" class="flex items-center justify-center py-20">
+        <div v-if="loading" role="status" class="flex items-center justify-center py-20">
           <div class="text-center">
             <div
               class="w-16 h-16 border-4 border-deep-teal/20 border-t-deep-teal rounded-full animate-spin mx-auto mb-4"
@@ -66,10 +74,18 @@
               <div class="flex gap-2">
                 <button
                   type="button"
+                  :aria-label="`Modifier la catégorie ${category.name}`"
                   class="p-2 text-deep-teal-muted hover:text-deep-teal hover:bg-deep-teal/5 rounded-lg transition-all"
                   @click="openEditModal(category)"
                 >
-                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -80,10 +96,18 @@
                 </button>
                 <button
                   type="button"
-                  class="p-2 text-red-700 hover:text-terracotta hover:bg-terracotta/5 rounded-lg transition-all"
+                  :aria-label="`Supprimer la catégorie ${category.name}`"
+                  class="p-2 text-red-700 hover:text-red-800 hover:bg-red-50 rounded-lg transition-all"
                   @click="confirmDelete(category)"
                 >
-                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -95,9 +119,9 @@
               </div>
             </div>
 
-            <h3 class="text-xl font-serif font-bold text-deep-teal mb-2">
+            <h2 class="text-xl font-serif font-bold text-deep-teal mb-2">
               {{ category.name }}
-            </h3>
+            </h2>
 
             <p class="text-sm text-deep-teal-muted mb-4">
               {{ category.description || 'Aucune description' }}
@@ -112,85 +136,82 @@
         </div>
 
         <!-- Create/Edit Modal -->
-        <div
-          v-if="showModal"
-          class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6 z-50"
-          @click.self="closeModal"
+        <AdminModal
+          :open="showModal"
+          :title="editingCategory ? 'Modifier la catégorie' : 'Nouvelle catégorie'"
+          @close="closeModal"
         >
-          <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8">
-            <h2 class="text-2xl font-serif font-bold text-deep-teal mb-6">
-              {{ editingCategory ? 'Modifier la catégorie' : 'Nouvelle catégorie' }}
-            </h2>
-
-            <CategoryForm
-              :category="editingCategory"
-              :is-edit="!!editingCategory"
-              @submit="handleSubmit"
-              @cancel="closeModal"
-            />
-          </div>
-        </div>
+          <CategoryForm
+            :category="editingCategory"
+            :is-edit="!!editingCategory"
+            :submitting="saving"
+            :error="saveError"
+            @submit="handleSubmit"
+            @cancel="closeModal"
+          />
+        </AdminModal>
 
         <!-- Delete Confirmation Modal -->
-        <div
-          v-if="showDeleteConfirm"
-          class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6 z-50"
-          @click.self="closeDeleteConfirm"
+        <AdminModal
+          :open="showDeleteConfirm"
+          title="Confirmer la suppression"
+          alert
+          centered
+          size="md"
+          @close="closeDeleteConfirm"
         >
-          <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
-            <div class="text-center mb-6">
-              <div
-                class="w-16 h-16 bg-terracotta/10 rounded-full flex items-center justify-center mx-auto mb-4"
+          <template #icon>
+            <div
+              class="w-16 h-16 bg-terracotta/10 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <svg
+                class="w-8 h-8 text-terracotta"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+                focusable="false"
               >
-                <svg
-                  class="w-8 h-8 text-terracotta"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                  />
-                </svg>
-              </div>
-              <h3 class="text-xl font-serif font-bold text-deep-teal mb-2">
-                Confirmer la suppression
-              </h3>
-              <p class="text-deep-teal-muted">
-                Êtes-vous sûr de vouloir supprimer la catégorie
-                <span class="font-semibold text-deep-teal">{{ categoryToDelete?.name }}</span>
-                ?
-              </p>
-              <p class="text-sm text-terracotta mt-2">Cette action ne peut pas être annulée.</p>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
             </div>
+          </template>
 
-            <div class="flex gap-3">
-              <button
-                type="button"
-                class="flex-1 px-4 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-all"
-                @click="closeDeleteConfirm"
-              >
-                Annuler
-              </button>
-              <button
-                type="button"
-                :disabled="deleting"
-                class="flex-1 px-4 py-3 bg-terracotta-dark text-white font-semibold rounded-lg hover:bg-terracotta-dark/90 transition-all disabled:opacity-50"
-                @click="handleDelete"
-              >
-                {{ deleting ? 'Suppression...' : 'Supprimer' }}
-              </button>
-            </div>
+          <p class="text-deep-teal-muted mb-2">
+            Êtes-vous sûr de vouloir supprimer la catégorie
+            <span class="font-semibold text-deep-teal">{{ categoryToDelete?.name }}</span>
+            ?
+          </p>
+          <p class="text-sm text-red-700 mb-6">Cette action ne peut pas être annulée.</p>
 
-            <p v-if="deleteError" class="text-red-700 text-sm mt-4 text-center">
-              {{ deleteError }}
-            </p>
+          <div class="flex gap-3">
+            <button
+              type="button"
+              class="flex-1 px-4 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-all"
+              @click="closeDeleteConfirm"
+            >
+              Annuler
+            </button>
+            <button
+              type="button"
+              :disabled="deleting"
+              class="flex-1 px-4 py-3 bg-terracotta-dark text-white font-semibold rounded-lg hover:bg-terracotta-dark/90 transition-all disabled:opacity-50"
+              @click="handleDelete"
+            >
+              {{ deleting ? 'Suppression...' : 'Supprimer' }}
+            </button>
           </div>
-        </div>
-      </div>
+
+          <p v-if="deleteError" role="alert" class="text-red-700 text-sm mt-4">
+            {{ deleteError }}
+          </p>
+        </AdminModal>
+      </main>
     </div>
   </div>
 </template>
@@ -211,6 +232,8 @@ const showDeleteConfirm = ref(false)
 const categoryToDelete = ref<Category | null>(null)
 const deleting = ref(false)
 const deleteError = ref<string | null>(null)
+const saving = ref(false)
+const saveError = ref<string | null>(null)
 
 onMounted(() => {
   fetchCategories()
@@ -218,29 +241,33 @@ onMounted(() => {
 
 function openCreateModal() {
   editingCategory.value = null
+  saveError.value = null
   showModal.value = true
 }
 
 function openEditModal(category: Category) {
   editingCategory.value = category
+  saveError.value = null
   showModal.value = true
 }
 
 function closeModal() {
   showModal.value = false
   editingCategory.value = null
+  saveError.value = null
 }
 
 async function handleSubmit(data: { name: string; color: string; description?: string }) {
+  saving.value = true
+  saveError.value = null
+
   try {
     if (editingCategory.value) {
-      // Update existing category
       await $fetch(`/api/admin/categories/${editingCategory.value.id}`, {
         method: 'PUT',
         body: data,
       })
     } else {
-      // Create new category
       await $fetch('/api/admin/categories', {
         method: 'POST',
         body: data,
@@ -250,7 +277,9 @@ async function handleSubmit(data: { name: string; color: string; description?: s
     closeModal()
     await fetchCategories()
   } catch {
-    // TODO: show user feedback on save failure
+    saveError.value = "L'enregistrement a échoué. Vérifiez les champs et réessayez."
+  } finally {
+    saving.value = false
   }
 }
 

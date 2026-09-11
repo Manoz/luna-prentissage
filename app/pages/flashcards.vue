@@ -80,7 +80,7 @@
           <!-- Main Content -->
           <main>
             <!-- Loading State -->
-            <div v-if="loading" class="flex items-center justify-center py-20">
+            <div v-if="loading" role="status" class="flex items-center justify-center py-20">
               <div class="text-center">
                 <div
                   class="w-16 h-16 border-4 border-deep-teal/20 border-t-deep-teal rounded-full animate-spin mx-auto mb-4"

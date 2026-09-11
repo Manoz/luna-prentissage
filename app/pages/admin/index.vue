@@ -30,7 +30,7 @@
         </div>
       </header>
 
-      <div class="container mx-auto px-6 py-12">
+      <main class="container mx-auto px-6 py-12">
         <!-- Welcome Section -->
         <div class="mb-12">
           <h1 class="text-4xl font-serif font-bold text-deep-teal mb-2">Tableau de bord</h1>
@@ -47,6 +47,8 @@
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
                 >
                   <path
                     stroke-linecap="round"
@@ -71,6 +73,8 @@
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
                 >
                   <path
                     stroke-linecap="round"
@@ -95,6 +99,8 @@
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
                 >
                   <path
                     stroke-linecap="round"
@@ -127,6 +133,8 @@
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
                 >
                   <path
                     stroke-linecap="round"
@@ -137,9 +145,9 @@
                 </svg>
               </div>
               <div class="flex-1">
-                <h3 class="text-xl font-serif font-bold text-deep-teal mb-1">
+                <h2 class="text-xl font-serif font-bold text-deep-teal mb-1">
                   Gérer les catégories
-                </h3>
+                </h2>
                 <p class="text-sm text-deep-teal-muted">
                   Ajouter, modifier ou supprimer des catégories
                 </p>
@@ -149,6 +157,8 @@
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
+                focusable="false"
               >
                 <path
                   stroke-linecap="round"
@@ -173,6 +183,8 @@
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
                 >
                   <path
                     stroke-linecap="round"
@@ -183,7 +195,7 @@
                 </svg>
               </div>
               <div class="flex-1">
-                <h3 class="text-xl font-serif font-bold text-deep-teal mb-1">Gérer les termes</h3>
+                <h2 class="text-xl font-serif font-bold text-deep-teal mb-1">Gérer les termes</h2>
                 <p class="text-sm text-deep-teal-muted">
                   Ajouter, modifier ou supprimer des termes médicaux
                 </p>
@@ -193,6 +205,8 @@
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
+                focusable="false"
               >
                 <path
                   stroke-linecap="round"
@@ -204,7 +218,7 @@
             </div>
           </NuxtLink>
         </div>
-      </div>
+      </main>
     </div>
   </div>
 </template>

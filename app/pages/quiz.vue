@@ -40,7 +40,7 @@
         </div>
       </header>
 
-      <div class="container mx-auto px-6 py-12">
+      <main class="container mx-auto px-6 py-12">
         <!-- Setup Screen -->
         <div v-if="quizState === 'setup'" class="max-w-2xl mx-auto">
           <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
@@ -246,7 +246,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   </div>
 </template>
