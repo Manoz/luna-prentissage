@@ -3,18 +3,18 @@
     ref="dialogRef"
     :role="alert ? 'alertdialog' : undefined"
     :aria-labelledby="titleId"
-    class="m-auto w-full bg-transparent p-0 backdrop:bg-black/50 backdrop:backdrop-blur-sm"
+    class="m-auto w-full bg-transparent p-4 text-ink backdrop:bg-black/50"
     :class="maxWidthClass"
     @close="emit('close')"
     @click="onBackdropClick"
   >
     <div
       v-if="open"
-      class="bg-white rounded-2xl shadow-2xl p-8"
+      class="rounded border border-line bg-paper p-6 shadow-[0_16px_40px_-16px_rgb(0_0_0/0.4)] sm:p-7"
       :class="{ 'text-center': centered }"
     >
       <slot name="icon" />
-      <h2 :id="titleId" class="text-2xl font-serif font-bold text-deep-teal mb-6">
+      <h2 :id="titleId" class="mb-5 text-xl font-semibold tracking-tight">
         {{ title }}
       </h2>
       <slot />

@@ -29,8 +29,13 @@ pnpm migrate      # Run database migrations
   - `useCategories` — fetch and cache categories
   - `useTerms` — fetch, filter, and shuffle terms
   - `useQuiz` — quiz generation, scoring, answer tracking
-- **Fonts**: Crimson Pro (serif headings), DM Sans (sans-serif body) via `@nuxt/fonts`
-- **Design tokens**: Deep Teal `#2D5F5D`, Warm Cream `#FAF9F6`, Terracotta `#C1666B`
+  - `useTheme` — theme preference (`light` | `dark` | `system`), persisted in localStorage
+- **Layouts** (`app/layouts/`): `default` (sidebar with nav, category list, theme switch) and `admin` (sidebar with admin nav); login and error screens opt out with `layout: false`. Layouts only read shared state; each page fetches the data it needs in `onMounted`
+- **Components** (`app/components/`): `AppSidebar`, `AppWordmark`, `ThemeSwitch`, `FlashCard`, `QuizQuestion`, and `admin/` (`Modal`, `CategoryForm`, `TermForm`)
+- **Theme**: light/dark tokens as CSS variables in `main.css` (`:root`, `[data-theme='dark']`, `prefers-color-scheme` fallback), exposed to Tailwind through `@theme inline`. An inline head script in `nuxt.config.ts` applies the stored choice before first paint; `plugins/theme.client.ts` mirrors it into `useTheme` after hydration
+- **Category filter**: carried by the URL (`/flashcards?category=<id>`, `/quiz?category=<id>`) so the sidebar links and the pages stay in sync
+- **Fonts**: Public Sans (UI), Newsreader italic (meanings, quiz prompts) via `@nuxt/fonts`
+- **Shared classes** (`main.css`): `btn-primary|secondary|ghost|danger`, `field`, `label`, `hint`, `kicker`, `row`/`row-active`, `dot`
 
 ### Backend (`server/`)
 

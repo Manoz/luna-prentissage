@@ -6,6 +6,14 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'fr' },
+      script: [
+        {
+          // Apply the stored theme before first paint to avoid a flash of the wrong theme
+          innerHTML:
+            "(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.dataset.theme=t}}catch(e){}})()",
+          tagPosition: 'head',
+        },
+      ],
     },
   },
   routeRules: {
@@ -22,6 +30,12 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: process.env.NODE_ENV === 'development' },
   css: ['~/assets/css/main.css'],
+  fonts: {
+    families: [
+      { name: 'Public Sans', provider: 'google', weights: [400, 500, 600, 700] },
+      { name: 'Newsreader', provider: 'google', weights: [500], styles: ['italic'] },
+    ],
+  },
   modules: [
     '@nuxt/eslint',
     '@nuxt/fonts',

@@ -1,110 +1,71 @@
 <template>
-  <div class="quiz-question bg-white rounded-xl shadow-lg p-8 max-w-3xl mx-auto">
-    <!-- Progress Bar -->
-    <div class="mb-8">
-      <div class="flex justify-between items-center mb-2">
-        <span id="quiz-question-position" class="text-sm font-medium text-deep-teal-muted">
-          Question {{ currentQuestion + 1 }} sur {{ totalQuestions }}
-        </span>
-        <span class="text-sm font-medium text-deep-teal-muted">
-          Score: {{ score }}/{{ currentQuestion + (answered ? 1 : 0) }}
-        </span>
-      </div>
-      <div
-        class="w-full bg-gray-200 rounded-full h-2"
-        role="progressbar"
-        aria-label="Progression du quiz"
-        :aria-valuenow="currentQuestion + 1"
-        aria-valuemin="1"
-        :aria-valuemax="totalQuestions"
-      >
-        <div
-          class="bg-linear-to-r from-deep-teal to-terracotta h-2 rounded-full transition-all duration-300"
-          :style="{ width: `${progress}%` }"
-        />
-      </div>
+  <div class="quiz-question">
+    <div class="mb-8 flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-ink-faint">
+      <span id="quiz-question-position" class="tabular-nums">
+        Question <span class="text-ink">{{ currentQuestion + 1 }}</span> / {{ totalQuestions }}
+      </span>
+      <span class="tabular-nums">
+        Score <span class="text-ink">{{ score }}</span> / {{ currentQuestion + (answered ? 1 : 0) }}
+      </span>
     </div>
 
-    <!-- Multiple Choice Question -->
-    <div v-if="question.type === 'multiple-choice'" class="space-y-6">
+    <!-- Multiple choice -->
+    <div v-if="question.type === 'multiple-choice'">
       <h2
         ref="headingRef"
         tabindex="-1"
         aria-describedby="quiz-question-position"
-        class="text-2xl font-bold text-deep-teal mb-6 focus:outline-none"
+        class="text-2xl font-semibold tracking-tight focus:outline-none sm:text-3xl"
       >
-        Que signifie <span class="text-terracotta">"{{ question.term.root }}"</span> ?
+        Que signifie <span class="font-serif italic text-accent">{{ question.term.root }}</span> ?
       </h2>
-      <div class="space-y-3">
+      <div class="mt-7 flex max-w-xl flex-col gap-2">
         <button
           v-for="(option, index) in question.options"
           :key="index"
           type="button"
           :aria-disabled="answered"
-          class="w-full p-4 text-left rounded-lg border-2 transition-all font-medium aria-disabled:cursor-default"
+          class="flex min-h-11 w-full items-center gap-3 rounded border px-4 py-2.5 text-left text-[15px] transition-colors aria-disabled:cursor-default"
           :class="getOptionClass(option)"
           @click="selectAnswer(option)"
         >
+          <span class="w-4 shrink-0 text-xs text-ink-faint" aria-hidden="true">{{
+            letters[index]
+          }}</span>
           {{ option }}
         </button>
       </div>
     </div>
 
-    <!-- True/False Question -->
-    <div v-else-if="question.type === 'true-false'" class="space-y-6">
+    <!-- True / false -->
+    <div v-else-if="question.type === 'true-false'">
       <h2
         ref="headingRef"
         tabindex="-1"
         aria-describedby="quiz-question-position"
-        class="text-2xl font-bold text-deep-teal mb-6 focus:outline-none"
+        class="text-2xl font-semibold tracking-tight focus:outline-none sm:text-3xl"
       >
-        <span class="text-terracotta">"{{ question.term.root }}"</span> signifie
-        <span class="text-terracotta">"{{ question.statement }}"</span>
+        <span class="font-serif italic text-accent">{{ question.term.root }}</span> signifie
+        <span class="font-serif italic text-accent">{{ question.statement }}</span>
       </h2>
-      <div class="grid grid-cols-2 gap-4">
+      <div class="mt-7 grid max-w-xl grid-cols-2 gap-2">
         <button
           type="button"
           :aria-disabled="answered"
-          class="p-6 flex items-center justify-center rounded-lg border-2 transition-all font-semibold text-lg aria-disabled:cursor-default"
+          class="min-h-12 rounded border px-4 text-[15px] font-medium transition-colors aria-disabled:cursor-default"
           :class="getTrueFalseClass(true)"
           @click="selectAnswer(true)"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="size-6"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-          </svg>
-
-          <span>Vrai</span>
+          Vrai
         </button>
         <button
           type="button"
           :aria-disabled="answered"
-          class="p-6 flex items-center justify-center rounded-lg border-2 transition-all font-semibold text-lg aria-disabled:cursor-default"
+          class="min-h-12 rounded border px-4 text-[15px] font-medium transition-colors aria-disabled:cursor-default"
           :class="getTrueFalseClass(false)"
           @click="selectAnswer(false)"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="size-6"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-          </svg>
-
-          <span>Faux</span>
+          Faux
         </button>
       </div>
     </div>
@@ -113,20 +74,20 @@
     <div role="status" aria-live="polite">
       <div
         v-if="answered"
-        class="mt-8 p-4 rounded-lg"
-        :class="isCorrect ? 'bg-green-50' : 'bg-red-50'"
+        class="mt-8 max-w-xl border-l-2 pl-4"
+        :class="isCorrect ? 'border-success' : 'border-danger'"
       >
-        <p class="text-lg font-semibold" :class="isCorrect ? 'text-green-700' : 'text-red-700'">
-          <span aria-hidden="true">{{ isCorrect ? '✓' : '✗' }}</span>
-          {{ isCorrect ? 'Correct !' : 'Incorrect' }}
+        <p class="font-semibold" :class="isCorrect ? 'text-success' : 'text-danger'">
+          {{ isCorrect ? 'Correct' : 'Incorrect' }}
         </p>
-        <p v-if="!isCorrect" class="mt-2 text-gray-700">
-          La bonne réponse est :
-          <span class="font-semibold">{{ formatAnswer(question.correctAnswer) }}</span>
+        <p v-if="!isCorrect" class="mt-1 text-sm text-ink-2">
+          La bonne réponse est
+          <span class="font-serif text-base italic text-accent">{{
+            formatAnswer(question.correctAnswer)
+          }}</span
+          >.
         </p>
-        <p class="mt-3 text-sm text-deep-teal-muted">
-          Catégorie : <span class="font-medium">{{ question.term.category_name }}</span>
-        </p>
+        <p class="mt-1 text-xs text-ink-faint">{{ question.term.category_name }}</p>
         <p class="sr-only">Score : {{ score }} sur {{ currentQuestion + 1 }}</p>
       </div>
     </div>
@@ -140,7 +101,6 @@ interface Props {
   question: QuizQuestion
   currentQuestion: number
   totalQuestions: number
-  progress: number
   score: number
 }
 
@@ -148,6 +108,8 @@ const props = defineProps<Props>()
 const emit = defineEmits<{
   answer: [answer: string | boolean]
 }>()
+
+const letters = ['A', 'B', 'C', 'D', 'E', 'F']
 
 const answered = ref(false)
 const selectedAnswer = ref<string | boolean | null>(null)
@@ -173,36 +135,23 @@ function focusHeading() {
   headingRef.value?.focus()
 }
 
+const idleClass = 'border-line-strong text-ink hover:border-ink hover:bg-ink/6'
+const correctClass = 'border-success bg-success-soft text-ink'
+const wrongClass = 'border-danger bg-danger-soft text-ink'
+const dimClass = 'border-line text-ink-faint'
+
 function getOptionClass(option: string) {
-  if (!answered.value) {
-    return 'border-gray-500 hover:border-deep-teal hover:bg-deep-teal/5'
-  }
-
-  if (option === props.question.correctAnswer) {
-    return 'border-green-500 bg-green-50 text-green-900'
-  }
-
-  if (option === selectedAnswer.value && !isCorrect.value) {
-    return 'border-red-500 bg-red-50 text-red-900'
-  }
-
-  return 'border-gray-200 bg-gray-50 text-gray-500'
+  if (!answered.value) return idleClass
+  if (option === props.question.correctAnswer) return correctClass
+  if (option === selectedAnswer.value && !isCorrect.value) return wrongClass
+  return dimClass
 }
 
 function getTrueFalseClass(value: boolean) {
-  if (!answered.value) {
-    return 'border-gray-500 hover:border-deep-teal hover:bg-deep-teal/5'
-  }
-
-  if (value === props.question.correctAnswer) {
-    return 'border-green-500 bg-green-50 text-green-900'
-  }
-
-  if (value === selectedAnswer.value && !isCorrect.value) {
-    return 'border-red-500 bg-red-50 text-red-900'
-  }
-
-  return 'border-gray-200 bg-gray-50 text-gray-500'
+  if (!answered.value) return idleClass
+  if (value === props.question.correctAnswer) return correctClass
+  if (value === selectedAnswer.value && !isCorrect.value) return wrongClass
+  return dimClass
 }
 
 // Reset when question changes
