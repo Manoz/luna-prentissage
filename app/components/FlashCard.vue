@@ -17,7 +17,7 @@
 
     <div class="mt-8 border-t border-dashed border-line-strong pt-6">
       <p
-        class="font-serif text-3xl italic transition-opacity duration-200 sm:text-4xl"
+        class="font-serif text-3xl font-medium transition-opacity duration-200 sm:text-4xl"
         :class="isFlipped ? 'text-accent opacity-100' : 'opacity-0'"
         :aria-hidden="!isFlipped"
       >

@@ -41,6 +41,8 @@ Out of scope:
 - Admin sessions use encrypted, HTTP-only, `SameSite=Strict` cookies with a 7-day expiration
 - Sessions are bound to a fingerprint of the admin password: rotating `ADMIN_PASSWORD` (or `SESSION_SECRET`) signs every session out
 - Login attempts are rate limited per IP (5 failures per 15 minutes)
+- The AI tutor endpoint is rate limited per IP (20 messages per 10 minutes) and globally (400 messages per day); messages are length-limited and the history is trimmed server-side
+- The Anthropic API key never leaves the server; the model only receives the app's terminology and the user's messages, and its system prompt restricts it to that scope
 - State-changing admin requests must carry a same-origin `Origin` / `Sec-Fetch-Site` header
 - Every request body and route parameter is validated server-side (types, required fields, length limits, numeric IDs)
 - Every response carries hardening headers: `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`, `Strict-Transport-Security` and a `Content-Security-Policy` restricting `frame-ancestors`, `base-uri` and `object-src`

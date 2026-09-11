@@ -154,7 +154,7 @@
         <h2
           ref="resultsHeadingRef"
           tabindex="-1"
-          class="mt-4 font-serif text-3xl italic text-accent focus:outline-none"
+          class="mt-4 font-serif text-3xl font-medium text-accent focus:outline-none"
         >
           {{ getResultTitle() }}
         </h2>

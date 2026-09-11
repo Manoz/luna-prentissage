@@ -11,7 +11,7 @@ A web application for learning medical terminology. Study medical roots, prefixe
 | Framework       | [Nuxt 4](https://nuxt.com) (Vue 3, TypeScript)                               |
 | Styling         | [Tailwind CSS 4](https://tailwindcss.com)                                    |
 | Database        | [Neon PostgreSQL](https://neon.tech) (serverless)                            |
-| Fonts           | Public Sans (UI), Newsreader italic (meanings) via `@nuxt/fonts`             |
+| Fonts           | Public Sans (UI), Source Serif 4 (meanings) via `@nuxt/fonts`                |
 | Auth            | H3 sessions (encrypted cookie, 7-day expiry), see [SECURITY.md](SECURITY.md) |
 | Package manager | pnpm                                                                         |
 
@@ -42,6 +42,7 @@ DATABASE_URL="postgresql://user:pass@host.neon.tech:5432/dbname?sslmode=require"
 ADMIN_USERNAME="admin"
 ADMIN_PASSWORD="your_secure_password"
 SESSION_SECRET="random_32_char_hex_string"
+ANTHROPIC_API_KEY=""   # optional, enables the AI tutor
 NODE_ENV="development"
 ```
 
@@ -111,6 +112,7 @@ app/
 │   ├── index.vue            # Home — overview and per-category shortcuts
 │   ├── flashcards.vue       # Flashcard mode (reveal in place, series list, keyboard navigation)
 │   ├── quiz.vue             # Quiz mode (MCQ, True/False, Mixed, results + confetti)
+│   ├── tutor.vue            # AI tutor chat (shown only when ANTHROPIC_API_KEY is set)
 │   └── admin/
 │       ├── login.vue        # Admin login (no layout)
 │       ├── index.vue        # Admin dashboard
@@ -131,6 +133,7 @@ app/
 │   ├── useCategories.ts     # Fetch and cache categories
 │   ├── useTerms.ts          # Fetch, filter and shuffle terms
 │   ├── useQuiz.ts           # Quiz generation, scoring, tracking
+│   ├── useTutor.ts          # Tutor conversation, reads the server-sent event stream
 │   └── useTheme.ts          # Theme preference persisted in localStorage
 ├── plugins/
 │   └── theme.client.ts      # Loads the stored theme preference after hydration
@@ -149,6 +152,7 @@ server/
 │   ├── terms/
 │   │   ├── index.get.ts              # GET /api/terms(?categoryId=N)
 │   │   └── [id].get.ts               # GET /api/terms/:id
+│   ├── tutor/chat.post.ts            # POST /api/tutor/chat (streams the tutor's answer)
 │   └── admin/                        # Session-protected endpoints
 │       ├── auth/{login,logout,status} # Authentication
 │       ├── categories/               # POST, PUT, DELETE
@@ -160,26 +164,28 @@ server/
     ├── queries.ts                    # Parameterized SQL queries
     ├── validation.ts                 # Input validation helpers
     ├── params.ts                     # Numeric route parameter parsing
-    ├── rate-limit.ts                 # Login attempt limiter (per IP)
+    ├── rate-limit.ts                 # Login and tutor limiters (per IP, plus a daily tutor ceiling)
+    ├── tutor.ts                      # Anthropic client and tutor system prompt
     └── auth.ts                       # Session helpers (requireAdminAuth, etc.)
 ```
 
 ### API
 
-| Method | Endpoint                    | Auth | Description                                  |
-| ------ | --------------------------- | ---- | -------------------------------------------- |
-| GET    | `/api/categories`           | No   | List all categories                          |
-| GET    | `/api/terms`                | No   | List terms (optional filter `?categoryId=N`) |
-| GET    | `/api/terms/:id`            | No   | Get a single term                            |
-| POST   | `/api/admin/auth/login`     | No   | Login (`{ username, password }`)             |
-| POST   | `/api/admin/auth/logout`    | Yes  | Logout                                       |
-| GET    | `/api/admin/auth/status`    | Yes  | Check session                                |
-| POST   | `/api/admin/categories`     | Yes  | Create a category                            |
-| PUT    | `/api/admin/categories/:id` | Yes  | Update a category                            |
-| DELETE | `/api/admin/categories/:id` | Yes  | Delete a category                            |
-| POST   | `/api/admin/terms`          | Yes  | Create a term                                |
-| PUT    | `/api/admin/terms/:id`      | Yes  | Update a term                                |
-| DELETE | `/api/admin/terms/:id`      | Yes  | Delete a term                                |
+| Method | Endpoint                    | Auth | Description                                         |
+| ------ | --------------------------- | ---- | --------------------------------------------------- |
+| GET    | `/api/categories`           | No   | List all categories                                 |
+| GET    | `/api/terms`                | No   | List terms (optional filter `?categoryId=N`)        |
+| GET    | `/api/terms/:id`            | No   | Get a single term                                   |
+| POST   | `/api/tutor/chat`           | No   | Tutor answer as server-sent events (`{ messages }`) |
+| POST   | `/api/admin/auth/login`     | No   | Login (`{ username, password }`)                    |
+| POST   | `/api/admin/auth/logout`    | Yes  | Logout                                              |
+| GET    | `/api/admin/auth/status`    | Yes  | Check session                                       |
+| POST   | `/api/admin/categories`     | Yes  | Create a category                                   |
+| PUT    | `/api/admin/categories/:id` | Yes  | Update a category                                   |
+| DELETE | `/api/admin/categories/:id` | Yes  | Delete a category                                   |
+| POST   | `/api/admin/terms`          | Yes  | Create a term                                       |
+| PUT    | `/api/admin/terms/:id`      | Yes  | Update a term                                       |
+| DELETE | `/api/admin/terms/:id`      | Yes  | Delete a term                                       |
 
 ## Design System
 
@@ -210,6 +216,12 @@ Environment variables to configure on the platform:
 - `ADMIN_USERNAME`
 - `ADMIN_PASSWORD`
 - `SESSION_SECRET`
+
+## AI Tutor
+
+An optional chat tutor built on the Anthropic API (`@anthropic-ai/sdk`, model `claude-sonnet-5`). Set `ANTHROPIC_API_KEY` to enable it; without the key the page and the menu entry are hidden and the endpoint answers 503.
+
+The tutor is scoped to the app: the system prompt carries the rules and the full terminology (rebuilt from the database on every request, cached with prompt caching), and instructs the model to decline anything else. Costs are bounded by a per-IP limit (20 messages per 10 minutes), a global daily ceiling (400 messages), a 1000-character message limit, a trimmed history (last 12 turns) and a 1024-token answer cap. These constants live in `server/utils/rate-limit.ts` and `server/utils/validation.ts`.
 
 ## Medical Data
 

@@ -86,7 +86,7 @@
   --color-danger-soft: var(--danger-soft);
 
   --font-sans: 'Public Sans', 'Helvetica Neue', Arial, sans-serif;
-  --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
 }
 
 @layer base {

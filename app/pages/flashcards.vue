@@ -63,6 +63,19 @@
         </div>
 
         <div
+          v-if="tutorEnabled && currentTerm"
+          class="mt-6 flex max-w-md flex-wrap items-center justify-between gap-3 rounded border border-line px-4 py-3"
+        >
+          <p class="text-sm text-ink-soft">Un doute sur ce terme ?</p>
+          <NuxtLink
+            :to="{ path: '/tutor', query: { q: `Explique-moi le terme ${currentTerm.root}` } }"
+            class="btn-secondary"
+          >
+            Demander au tuteur
+          </NuxtLink>
+        </div>
+
+        <div
           class="mt-8 h-0.5 w-full max-w-md bg-line"
           role="progressbar"
           aria-label="Progression des fiches"
@@ -112,6 +125,7 @@ const { categories, fetchCategories } = useCategories()
 const { terms, fetchTerms, shuffleTerms, loading } = useTerms()
 
 const route = useRoute()
+const { tutorEnabled } = useRuntimeConfig().public
 const currentIndex = ref(0)
 const flashcardRef = ref<{ flip: () => void; focus: () => void } | null>(null)
 const listRef = ref<HTMLElement | null>(null)
