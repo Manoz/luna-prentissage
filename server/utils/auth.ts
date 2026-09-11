@@ -5,17 +5,26 @@ export interface AdminSession {
   username?: string
 }
 
+function getSessionConfig() {
+  return {
+    name: 'admin-session',
+    password: useRuntimeConfig().sessionSecret,
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+    cookie: { sameSite: 'strict' as const },
+  }
+}
+
+function useAdminSession(event: H3Event) {
+  return useSession<AdminSession>(event, getSessionConfig())
+}
+
 export function verifyAdminCredentials(username: string, password: string): boolean {
   const config = useRuntimeConfig()
   return username === config.adminUsername && password === config.adminPassword
 }
 
 export async function getAdminSession(event: H3Event): Promise<AdminSession> {
-  const session = await useSession<AdminSession>(event, {
-    name: 'admin-session',
-    password: useRuntimeConfig().sessionSecret,
-    maxAge: 60 * 60 * 24 * 7, // 7 days
-  })
+  const session = await useAdminSession(event)
 
   return {
     authenticated: session.data.authenticated || false,
@@ -24,11 +33,7 @@ export async function getAdminSession(event: H3Event): Promise<AdminSession> {
 }
 
 export async function setAdminSession(event: H3Event, username: string) {
-  const session = await useSession<AdminSession>(event, {
-    name: 'admin-session',
-    password: useRuntimeConfig().sessionSecret,
-    maxAge: 60 * 60 * 24 * 7,
-  })
+  const session = await useAdminSession(event)
 
   await session.update({
     authenticated: true,
@@ -37,10 +42,7 @@ export async function setAdminSession(event: H3Event, username: string) {
 }
 
 export async function clearAdminSession(event: H3Event) {
-  const session = await useSession<AdminSession>(event, {
-    name: 'admin-session',
-    password: useRuntimeConfig().sessionSecret,
-  })
+  const session = await useAdminSession(event)
 
   await session.clear()
 }

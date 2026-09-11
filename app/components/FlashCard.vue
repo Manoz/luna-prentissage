@@ -70,9 +70,3 @@ defineExpose({
   flip,
 })
 </script>
-
-<style scoped>
-.flashcard {
-  transition: transform 0.6s;
-}
-</style>

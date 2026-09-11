@@ -312,7 +312,7 @@ function nextQuestion() {
 
 function finishQuiz() {
   quizState.value = 'results'
-  // Trigger confetti animation after a small delay
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
   setTimeout(() => {
     triggerConfetti(percentage.value)
   }, 300)

@@ -95,7 +95,8 @@
       :class="isCorrect ? 'bg-green-50' : 'bg-red-50'"
     >
       <p class="text-lg font-semibold" :class="isCorrect ? 'text-green-700' : 'text-red-700'">
-        {{ isCorrect ? '✓ Correct !' : '✗ Incorrect' }}
+        <span aria-hidden="true">{{ isCorrect ? '✓' : '✗' }}</span>
+        {{ isCorrect ? 'Correct !' : 'Incorrect' }}
       </p>
       <p v-if="!isCorrect" class="mt-2 text-gray-700">
         La bonne réponse est :

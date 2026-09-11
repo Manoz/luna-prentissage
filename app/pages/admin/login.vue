@@ -29,6 +29,7 @@
               id="username"
               v-model="credentials.username"
               type="text"
+              autocomplete="username"
               required
               class="w-full px-4 py-3 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none transition-colors"
               placeholder=""
