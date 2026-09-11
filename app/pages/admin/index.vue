@@ -16,12 +16,12 @@
               <NuxtLink to="/" class="text-2xl font-serif font-bold text-deep-teal">
                 Luna<span class="text-terracotta">·</span>Prentissage
               </NuxtLink>
-              <span class="text-sm text-deep-teal/60">Administration</span>
+              <span class="text-sm text-deep-teal-muted">Administration</span>
             </div>
 
             <button
               type="button"
-              class="px-4 py-2 text-sm font-medium text-deep-teal/70 hover:text-terracotta transition-colors"
+              class="px-4 py-2 text-sm font-medium text-deep-teal-muted hover:text-terracotta transition-colors"
               @click="handleLogout"
             >
               Déconnexion
@@ -30,11 +30,11 @@
         </div>
       </header>
 
-      <div class="container mx-auto px-6 py-12">
+      <main class="container mx-auto px-6 py-12">
         <!-- Welcome Section -->
         <div class="mb-12">
           <h1 class="text-4xl font-serif font-bold text-deep-teal mb-2">Tableau de bord</h1>
-          <p class="text-deep-teal/60">Gérez les catégories et les termes médicaux</p>
+          <p class="text-deep-teal-muted">Gérez les catégories et les termes médicaux</p>
         </div>
 
         <!-- Statistics -->
@@ -47,6 +47,8 @@
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
                 >
                   <path
                     stroke-linecap="round"
@@ -60,7 +62,7 @@
             <div class="text-3xl font-serif font-bold text-deep-teal mb-1">
               {{ categories.length }}
             </div>
-            <div class="text-sm text-deep-teal/60">Catégories</div>
+            <div class="text-sm text-deep-teal-muted">Catégories</div>
           </div>
 
           <div class="bg-white rounded-xl shadow-lg p-6">
@@ -71,6 +73,8 @@
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
                 >
                   <path
                     stroke-linecap="round"
@@ -84,7 +88,7 @@
             <div class="text-3xl font-serif font-bold text-deep-teal mb-1">
               {{ terms.length }}
             </div>
-            <div class="text-sm text-deep-teal/60">Termes médicaux</div>
+            <div class="text-sm text-deep-teal-muted">Termes médicaux</div>
           </div>
 
           <div class="bg-white rounded-xl shadow-lg p-6">
@@ -95,6 +99,8 @@
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
                 >
                   <path
                     stroke-linecap="round"
@@ -108,7 +114,7 @@
             <div class="text-3xl font-serif font-bold text-deep-teal mb-1">
               {{ averageTermsPerCategory }}
             </div>
-            <div class="text-sm text-deep-teal/60">Termes / catégorie</div>
+            <div class="text-sm text-deep-teal-muted">Termes / catégorie</div>
           </div>
         </div>
 
@@ -127,6 +133,8 @@
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
                 >
                   <path
                     stroke-linecap="round"
@@ -137,10 +145,10 @@
                 </svg>
               </div>
               <div class="flex-1">
-                <h3 class="text-xl font-serif font-bold text-deep-teal mb-1">
+                <h2 class="text-xl font-serif font-bold text-deep-teal mb-1">
                   Gérer les catégories
-                </h3>
-                <p class="text-sm text-deep-teal/60">
+                </h2>
+                <p class="text-sm text-deep-teal-muted">
                   Ajouter, modifier ou supprimer des catégories
                 </p>
               </div>
@@ -149,6 +157,8 @@
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
+                focusable="false"
               >
                 <path
                   stroke-linecap="round"
@@ -173,6 +183,8 @@
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
                 >
                   <path
                     stroke-linecap="round"
@@ -183,8 +195,8 @@
                 </svg>
               </div>
               <div class="flex-1">
-                <h3 class="text-xl font-serif font-bold text-deep-teal mb-1">Gérer les termes</h3>
-                <p class="text-sm text-deep-teal/60">
+                <h2 class="text-xl font-serif font-bold text-deep-teal mb-1">Gérer les termes</h2>
+                <p class="text-sm text-deep-teal-muted">
                   Ajouter, modifier ou supprimer des termes médicaux
                 </p>
               </div>
@@ -193,6 +205,8 @@
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
+                focusable="false"
               >
                 <path
                   stroke-linecap="round"
@@ -204,7 +218,7 @@
             </div>
           </NuxtLink>
         </div>
-      </div>
+      </main>
     </div>
   </div>
 </template>

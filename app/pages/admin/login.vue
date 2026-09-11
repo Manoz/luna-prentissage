@@ -7,14 +7,14 @@
       "
     />
 
-    <div class="relative w-full max-w-md">
+    <main class="relative w-full max-w-md">
       <div class="text-center mb-8">
         <NuxtLink to="/" class="inline-block">
           <h1 class="text-4xl font-serif font-bold text-deep-teal">
             Luna<span class="text-terracotta">·</span>Prentissage
           </h1>
         </NuxtLink>
-        <p class="text-deep-teal/60 mt-2">Administration</p>
+        <p class="text-deep-teal-muted mt-2">Administration</p>
       </div>
 
       <div class="bg-white rounded-2xl shadow-xl p-8">
@@ -27,10 +27,14 @@
             </label>
             <input
               id="username"
+              ref="usernameRef"
               v-model="credentials.username"
               type="text"
+              autocomplete="username"
               required
-              class="w-full px-4 py-3 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none transition-colors"
+              :aria-invalid="!!error"
+              :aria-describedby="error ? 'login-error' : undefined"
+              class="w-full px-4 py-3 border-2 border-deep-teal/70 rounded-lg focus:border-deep-teal focus:outline-none transition-colors"
               placeholder=""
             />
           </div>
@@ -45,7 +49,9 @@
               type="password"
               autocomplete="current-password"
               required
-              class="w-full px-4 py-3 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none transition-colors"
+              :aria-invalid="!!error"
+              :aria-describedby="error ? 'login-error' : undefined"
+              class="w-full px-4 py-3 border-2 border-deep-teal/70 rounded-lg focus:border-deep-teal focus:outline-none transition-colors"
               placeholder=""
             />
           </div>
@@ -58,7 +64,7 @@
             {{ loading ? 'Connexion...' : 'Se connecter' }}
           </button>
 
-          <p v-if="error" class="text-terracotta text-sm text-center">
+          <p v-if="error" id="login-error" role="alert" class="text-red-700 text-sm text-center">
             {{ error }}
           </p>
         </form>
@@ -66,9 +72,16 @@
         <div class="mt-6 pt-6 border-t border-deep-teal/10">
           <NuxtLink
             to="/"
-            class="text-sm text-deep-teal/60 hover:text-deep-teal transition-colors flex items-center justify-center gap-2"
+            class="text-sm text-deep-teal-muted hover:text-deep-teal transition-colors flex items-center justify-center gap-2"
           >
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+              focusable="false"
+            >
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -80,7 +93,7 @@
           </NuxtLink>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 
@@ -95,6 +108,7 @@ const credentials = reactive({
 
 const loading = ref(false)
 const error = ref<string | null>(null)
+const usernameRef = ref<HTMLInputElement | null>(null)
 
 async function handleLogin() {
   loading.value = true
@@ -105,6 +119,8 @@ async function handleLogin() {
     await router.push('/admin')
   } catch {
     error.value = "Nom d'utilisateur ou mot de passe incorrect"
+    // The submit button is disabled while loading, which drops focus to <body>
+    nextTick(() => usernameRef.value?.focus())
   } finally {
     loading.value = false
   }

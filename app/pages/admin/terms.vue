@@ -15,9 +15,17 @@
             <div class="flex items-center gap-4">
               <NuxtLink
                 to="/admin"
-                class="text-deep-teal/60 hover:text-deep-teal transition-colors"
+                aria-label="Retour au tableau de bord"
+                class="text-deep-teal-muted hover:text-deep-teal transition-colors"
               >
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -40,27 +48,31 @@
         </div>
       </header>
 
-      <div class="container mx-auto px-6 py-12">
+      <main class="container mx-auto px-6 py-12">
         <!-- Filters -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-deep-teal mb-2"> Rechercher </label>
+              <label for="terms-search" class="block text-sm font-medium text-deep-teal mb-2">
+                Rechercher
+              </label>
               <input
+                id="terms-search"
                 v-model="searchQuery"
                 type="text"
                 placeholder="Rechercher par radical ou signification..."
-                class="w-full px-4 py-2 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
+                class="w-full px-4 py-2 border-2 border-deep-teal/70 rounded-lg focus:border-deep-teal focus:outline-none"
               />
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-deep-teal mb-2">
+              <label for="terms-category" class="block text-sm font-medium text-deep-teal mb-2">
                 Filtrer par catégorie
               </label>
               <select
+                id="terms-category"
                 v-model="filterCategoryId"
-                class="w-full px-4 py-2 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
+                class="w-full px-4 py-2 border-2 border-deep-teal/70 rounded-lg focus:border-deep-teal focus:outline-none"
               >
                 <option :value="null">Toutes les catégories</option>
                 <option v-for="category in categories" :key="category.id" :value="category.id">
@@ -70,19 +82,22 @@
             </div>
           </div>
 
-          <div class="mt-4 flex items-center justify-between text-sm text-deep-teal/60">
+          <div
+            class="mt-4 flex items-center justify-between text-sm text-deep-teal-muted"
+            aria-live="polite"
+          >
             <span>{{ filteredTerms.length }} terme(s) trouvé(s)</span>
             <span>Page {{ currentPage }} sur {{ totalPages }}</span>
           </div>
         </div>
 
         <!-- Loading State -->
-        <div v-if="loading" class="flex items-center justify-center py-20">
+        <div v-if="loading" role="status" class="flex items-center justify-center py-20">
           <div class="text-center">
             <div
               class="w-16 h-16 border-4 border-deep-teal/20 border-t-deep-teal rounded-full animate-spin mx-auto mb-4"
             />
-            <p class="text-deep-teal/60">Chargement...</p>
+            <p class="text-deep-teal-muted">Chargement...</p>
           </div>
         </div>
 
@@ -90,19 +105,38 @@
         <div v-else class="bg-white rounded-xl shadow-lg overflow-hidden">
           <div class="overflow-x-auto">
             <table class="w-full">
+              <caption class="sr-only">
+                Termes médicaux, page
+                {{
+                  currentPage
+                }}
+                sur
+                {{
+                  totalPages
+                }}
+              </caption>
               <thead class="bg-deep-teal/5 border-b border-deep-teal/10">
                 <tr>
-                  <th class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">Radical</th>
-                  <th class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">
+                  <th scope="col" class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">
+                    Radical
+                  </th>
+                  <th scope="col" class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">
                     Signification
                   </th>
-                  <th class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">
+                  <th scope="col" class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">
                     Catégorie
                   </th>
-                  <th class="px-6 py-4 text-right text-sm font-semibold text-deep-teal">Actions</th>
+                  <th scope="col" class="px-6 py-4 text-right text-sm font-semibold text-deep-teal">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-deep-teal/10">
+                <tr v-if="paginatedTerms.length === 0">
+                  <td colspan="4" class="px-6 py-10 text-center text-deep-teal-muted">
+                    Aucun terme ne correspond à votre recherche.
+                  </td>
+                </tr>
                 <tr
                   v-for="term in paginatedTerms"
                   :key="term.id"
@@ -111,13 +145,16 @@
                   <td class="px-6 py-4">
                     <span class="font-semibold text-deep-teal">{{ term.root }}</span>
                   </td>
-                  <td class="px-6 py-4 text-deep-teal/70">
+                  <td class="px-6 py-4 text-deep-teal-muted">
                     {{ term.meaning }}
                   </td>
                   <td class="px-6 py-4">
                     <span
-                      class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm text-white"
-                      :style="{ backgroundColor: term.category_color }"
+                      class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm"
+                      :style="{
+                        backgroundColor: term.category_color,
+                        color: readableTextOn(term.category_color),
+                      }"
                     >
                       {{ term.category_name }}
                     </span>
@@ -126,10 +163,18 @@
                     <div class="flex items-center justify-end gap-2">
                       <button
                         type="button"
-                        class="p-2 text-deep-teal/60 hover:text-deep-teal hover:bg-deep-teal/5 rounded-lg transition-all"
+                        :aria-label="`Modifier le terme ${term.root}`"
+                        class="p-2 text-deep-teal-muted hover:text-deep-teal hover:bg-deep-teal/5 rounded-lg transition-all"
                         @click="openEditModal(term)"
                       >
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg
+                          class="w-5 h-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          aria-hidden="true"
+                          focusable="false"
+                        >
                           <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
@@ -140,10 +185,18 @@
                       </button>
                       <button
                         type="button"
-                        class="p-2 text-terracotta/60 hover:text-terracotta hover:bg-terracotta/5 rounded-lg transition-all"
+                        :aria-label="`Supprimer le terme ${term.root}`"
+                        class="p-2 text-red-700 hover:text-red-800 hover:bg-red-50 rounded-lg transition-all"
                         @click="confirmDelete(term)"
                       >
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg
+                          class="w-5 h-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          aria-hidden="true"
+                          focusable="false"
+                        >
                           <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
@@ -160,12 +213,16 @@
           </div>
 
           <!-- Pagination -->
-          <div v-if="totalPages > 1" class="px-6 py-4 border-t border-deep-teal/10">
+          <nav
+            v-if="totalPages > 1"
+            aria-label="Pagination"
+            class="px-6 py-4 border-t border-deep-teal/10"
+          >
             <div class="flex items-center justify-between">
               <button
                 type="button"
                 :disabled="currentPage === 1"
-                class="px-4 py-2 text-sm font-medium text-deep-teal border-2 border-deep-teal/20 rounded-lg hover:bg-deep-teal/5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                class="px-4 py-2 text-sm font-medium text-deep-teal border-2 border-deep-teal/70 rounded-lg hover:bg-deep-teal/5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                 @click="currentPage--"
               >
                 Précédent
@@ -176,6 +233,8 @@
                   v-for="page in visiblePages"
                   :key="page"
                   type="button"
+                  :aria-label="`Page ${page}`"
+                  :aria-current="page === currentPage ? 'page' : undefined"
                   class="w-10 h-10 rounded-lg font-medium transition-all"
                   :class="{
                     'bg-deep-teal text-white': page === currentPage,
@@ -190,91 +249,92 @@
               <button
                 type="button"
                 :disabled="currentPage === totalPages"
-                class="px-4 py-2 text-sm font-medium text-deep-teal border-2 border-deep-teal/20 rounded-lg hover:bg-deep-teal/5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                class="px-4 py-2 text-sm font-medium text-deep-teal border-2 border-deep-teal/70 rounded-lg hover:bg-deep-teal/5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                 @click="currentPage++"
               >
                 Suivant
               </button>
             </div>
-          </div>
+          </nav>
         </div>
 
         <!-- Create/Edit Modal -->
-        <div
-          v-if="showModal"
-          class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6 z-50"
-          @click.self="closeModal"
+        <AdminModal
+          :open="showModal"
+          :title="editingTerm ? 'Modifier le terme' : 'Nouveau terme'"
+          @close="closeModal"
         >
-          <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8">
-            <h2 class="text-2xl font-serif font-bold text-deep-teal mb-6">
-              {{ editingTerm ? 'Modifier le terme' : 'Nouveau terme' }}
-            </h2>
-
-            <AdminTermForm
-              :key="editingTerm?.id || 'new'"
-              :term="editingTerm"
-              :categories="categories"
-              :is-edit="!!editingTerm"
-              @submit="handleSubmit"
-              @cancel="closeModal"
-            />
-          </div>
-        </div>
+          <AdminTermForm
+            :key="editingTerm?.id || 'new'"
+            :term="editingTerm"
+            :categories="categories"
+            :is-edit="!!editingTerm"
+            :submitting="saving"
+            :error="saveError"
+            @submit="handleSubmit"
+            @cancel="closeModal"
+          />
+        </AdminModal>
 
         <!-- Delete Confirmation Modal -->
-        <div
-          v-if="showDeleteConfirm"
-          class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6 z-50"
-          @click.self="closeDeleteConfirm"
+        <AdminModal
+          :open="showDeleteConfirm"
+          title="Confirmer la suppression"
+          alert
+          centered
+          size="md"
+          @close="closeDeleteConfirm"
         >
-          <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
-            <div class="text-center mb-6">
-              <div
-                class="w-16 h-16 bg-terracotta/10 rounded-full flex items-center justify-center mx-auto mb-4"
+          <template #icon>
+            <div
+              class="w-16 h-16 bg-terracotta/10 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <svg
+                class="w-8 h-8 text-terracotta"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+                focusable="false"
               >
-                <svg
-                  class="w-8 h-8 text-terracotta"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                  />
-                </svg>
-              </div>
-              <h3 class="text-xl font-serif font-bold text-deep-teal mb-2">
-                Confirmer la suppression
-              </h3>
-              <p class="text-deep-teal/60">
-                Êtes-vous sûr de vouloir supprimer le terme
-                <span class="font-semibold text-deep-teal">{{ termToDelete?.root }}</span> ?
-              </p>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
             </div>
+          </template>
 
-            <div class="flex gap-3">
-              <button
-                type="button"
-                class="flex-1 px-4 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-all"
-                @click="closeDeleteConfirm"
-              >
-                Annuler
-              </button>
-              <button
-                type="button"
-                :disabled="deleting"
-                class="flex-1 px-4 py-3 bg-terracotta text-white font-semibold rounded-lg hover:bg-terracotta/90 transition-all disabled:opacity-50"
-                @click="handleDelete"
-              >
-                {{ deleting ? 'Suppression...' : 'Supprimer' }}
-              </button>
-            </div>
+          <p class="text-deep-teal-muted mb-6">
+            Êtes-vous sûr de vouloir supprimer le terme
+            <span class="font-semibold text-deep-teal">{{ termToDelete?.root }}</span> ?
+          </p>
+
+          <div class="flex gap-3">
+            <button
+              type="button"
+              class="flex-1 px-4 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-all"
+              @click="closeDeleteConfirm"
+            >
+              Annuler
+            </button>
+            <button
+              type="button"
+              :disabled="deleting"
+              class="flex-1 px-4 py-3 bg-terracotta-dark text-white font-semibold rounded-lg hover:bg-terracotta-dark/90 transition-all disabled:opacity-50"
+              @click="handleDelete"
+            >
+              {{ deleting ? 'Suppression...' : 'Supprimer' }}
+            </button>
           </div>
-        </div>
-      </div>
+
+          <p v-if="deleteError" role="alert" class="text-red-700 text-sm mt-4">
+            {{ deleteError }}
+          </p>
+        </AdminModal>
+      </main>
     </div>
   </div>
 </template>
@@ -299,6 +359,9 @@ const editingTerm = ref<Term | null>(null)
 const showDeleteConfirm = ref(false)
 const termToDelete = ref<TermWithCategory | null>(null)
 const deleting = ref(false)
+const deleteError = ref<string | null>(null)
+const saving = ref(false)
+const saveError = ref<string | null>(null)
 
 onMounted(async () => {
   await Promise.all([fetchCategories(), fetchTerms()])
@@ -358,6 +421,7 @@ watch([searchQuery, filterCategoryId], () => {
 
 function openCreateModal() {
   editingTerm.value = null
+  saveError.value = null
   showModal.value = true
 }
 
@@ -370,24 +434,27 @@ function openEditModal(term: TermWithCategory) {
     created_at: term.created_at,
     updated_at: term.updated_at,
   }
+  saveError.value = null
   showModal.value = true
 }
 
 function closeModal() {
   showModal.value = false
   editingTerm.value = null
+  saveError.value = null
 }
 
 async function handleSubmit(data: { root: string; meaning: string; category_id: number }) {
+  saving.value = true
+  saveError.value = null
+
   try {
     if (editingTerm.value) {
-      // Update existing term
       await $fetch(`/api/admin/terms/${editingTerm.value.id}`, {
         method: 'PUT',
         body: data,
       })
     } else {
-      // Create new term
       await $fetch('/api/admin/terms', {
         method: 'POST',
         body: data,
@@ -397,24 +464,29 @@ async function handleSubmit(data: { root: string; meaning: string; category_id: 
     closeModal()
     await fetchTerms()
   } catch {
-    // TODO: show user feedback on save failure
+    saveError.value = "L'enregistrement a échoué. Vérifiez les champs et réessayez."
+  } finally {
+    saving.value = false
   }
 }
 
 function confirmDelete(term: TermWithCategory) {
   termToDelete.value = term
+  deleteError.value = null
   showDeleteConfirm.value = true
 }
 
 function closeDeleteConfirm() {
   showDeleteConfirm.value = false
   termToDelete.value = null
+  deleteError.value = null
 }
 
 async function handleDelete() {
   if (!termToDelete.value) return
 
   deleting.value = true
+  deleteError.value = null
 
   try {
     await $fetch(`/api/admin/terms/${termToDelete.value.id}`, {
@@ -424,7 +496,7 @@ async function handleDelete() {
     closeDeleteConfirm()
     await fetchTerms()
   } catch {
-    // TODO: show user feedback on delete failure
+    deleteError.value = 'La suppression a échoué. Veuillez réessayer.'
   } finally {
     deleting.value = false
   }

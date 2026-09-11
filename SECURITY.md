@@ -38,6 +38,9 @@ Out of scope:
 ## Security Practices
 
 - All database queries use parameterized statements (no raw string interpolation)
-- Admin sessions use encrypted HTTP-only cookies with expiration
+- Admin sessions use encrypted, HTTP-only, `SameSite=Strict` cookies with a 7-day expiration
+- Sessions are bound to a fingerprint of the admin password: rotating `ADMIN_PASSWORD` (or `SESSION_SECRET`) signs every session out
+- Login attempts are rate limited per IP (5 failures per 15 minutes)
+- State-changing admin requests must carry a same-origin `Origin` / `Sec-Fetch-Site` header
 - Secrets are stored as environment variables, never committed to the repository
 - Dependencies are regularly updated and audited

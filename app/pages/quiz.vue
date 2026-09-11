@@ -13,8 +13,19 @@
         <div class="container mx-auto px-6 py-6">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
-              <NuxtLink to="/" class="text-deep-teal/60 hover:text-deep-teal transition-colors">
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <NuxtLink
+                to="/"
+                aria-label="Retour à l'accueil"
+                class="text-deep-teal-muted hover:text-deep-teal transition-colors"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -29,22 +40,31 @@
         </div>
       </header>
 
-      <div class="container mx-auto px-6 py-12">
+      <main class="container mx-auto px-6 py-12">
         <!-- Setup Screen -->
         <div v-if="quizState === 'setup'" class="max-w-2xl mx-auto">
           <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-            <h2 class="text-3xl font-serif font-bold text-deep-teal mb-2">Configurer votre quiz</h2>
-            <p class="text-deep-teal/60 mb-8">
+            <h2
+              ref="setupHeadingRef"
+              tabindex="-1"
+              class="text-3xl font-serif font-bold text-deep-teal mb-2 focus:outline-none"
+            >
+              Configurer votre quiz
+            </h2>
+            <p class="text-deep-teal-muted mb-8">
               Choisissez les paramètres pour personnaliser votre session de quiz.
             </p>
 
             <div class="space-y-8">
               <!-- Category Selection -->
               <div>
-                <label class="block text-sm font-semibold text-deep-teal mb-3"> Catégorie </label>
+                <label for="quiz-category" class="block text-sm font-semibold text-deep-teal mb-3">
+                  Catégorie
+                </label>
                 <select
+                  id="quiz-category"
                   v-model="selectedCategoryId"
-                  class="w-full px-4 py-3 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
+                  class="w-full px-4 py-3 border-2 border-deep-teal/70 rounded-lg focus:border-deep-teal focus:outline-none"
                 >
                   <option :value="null">Toutes les catégories</option>
                   <option v-for="category in categories" :key="category.id" :value="category.id">
@@ -54,65 +74,40 @@
               </div>
 
               <!-- Quiz Type -->
-              <div>
-                <label class="block text-sm font-semibold text-deep-teal mb-3">
+              <fieldset>
+                <legend class="block text-sm font-semibold text-deep-teal mb-3">
                   Type de questions
-                </label>
+                </legend>
                 <div class="grid grid-cols-3 gap-3">
-                  <button
-                    type="button"
-                    class="p-4 rounded-lg border-2 transition-all cursor-pointer"
-                    :class="{
-                      'border-terracotta text-terracotta': quizType === 'multiple-choice',
-                      'border-deep-teal/20 text-deep-teal/60 hover:border-deep-teal/40':
-                        quizType !== 'multiple-choice',
-                    }"
-                    @click="quizType = 'multiple-choice'"
+                  <label
+                    v-for="option in quizTypeOptions"
+                    :key="option.value"
+                    class="cursor-pointer"
                   >
-                    <div class="flex items-center justify-center gap-2">
-                      <div class="text-sm font-medium">QCM</div>
-                    </div>
-                  </button>
-
-                  <button
-                    type="button"
-                    class="p-4 rounded-lg border-2 transition-all cursor-pointer"
-                    :class="{
-                      'border-terracotta text-terracotta': quizType === 'true-false',
-                      'border-deep-teal/20 text-deep-teal/60 hover:border-deep-teal/40':
-                        quizType !== 'true-false',
-                    }"
-                    @click="quizType = 'true-false'"
-                  >
-                    <div class="flex items-center justify-center gap-2">
-                      <div class="text-sm font-medium">Vrai/Faux</div>
-                    </div>
-                  </button>
-
-                  <button
-                    type="button"
-                    class="p-4 rounded-lg border-2 transition-all cursor-pointer"
-                    :class="{
-                      'border-terracotta text-terracotta': quizType === 'mixed',
-                      'border-deep-teal/40 text-deep-teal/60 hover:border-deep-teal/40':
-                        quizType !== 'mixed',
-                    }"
-                    @click="quizType = 'mixed'"
-                  >
-                    <div class="flex items-center justify-center gap-2">
-                      <div class="text-sm font-medium">Mixte</div>
-                    </div>
-                  </button>
+                    <input
+                      v-model="quizType"
+                      type="radio"
+                      name="quiz-type"
+                      :value="option.value"
+                      class="sr-only peer"
+                    />
+                    <span
+                      class="block p-4 rounded-lg border-2 border-deep-teal/40 text-center text-sm font-medium text-deep-teal transition-all hover:border-deep-teal peer-checked:border-terracotta peer-checked:bg-terracotta/10 peer-checked:font-semibold peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-deep-teal"
+                    >
+                      {{ option.label }}
+                    </span>
+                  </label>
                 </div>
-              </div>
+              </fieldset>
 
               <!-- Number of Questions -->
               <div>
-                <label class="block text-sm font-semibold text-deep-teal mb-3">
+                <label for="quiz-count" class="block text-sm font-semibold text-deep-teal mb-3">
                   Nombre de questions
                 </label>
                 <div class="py-4">
                   <input
+                    id="quiz-count"
                     v-model.number="questionCount"
                     type="range"
                     min="5"
@@ -121,9 +116,11 @@
                     class="slider w-full"
                   />
                 </div>
-                <div class="flex justify-between text-sm text-deep-teal/60 mt-2">
+                <div class="flex justify-between text-sm text-deep-teal-muted mt-2">
                   <span>5</span>
-                  <span class="text-lg font-semibold text-deep-teal">{{ questionCount }}</span>
+                  <output for="quiz-count" class="text-lg font-semibold text-deep-teal">
+                    {{ questionCount }}
+                  </output>
                   <span>50</span>
                 </div>
               </div>
@@ -141,7 +138,8 @@
 
               <p
                 v-if="!termsLoading && availableTerms.length === 0"
-                class="text-center text-terracotta text-sm"
+                role="status"
+                class="text-center text-red-700 text-sm"
               >
                 Aucun terme disponible pour cette catégorie
               </p>
@@ -152,6 +150,7 @@
         <!-- Quiz Screen -->
         <div v-else-if="quizState === 'quiz' && currentQuestion" class="max-w-4xl mx-auto">
           <QuizQuestion
+            ref="quizQuestionRef"
             :question="currentQuestion"
             :current-question="currentIndex"
             :total-questions="questions.length"
@@ -160,9 +159,10 @@
             @answer="handleAnswer"
           />
 
-          <div ref="nextButtonRef" class="text-center mt-8">
+          <div class="text-center mt-8">
             <button
               v-if="currentIndex < questions.length - 1"
+              ref="nextButtonRef"
               type="button"
               :disabled="!hasAnswered"
               class="px-8 py-3 bg-deep-teal text-white font-semibold rounded-full hover:bg-deep-teal/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
@@ -172,9 +172,10 @@
             </button>
             <button
               v-else
+              ref="nextButtonRef"
               type="button"
               :disabled="!hasAnswered"
-              class="px-8 py-3 bg-terracotta text-warm-cream font-semibold rounded-full hover:bg-terracotta/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              class="px-8 py-3 bg-terracotta-dark text-warm-cream font-semibold rounded-full hover:bg-terracotta-dark/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               @click="finishQuiz"
             >
               Voir les résultats
@@ -189,19 +190,23 @@
               <div
                 class="w-32 h-32 rounded-full mx-auto mb-6 flex items-center justify-center text-6xl font-serif font-bold"
                 :class="{
-                  'bg-green-100 text-green-600': percentage >= 70,
-                  'bg-yellow-100 text-yellow-600': percentage >= 50 && percentage < 70,
-                  'bg-red-100 text-red-600': percentage < 50,
+                  'bg-green-100 text-green-800': percentage >= 70,
+                  'bg-yellow-100 text-yellow-800': percentage >= 50 && percentage < 70,
+                  'bg-red-100 text-red-800': percentage < 50,
                 }"
               >
                 {{ percentage }}%
               </div>
 
-              <h2 class="text-4xl font-serif font-bold text-deep-teal mb-2">
+              <h2
+                ref="resultsHeadingRef"
+                tabindex="-1"
+                class="text-4xl font-serif font-bold text-deep-teal mb-2 focus:outline-none"
+              >
                 {{ getResultTitle() }}
               </h2>
 
-              <p class="text-xl text-deep-teal/70">
+              <p class="text-xl text-deep-teal-muted">
                 Vous avez obtenu
                 <span class="font-semibold text-deep-teal">{{ score }}/{{ questions.length }}</span>
                 bonnes réponses
@@ -213,14 +218,14 @@
                 <div class="text-3xl font-serif font-bold text-deep-teal mb-1">
                   {{ score }}
                 </div>
-                <div class="text-sm text-deep-teal/60">Bonnes réponses</div>
+                <div class="text-sm text-deep-teal-muted">Bonnes réponses</div>
               </div>
 
               <div class="p-6 bg-terracotta/5 rounded-xl">
                 <div class="text-3xl font-serif font-bold text-terracotta mb-1">
                   {{ questions.length - score }}
                 </div>
-                <div class="text-sm text-deep-teal/60">Erreurs</div>
+                <div class="text-sm text-deep-teal-muted">Erreurs</div>
               </div>
             </div>
 
@@ -234,14 +239,14 @@
               </button>
               <NuxtLink
                 to="/"
-                class="flex-1 px-6 py-3 border-2 border-deep-teal/20 text-deep-teal font-semibold rounded-full hover:bg-deep-teal/5 transition-all text-center"
+                class="flex-1 px-6 py-3 border-2 border-deep-teal/70 text-deep-teal font-semibold rounded-full hover:bg-deep-teal/5 transition-all text-center"
               >
                 Retour à l'accueil
               </NuxtLink>
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   </div>
 </template>
@@ -268,7 +273,16 @@ const selectedCategoryId = ref<number | null>(null)
 const quizType = ref<'multiple-choice' | 'true-false' | 'mixed'>('mixed')
 const questionCount = ref(10)
 const hasAnswered = ref(false)
-const nextButtonRef = ref<HTMLElement | null>(null)
+const nextButtonRef = ref<HTMLButtonElement | null>(null)
+const quizQuestionRef = ref<{ focusHeading: () => void } | null>(null)
+const setupHeadingRef = ref<HTMLElement | null>(null)
+const resultsHeadingRef = ref<HTMLElement | null>(null)
+
+const quizTypeOptions = [
+  { value: 'multiple-choice', label: 'QCM' },
+  { value: 'true-false', label: 'Vrai/Faux' },
+  { value: 'mixed', label: 'Mixte' },
+] as const
 
 const availableTerms = computed(() => {
   if (selectedCategoryId.value === null) {
@@ -295,6 +309,7 @@ function startQuiz() {
   generateQuestions([...availableTerms.value], quizType.value, questionCount.value)
   quizState.value = 'quiz'
   hasAnswered.value = false
+  nextTick(() => quizQuestionRef.value?.focusHeading())
 }
 
 function handleAnswer(answer: string | boolean) {
@@ -302,17 +317,20 @@ function handleAnswer(answer: string | boolean) {
   hasAnswered.value = true
   nextTick(() => {
     nextButtonRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    nextButtonRef.value?.focus({ preventScroll: true })
   })
 }
 
 function nextQuestion() {
   quizNextQuestion()
   hasAnswered.value = false
+  nextTick(() => quizQuestionRef.value?.focusHeading())
 }
 
 function finishQuiz() {
   quizState.value = 'results'
-  // Trigger confetti animation after a small delay
+  nextTick(() => resultsHeadingRef.value?.focus())
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
   setTimeout(() => {
     triggerConfetti(percentage.value)
   }, 300)
@@ -322,6 +340,7 @@ function resetQuiz() {
   quizReset()
   quizState.value = 'setup'
   hasAnswered.value = false
+  nextTick(() => setupHeadingRef.value?.focus())
 }
 
 function getResultTitle() {
@@ -450,6 +469,11 @@ function triggerConfetti(percentage: number) {
   transition: all 0.2s ease;
 }
 
+.slider:focus-visible::-webkit-slider-thumb {
+  outline: 3px solid #2d5f5d;
+  outline-offset: 2px;
+}
+
 .slider::-webkit-slider-thumb:hover {
   transform: scale(1.1);
   box-shadow: 0 3px 8px rgba(45, 95, 93, 0.4);
@@ -476,6 +500,11 @@ function triggerConfetti(percentage: number) {
   box-shadow: 0 2px 6px rgba(45, 95, 93, 0.3);
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+.slider:focus-visible::-moz-range-thumb {
+  outline: 3px solid #2d5f5d;
+  outline-offset: 2px;
 }
 
 .slider::-moz-range-thumb:hover {
