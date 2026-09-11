@@ -6,14 +6,14 @@ A web application for learning medical terminology. Study medical roots, prefixe
 
 ## Tech Stack
 
-| Layer           | Technology                                                  |
-| --------------- | ----------------------------------------------------------- |
-| Framework       | [Nuxt 4](https://nuxt.com) (Vue 3, TypeScript)              |
-| Styling         | [Tailwind CSS 4](https://tailwindcss.com)                   |
-| Database        | [Neon PostgreSQL](https://neon.tech) (serverless)           |
-| Fonts           | Crimson Pro (serif), DM Sans (sans-serif) via `@nuxt/fonts` |
-| Auth            | H3 sessions (encrypted cookie, 7-day expiry)                |
-| Package manager | pnpm                                                        |
+| Layer           | Technology                                                                   |
+| --------------- | ---------------------------------------------------------------------------- |
+| Framework       | [Nuxt 4](https://nuxt.com) (Vue 3, TypeScript)                               |
+| Styling         | [Tailwind CSS 4](https://tailwindcss.com)                                    |
+| Database        | [Neon PostgreSQL](https://neon.tech) (serverless)                            |
+| Fonts           | Public Sans (UI), Newsreader italic (meanings) via `@nuxt/fonts`             |
+| Auth            | H3 sessions (encrypted cookie, 7-day expiry), see [SECURITY.md](SECURITY.md) |
+| Package manager | pnpm                                                                         |
 
 ## Prerequisites
 
@@ -104,30 +104,40 @@ pnpm lint:fix     # ESLint with auto-fix
 
 ```
 app/
+├── layouts/
+│   ├── default.vue          # Sidebar: navigation, category list, theme switch
+│   └── admin.vue            # Sidebar: admin navigation, logout
 ├── pages/
-│   ├── index.vue            # Home — hero + category grid
-│   ├── flashcards.vue       # Flashcard mode (3D flip, filters, keyboard navigation)
+│   ├── index.vue            # Home — overview and per-category shortcuts
+│   ├── flashcards.vue       # Flashcard mode (reveal in place, series list, keyboard navigation)
 │   ├── quiz.vue             # Quiz mode (MCQ, True/False, Mixed, results + confetti)
 │   └── admin/
-│       ├── login.vue        # Admin login
+│       ├── login.vue        # Admin login (no layout)
 │       ├── index.vue        # Admin dashboard
 │       ├── categories.vue   # Category CRUD
 │       └── terms.vue        # Term CRUD (paginated)
 ├── components/
-│   ├── FlashCard.vue        # Card with 3D flip animation
-│   ├── CategoryFilter.vue   # Category filter sidebar
+│   ├── AppSidebar.vue       # Shared sidebar shell used by both layouts
+│   ├── AppWordmark.vue      # Logo link
+│   ├── ThemeSwitch.vue      # Light / dark / system radio group
+│   ├── FlashCard.vue        # Term with meaning revealed on press
 │   ├── QuizQuestion.vue     # Question display (MCQ or True/False)
 │   └── admin/
+│       ├── Modal.vue        # Native <dialog> wrapper
 │       ├── CategoryForm.vue # Category form
 │       └── TermForm.vue     # Term form
 ├── composables/
 │   ├── useAdminAuth.ts      # Admin session login/logout/status
 │   ├── useCategories.ts     # Fetch and cache categories
 │   ├── useTerms.ts          # Fetch, filter and shuffle terms
-│   └── useQuiz.ts           # Quiz generation, scoring, tracking
+│   ├── useQuiz.ts           # Quiz generation, scoring, tracking
+│   └── useTheme.ts          # Theme preference persisted in localStorage
+├── plugins/
+│   └── theme.client.ts      # Loads the stored theme preference after hydration
 ├── middleware/
 │   └── admin.ts             # Guard: redirects to /admin/login if unauthenticated
-└── assets/css/main.css      # Tailwind theme (@theme) + global fonts
+├── error.vue                # Error page (no layout)
+└── assets/css/main.css      # Theme tokens (light/dark), Tailwind theme, shared classes
 ```
 
 ### Backend (`server/`)
@@ -143,11 +153,15 @@ server/
 │       ├── auth/{login,logout,status} # Authentication
 │       ├── categories/               # POST, PUT, DELETE
 │       └── terms/                    # POST, PUT, DELETE
+├── middleware/
+│   └── csrf.ts                       # Same-origin check on state-changing admin requests
 └── utils/
     ├── db.ts                         # Neon connection (singleton)
     ├── queries.ts                    # Parameterized SQL queries
     ├── validation.ts                 # Input validation helpers
-    └── auth.ts                       # Session helpers (requireAuth, etc.)
+    ├── params.ts                     # Numeric route parameter parsing
+    ├── rate-limit.ts                 # Login attempt limiter (per IP)
+    └── auth.ts                       # Session helpers (requireAdminAuth, etc.)
 ```
 
 ### API
@@ -169,13 +183,16 @@ server/
 
 ## Design System
 
-Three colors defined in `@theme` (Tailwind 4):
+Light and dark themes share one set of CSS variables (`app/assets/css/main.css`), exposed to Tailwind 4 through `@theme inline`. The user picks light, dark or system in the sidebar; the choice is stored in `localStorage` and applied before first paint.
 
-| Token        | Hex       | Usage                                     |
-| ------------ | --------- | ----------------------------------------- |
-| `warm-cream` | `#FAF9F6` | Page background                           |
-| `deep-teal`  | `#2D5F5D` | Primary text, buttons, accents            |
-| `terracotta` | `#C1666B` | Alerts, destructive actions, accent color |
+| Token     | Light     | Dark      | Usage                            |
+| --------- | --------- | --------- | -------------------------------- |
+| `paper`   | `#F5F6F5` | `#14181D` | Page background                  |
+| `panel`   | `#ECEEEC` | `#0F1215` | Sidebar                          |
+| `surface` | `#FFFFFF` | `#1D2329` | Fields, active rows, dialogs     |
+| `ink`     | `#1A1D21` | `#E8EBEF` | Text                             |
+| `accent`  | `#1F8A6B` | `#7FD1B9` | Meanings, primary actions, focus |
+| `danger`  | `#C2373F` | `#F28B93` | Errors, destructive actions      |
 
 Each category uses a custom color stored in the database (`color` field).
 

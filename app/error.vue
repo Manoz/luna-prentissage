@@ -1,49 +1,22 @@
 <template>
-  <div class="min-h-screen bg-warm-cream flex items-center justify-center px-6">
-    <div
-      class="fixed inset-0 opacity-[0.03] pointer-events-none"
-      style="
-        background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E');
-      "
-    />
+  <div class="flex min-h-screen items-center px-6 sm:px-12">
+    <main class="w-full max-w-xl">
+      <p class="kicker mb-3">Erreur {{ error.statusCode }}</p>
+      <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">{{ errorTitle }}</h1>
+      <p class="mt-3 text-ink-soft">{{ errorMessage }}</p>
 
-    <div class="relative text-center max-w-2xl">
-      <div class="mb-8">
-        <div class="text-9xl font-serif font-bold text-deep-teal/20 mb-4">
-          {{ error.statusCode }}
-        </div>
-        <h1 class="text-4xl md:text-5xl font-serif font-bold text-deep-teal mb-4">
-          {{ errorTitle }}
-        </h1>
-        <p class="text-xl text-deep-teal/70 mb-8">
-          {{ errorMessage }}
-        </p>
-      </div>
-
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <button
-          type="button"
-          class="px-8 py-3 bg-deep-teal text-white font-semibold rounded-full hover:bg-deep-teal/90 transition-all shadow-lg"
-          @click="handleError"
-        >
-          Retour à l'accueil
-        </button>
-
-        <button
-          v-if="error.statusCode === 404"
-          type="button"
-          class="px-8 py-3 border-2 border-deep-teal/20 text-deep-teal font-semibold rounded-full hover:bg-deep-teal/5 transition-all"
-          @click="goBack"
-        >
-          Retour en arrière
+      <div class="mt-8 flex flex-wrap gap-2">
+        <button type="button" class="btn-primary" @click="handleError">Retour à l'accueil</button>
+        <button v-if="error.statusCode === 404" type="button" class="btn-secondary" @click="goBack">
+          Page précédente
         </button>
       </div>
 
-      <div v-if="isDev" class="mt-12 p-6 bg-white rounded-xl shadow-lg text-left">
-        <h3 class="text-lg font-semibold text-deep-teal mb-2">Détails de l'erreur (dev mode)</h3>
-        <pre class="text-sm text-deep-teal/70 overflow-x-auto">{{ error }}</pre>
+      <div v-if="isDev" class="mt-12 border-t border-line pt-6">
+        <h2 class="kicker mb-3">Détails (dev)</h2>
+        <pre class="overflow-x-auto text-xs text-ink-soft">{{ error }}</pre>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 

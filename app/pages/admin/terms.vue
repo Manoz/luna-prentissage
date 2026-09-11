@@ -1,282 +1,200 @@
 <template>
-  <div class="min-h-screen bg-warm-cream">
-    <div
-      class="fixed inset-0 opacity-[0.03] pointer-events-none"
-      style="
-        background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E');
-      "
-    />
+  <main class="px-5 py-8 sm:px-8 lg:px-12 lg:py-12">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="kicker mb-2">Termes</p>
+        <h1 class="text-3xl font-semibold tracking-tight tabular-nums">
+          {{ terms.length }} termes
+        </h1>
+      </div>
+      <button type="button" class="btn-primary" @click="openCreateModal">Nouveau terme</button>
+    </div>
 
-    <div class="relative">
-      <!-- Header -->
-      <header class="border-b border-deep-teal/10 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
-        <div class="container mx-auto px-6 py-4">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-4">
-              <NuxtLink
-                to="/admin"
-                class="text-deep-teal/60 hover:text-deep-teal transition-colors"
-              >
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-              </NuxtLink>
-              <h1 class="text-2xl font-serif font-bold text-deep-teal">Termes médicaux</h1>
-            </div>
-
-            <button
-              type="button"
-              class="px-4 py-2 bg-deep-teal text-white font-medium rounded-lg hover:bg-deep-teal/90 transition-all shadow-lg"
-              @click="openCreateModal"
-            >
-              + Nouveau terme
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div class="container mx-auto px-6 py-12">
-        <!-- Filters -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-deep-teal mb-2"> Rechercher </label>
-              <input
-                v-model="searchQuery"
-                type="text"
-                placeholder="Rechercher par radical ou signification..."
-                class="w-full px-4 py-2 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-deep-teal mb-2">
-                Filtrer par catégorie
-              </label>
-              <select
-                v-model="filterCategoryId"
-                class="w-full px-4 py-2 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
-              >
-                <option :value="null">Toutes les catégories</option>
-                <option v-for="category in categories" :key="category.id" :value="category.id">
-                  {{ category.name }}
-                </option>
-              </select>
-            </div>
-          </div>
-
-          <div class="mt-4 flex items-center justify-between text-sm text-deep-teal/60">
-            <span>{{ filteredTerms.length }} terme(s) trouvé(s)</span>
-            <span>Page {{ currentPage }} sur {{ totalPages }}</span>
-          </div>
-        </div>
-
-        <!-- Loading State -->
-        <div v-if="loading" class="flex items-center justify-center py-20">
-          <div class="text-center">
-            <div
-              class="w-16 h-16 border-4 border-deep-teal/20 border-t-deep-teal rounded-full animate-spin mx-auto mb-4"
-            />
-            <p class="text-deep-teal/60">Chargement...</p>
-          </div>
-        </div>
-
-        <!-- Terms Table -->
-        <div v-else class="bg-white rounded-xl shadow-lg overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead class="bg-deep-teal/5 border-b border-deep-teal/10">
-                <tr>
-                  <th class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">Radical</th>
-                  <th class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">
-                    Signification
-                  </th>
-                  <th class="px-6 py-4 text-left text-sm font-semibold text-deep-teal">
-                    Catégorie
-                  </th>
-                  <th class="px-6 py-4 text-right text-sm font-semibold text-deep-teal">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-deep-teal/10">
-                <tr
-                  v-for="term in paginatedTerms"
-                  :key="term.id"
-                  class="hover:bg-deep-teal/5 transition-colors"
-                >
-                  <td class="px-6 py-4">
-                    <span class="font-semibold text-deep-teal">{{ term.root }}</span>
-                  </td>
-                  <td class="px-6 py-4 text-deep-teal/70">
-                    {{ term.meaning }}
-                  </td>
-                  <td class="px-6 py-4">
-                    <span
-                      class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm text-white"
-                      :style="{ backgroundColor: term.category_color }"
-                    >
-                      {{ term.category_name }}
-                    </span>
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex items-center justify-end gap-2">
-                      <button
-                        type="button"
-                        class="p-2 text-deep-teal/60 hover:text-deep-teal hover:bg-deep-teal/5 rounded-lg transition-all"
-                        @click="openEditModal(term)"
-                      >
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                          />
-                        </svg>
-                      </button>
-                      <button
-                        type="button"
-                        class="p-2 text-terracotta/60 hover:text-terracotta hover:bg-terracotta/5 rounded-lg transition-all"
-                        @click="confirmDelete(term)"
-                      >
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Pagination -->
-          <div v-if="totalPages > 1" class="px-6 py-4 border-t border-deep-teal/10">
-            <div class="flex items-center justify-between">
-              <button
-                type="button"
-                :disabled="currentPage === 1"
-                class="px-4 py-2 text-sm font-medium text-deep-teal border-2 border-deep-teal/20 rounded-lg hover:bg-deep-teal/5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-                @click="currentPage--"
-              >
-                Précédent
-              </button>
-
-              <div class="flex items-center gap-2">
-                <button
-                  v-for="page in visiblePages"
-                  :key="page"
-                  type="button"
-                  class="w-10 h-10 rounded-lg font-medium transition-all"
-                  :class="{
-                    'bg-deep-teal text-white': page === currentPage,
-                    'text-deep-teal hover:bg-deep-teal/5': page !== currentPage,
-                  }"
-                  @click="currentPage = page"
-                >
-                  {{ page }}
-                </button>
-              </div>
-
-              <button
-                type="button"
-                :disabled="currentPage === totalPages"
-                class="px-4 py-2 text-sm font-medium text-deep-teal border-2 border-deep-teal/20 rounded-lg hover:bg-deep-teal/5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-                @click="currentPage++"
-              >
-                Suivant
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Create/Edit Modal -->
-        <div
-          v-if="showModal"
-          class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6 z-50"
-          @click.self="closeModal"
-        >
-          <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8">
-            <h2 class="text-2xl font-serif font-bold text-deep-teal mb-6">
-              {{ editingTerm ? 'Modifier le terme' : 'Nouveau terme' }}
-            </h2>
-
-            <AdminTermForm
-              :key="editingTerm?.id || 'new'"
-              :term="editingTerm"
-              :categories="categories"
-              :is-edit="!!editingTerm"
-              @submit="handleSubmit"
-              @cancel="closeModal"
-            />
-          </div>
-        </div>
-
-        <!-- Delete Confirmation Modal -->
-        <div
-          v-if="showDeleteConfirm"
-          class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6 z-50"
-          @click.self="closeDeleteConfirm"
-        >
-          <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
-            <div class="text-center mb-6">
-              <div
-                class="w-16 h-16 bg-terracotta/10 rounded-full flex items-center justify-center mx-auto mb-4"
-              >
-                <svg
-                  class="w-8 h-8 text-terracotta"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                  />
-                </svg>
-              </div>
-              <h3 class="text-xl font-serif font-bold text-deep-teal mb-2">
-                Confirmer la suppression
-              </h3>
-              <p class="text-deep-teal/60">
-                Êtes-vous sûr de vouloir supprimer le terme
-                <span class="font-semibold text-deep-teal">{{ termToDelete?.root }}</span> ?
-              </p>
-            </div>
-
-            <div class="flex gap-3">
-              <button
-                type="button"
-                class="flex-1 px-4 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-all"
-                @click="closeDeleteConfirm"
-              >
-                Annuler
-              </button>
-              <button
-                type="button"
-                :disabled="deleting"
-                class="flex-1 px-4 py-3 bg-terracotta text-white font-semibold rounded-lg hover:bg-terracotta/90 transition-all disabled:opacity-50"
-                @click="handleDelete"
-              >
-                {{ deleting ? 'Suppression...' : 'Supprimer' }}
-              </button>
-            </div>
-          </div>
-        </div>
+    <!-- Filters -->
+    <div class="mt-8 grid grid-cols-1 gap-2 md:grid-cols-[1fr_260px]">
+      <div>
+        <label for="terms-search" class="sr-only">Rechercher</label>
+        <input
+          id="terms-search"
+          v-model="searchQuery"
+          type="search"
+          placeholder="Rechercher un radical ou une signification"
+          class="field"
+        />
+      </div>
+      <div>
+        <label for="terms-category" class="sr-only">Filtrer par catégorie</label>
+        <select id="terms-category" v-model="filterCategoryId" class="field">
+          <option :value="null">Toutes les catégories</option>
+          <option v-for="category in categories" :key="category.id" :value="category.id">
+            {{ category.name }}
+          </option>
+        </select>
       </div>
     </div>
-  </div>
+
+    <div
+      class="mt-3 flex items-center justify-between text-xs text-ink-faint tabular-nums"
+      aria-live="polite"
+    >
+      <span>{{ filteredTerms.length }} résultat{{ filteredTerms.length > 1 ? 's' : '' }}</span>
+      <span>Page {{ currentPage }} / {{ totalPages || 1 }}</span>
+    </div>
+
+    <div v-if="loading" role="status" class="py-24 text-sm text-ink-soft">Chargement…</div>
+
+    <div v-else class="mt-2 overflow-x-auto">
+      <table class="w-full border-y border-line text-sm">
+        <caption class="sr-only">
+          Termes médicaux, page
+          {{
+            currentPage
+          }}
+          sur
+          {{
+            totalPages
+          }}
+        </caption>
+        <thead>
+          <tr class="border-b border-line">
+            <th scope="col" class="kicker py-2.5 pr-4 text-left font-semibold">Radical</th>
+            <th scope="col" class="kicker py-2.5 pr-4 text-left font-semibold">Signification</th>
+            <th scope="col" class="kicker py-2.5 pr-4 text-left font-semibold">Catégorie</th>
+            <th scope="col" class="py-2.5 text-right"><span class="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-line">
+          <tr v-if="paginatedTerms.length === 0">
+            <td colspan="4" class="py-12 text-center text-ink-soft">
+              Aucun terme ne correspond à cette recherche.
+            </td>
+          </tr>
+          <tr
+            v-for="term in paginatedTerms"
+            :key="term.id"
+            class="transition-colors hover:bg-ink/4"
+          >
+            <td class="py-2 pr-4 font-medium whitespace-nowrap">{{ term.root }}</td>
+            <td class="py-2 pr-4 text-ink-2">{{ term.meaning }}</td>
+            <td class="py-2 pr-4">
+              <span class="inline-flex items-center gap-2 whitespace-nowrap text-ink-2">
+                <span
+                  class="dot"
+                  :style="{ backgroundColor: term.category_color }"
+                  aria-hidden="true"
+                />
+                {{ term.category_name }}
+              </span>
+            </td>
+            <td class="py-1">
+              <div class="flex items-center justify-end gap-1">
+                <button
+                  type="button"
+                  :aria-label="`Modifier le terme ${term.root}`"
+                  class="btn-ghost min-h-8 px-2 text-xs"
+                  @click="openEditModal(term)"
+                >
+                  Modifier
+                </button>
+                <button
+                  type="button"
+                  :aria-label="`Supprimer le terme ${term.root}`"
+                  class="btn-ghost min-h-8 px-2 text-xs hover:bg-danger-soft hover:text-danger"
+                  @click="confirmDelete(term)"
+                >
+                  Supprimer
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <nav
+        v-if="totalPages > 1"
+        aria-label="Pagination"
+        class="flex items-center justify-between py-3"
+      >
+        <button
+          type="button"
+          :disabled="currentPage === 1"
+          class="btn-secondary"
+          @click="currentPage--"
+        >
+          ← Précédent
+        </button>
+        <div class="flex items-center gap-0.5">
+          <button
+            v-for="page in visiblePages"
+            :key="page"
+            type="button"
+            :aria-label="`Page ${page}`"
+            :aria-current="page === currentPage ? 'page' : undefined"
+            class="size-9 rounded text-[13px] tabular-nums transition-colors"
+            :class="
+              page === currentPage
+                ? 'bg-ink text-paper'
+                : 'text-ink-soft hover:bg-ink/6 hover:text-ink'
+            "
+            @click="currentPage = page"
+          >
+            {{ page }}
+          </button>
+        </div>
+        <button
+          type="button"
+          :disabled="currentPage === totalPages"
+          class="btn-secondary"
+          @click="currentPage++"
+        >
+          Suivant →
+        </button>
+      </nav>
+    </div>
+
+    <!-- Create/Edit Modal -->
+    <AdminModal
+      :open="showModal"
+      :title="editingTerm ? 'Modifier le terme' : 'Nouveau terme'"
+      @close="closeModal"
+    >
+      <AdminTermForm
+        :key="editingTerm?.id || 'new'"
+        :term="editingTerm"
+        :categories="categories"
+        :is-edit="!!editingTerm"
+        :submitting="saving"
+        :error="saveError"
+        @submit="handleSubmit"
+        @cancel="closeModal"
+      />
+    </AdminModal>
+
+    <!-- Delete Confirmation Modal -->
+    <AdminModal
+      :open="showDeleteConfirm"
+      title="Supprimer ce terme ?"
+      alert
+      size="md"
+      @close="closeDeleteConfirm"
+    >
+      <p class="text-sm text-ink-2">
+        <span class="font-semibold text-ink">{{ termToDelete?.root }}</span> sera supprimé
+        définitivement.
+      </p>
+
+      <div class="mt-6 flex gap-2">
+        <button type="button" :disabled="deleting" class="btn-danger" @click="handleDelete">
+          {{ deleting ? 'Suppression…' : 'Supprimer' }}
+        </button>
+        <button type="button" class="btn-secondary" @click="closeDeleteConfirm">Annuler</button>
+      </div>
+
+      <p v-if="deleteError" role="alert" class="mt-4 text-sm text-danger">
+        {{ deleteError }}
+      </p>
+    </AdminModal>
+  </main>
 </template>
 
 <script setup lang="ts">
@@ -284,6 +202,7 @@ import type { Term, TermWithCategory } from '~/types'
 
 definePageMeta({
   middleware: 'admin',
+  layout: 'admin',
 })
 
 const { categories, fetchCategories } = useCategories()
@@ -299,6 +218,9 @@ const editingTerm = ref<Term | null>(null)
 const showDeleteConfirm = ref(false)
 const termToDelete = ref<TermWithCategory | null>(null)
 const deleting = ref(false)
+const deleteError = ref<string | null>(null)
+const saving = ref(false)
+const saveError = ref<string | null>(null)
 
 onMounted(async () => {
   await Promise.all([fetchCategories(), fetchTerms()])
@@ -358,6 +280,7 @@ watch([searchQuery, filterCategoryId], () => {
 
 function openCreateModal() {
   editingTerm.value = null
+  saveError.value = null
   showModal.value = true
 }
 
@@ -370,24 +293,27 @@ function openEditModal(term: TermWithCategory) {
     created_at: term.created_at,
     updated_at: term.updated_at,
   }
+  saveError.value = null
   showModal.value = true
 }
 
 function closeModal() {
   showModal.value = false
   editingTerm.value = null
+  saveError.value = null
 }
 
 async function handleSubmit(data: { root: string; meaning: string; category_id: number }) {
+  saving.value = true
+  saveError.value = null
+
   try {
     if (editingTerm.value) {
-      // Update existing term
       await $fetch(`/api/admin/terms/${editingTerm.value.id}`, {
         method: 'PUT',
         body: data,
       })
     } else {
-      // Create new term
       await $fetch('/api/admin/terms', {
         method: 'POST',
         body: data,
@@ -397,24 +323,29 @@ async function handleSubmit(data: { root: string; meaning: string; category_id: 
     closeModal()
     await fetchTerms()
   } catch {
-    // TODO: show user feedback on save failure
+    saveError.value = "L'enregistrement a échoué. Vérifiez les champs et réessayez."
+  } finally {
+    saving.value = false
   }
 }
 
 function confirmDelete(term: TermWithCategory) {
   termToDelete.value = term
+  deleteError.value = null
   showDeleteConfirm.value = true
 }
 
 function closeDeleteConfirm() {
   showDeleteConfirm.value = false
   termToDelete.value = null
+  deleteError.value = null
 }
 
 async function handleDelete() {
   if (!termToDelete.value) return
 
   deleting.value = true
+  deleteError.value = null
 
   try {
     await $fetch(`/api/admin/terms/${termToDelete.value.id}`, {
@@ -424,7 +355,7 @@ async function handleDelete() {
     closeDeleteConfirm()
     await fetchTerms()
   } catch {
-    // TODO: show user feedback on delete failure
+    deleteError.value = 'La suppression a échoué. Veuillez réessayer.'
   } finally {
     deleting.value = false
   }

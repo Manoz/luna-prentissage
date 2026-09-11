@@ -1,248 +1,183 @@
 <template>
-  <div class="min-h-screen bg-warm-cream">
-    <div
-      class="fixed inset-0 opacity-[0.03] pointer-events-none"
-      style="
-        background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E');
-      "
-    />
+  <div class="flex min-h-screen flex-col">
+    <header class="flex h-13 items-center gap-4 border-b border-line px-5 text-[13px] sm:px-7">
+      <p class="min-w-0 truncate text-ink-soft">
+        Quiz
+        <template v-if="quizState !== 'setup'">
+          <span class="text-ink-faint" aria-hidden="true">/</span>
+          {{ selectedCategoryName }}
+        </template>
+      </p>
+    </header>
 
-    <div class="relative">
-      <!-- Header -->
-      <header class="border-b border-deep-teal/10">
-        <div class="container mx-auto px-6 py-6">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-4">
-              <NuxtLink to="/" class="text-deep-teal/60 hover:text-deep-teal transition-colors">
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-              </NuxtLink>
-              <h1 class="text-2xl font-serif font-bold text-deep-teal">Mode Quiz</h1>
-            </div>
+    <main class="flex-1 px-5 py-10 sm:px-7 lg:px-14">
+      <!-- Setup -->
+      <div v-if="quizState === 'setup'" class="max-w-xl">
+        <h1
+          ref="setupHeadingRef"
+          tabindex="-1"
+          class="text-3xl font-semibold tracking-tight focus:outline-none"
+        >
+          Nouveau quiz
+        </h1>
+        <p class="mt-2 text-sm text-ink-soft">Réglez la session, puis lancez le quiz.</p>
+
+        <div class="mt-8 flex flex-col gap-7">
+          <div>
+            <label for="quiz-category" class="label">Catégorie</label>
+            <select id="quiz-category" v-model="selectedCategoryId" class="field">
+              <option :value="null">Toutes les catégories</option>
+              <option v-for="category in categories" :key="category.id" :value="category.id">
+                {{ category.name }}
+              </option>
+            </select>
           </div>
-        </div>
-      </header>
 
-      <div class="container mx-auto px-6 py-12">
-        <!-- Setup Screen -->
-        <div v-if="quizState === 'setup'" class="max-w-2xl mx-auto">
-          <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-            <h2 class="text-3xl font-serif font-bold text-deep-teal mb-2">Configurer votre quiz</h2>
-            <p class="text-deep-teal/60 mb-8">
-              Choisissez les paramètres pour personnaliser votre session de quiz.
-            </p>
-
-            <div class="space-y-8">
-              <!-- Category Selection -->
-              <div>
-                <label class="block text-sm font-semibold text-deep-teal mb-3"> Catégorie </label>
-                <select
-                  v-model="selectedCategoryId"
-                  class="w-full px-4 py-3 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
+          <fieldset class="m-0 border-0 p-0">
+            <legend class="label">Type de questions</legend>
+            <div class="grid grid-cols-3 gap-0.5 rounded border border-line-strong p-0.5">
+              <label v-for="option in quizTypeOptions" :key="option.value" class="cursor-pointer">
+                <input
+                  v-model="quizType"
+                  type="radio"
+                  name="quiz-type"
+                  :value="option.value"
+                  class="peer sr-only"
+                />
+                <span
+                  class="block rounded py-2 text-center text-[13px] font-medium text-ink-soft transition-colors hover:text-ink peer-checked:bg-surface peer-checked:text-ink peer-checked:shadow-[0_0_0_1px_var(--line)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-1 peer-focus-visible:outline-accent"
                 >
-                  <option :value="null">Toutes les catégories</option>
-                  <option v-for="category in categories" :key="category.id" :value="category.id">
-                    {{ category.name }}
-                  </option>
-                </select>
-              </div>
+                  {{ option.label }}
+                </span>
+              </label>
+            </div>
+          </fieldset>
 
-              <!-- Quiz Type -->
-              <div>
-                <label class="block text-sm font-semibold text-deep-teal mb-3">
-                  Type de questions
-                </label>
-                <div class="grid grid-cols-3 gap-3">
-                  <button
-                    type="button"
-                    class="p-4 rounded-lg border-2 transition-all cursor-pointer"
-                    :class="{
-                      'border-terracotta text-terracotta': quizType === 'multiple-choice',
-                      'border-deep-teal/20 text-deep-teal/60 hover:border-deep-teal/40':
-                        quizType !== 'multiple-choice',
-                    }"
-                    @click="quizType = 'multiple-choice'"
-                  >
-                    <div class="flex items-center justify-center gap-2">
-                      <div class="text-sm font-medium">QCM</div>
-                    </div>
-                  </button>
-
-                  <button
-                    type="button"
-                    class="p-4 rounded-lg border-2 transition-all cursor-pointer"
-                    :class="{
-                      'border-terracotta text-terracotta': quizType === 'true-false',
-                      'border-deep-teal/20 text-deep-teal/60 hover:border-deep-teal/40':
-                        quizType !== 'true-false',
-                    }"
-                    @click="quizType = 'true-false'"
-                  >
-                    <div class="flex items-center justify-center gap-2">
-                      <div class="text-sm font-medium">Vrai/Faux</div>
-                    </div>
-                  </button>
-
-                  <button
-                    type="button"
-                    class="p-4 rounded-lg border-2 transition-all cursor-pointer"
-                    :class="{
-                      'border-terracotta text-terracotta': quizType === 'mixed',
-                      'border-deep-teal/40 text-deep-teal/60 hover:border-deep-teal/40':
-                        quizType !== 'mixed',
-                    }"
-                    @click="quizType = 'mixed'"
-                  >
-                    <div class="flex items-center justify-center gap-2">
-                      <div class="text-sm font-medium">Mixte</div>
-                    </div>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Number of Questions -->
-              <div>
-                <label class="block text-sm font-semibold text-deep-teal mb-3">
-                  Nombre de questions
-                </label>
-                <div class="py-4">
-                  <input
-                    v-model.number="questionCount"
-                    type="range"
-                    min="5"
-                    max="50"
-                    step="5"
-                    class="slider w-full"
-                  />
-                </div>
-                <div class="flex justify-between text-sm text-deep-teal/60 mt-2">
-                  <span>5</span>
-                  <span class="text-lg font-semibold text-deep-teal">{{ questionCount }}</span>
-                  <span>50</span>
-                </div>
-              </div>
-
-              <!-- Start Button -->
-              <button
-                type="button"
-                :disabled="termsLoading || availableTerms.length === 0"
-                class="w-full py-4 bg-deep-teal text-white font-semibold rounded-full hover:bg-deep-teal/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-                @click="startQuiz"
-              >
-                <span v-if="termsLoading">Chargement...</span>
-                <span v-else>Commencer le quiz</span>
-              </button>
-
-              <p
-                v-if="!termsLoading && availableTerms.length === 0"
-                class="text-center text-terracotta text-sm"
-              >
-                Aucun terme disponible pour cette catégorie
-              </p>
+          <div>
+            <div class="flex items-baseline justify-between">
+              <label for="quiz-count" class="label">Nombre de questions</label>
+              <output for="quiz-count" class="text-sm font-semibold tabular-nums">{{
+                questionCount
+              }}</output>
+            </div>
+            <input
+              id="quiz-count"
+              v-model.number="questionCount"
+              type="range"
+              min="5"
+              max="50"
+              step="5"
+              class="slider w-full"
+            />
+            <div class="mt-1 flex justify-between text-xs text-ink-faint tabular-nums">
+              <span>5</span>
+              <span>50</span>
             </div>
           </div>
-        </div>
 
-        <!-- Quiz Screen -->
-        <div v-else-if="quizState === 'quiz' && currentQuestion" class="max-w-4xl mx-auto">
-          <QuizQuestion
-            :question="currentQuestion"
-            :current-question="currentIndex"
-            :total-questions="questions.length"
-            :progress="progress"
-            :score="score"
-            @answer="handleAnswer"
-          />
-
-          <div ref="nextButtonRef" class="text-center mt-8">
+          <div>
             <button
-              v-if="currentIndex < questions.length - 1"
               type="button"
-              :disabled="!hasAnswered"
-              class="px-8 py-3 bg-deep-teal text-white font-semibold rounded-full hover:bg-deep-teal/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              @click="nextQuestion"
+              :disabled="termsLoading || availableTerms.length === 0"
+              class="btn-primary"
+              @click="startQuiz"
             >
-              Question suivante
+              <span v-if="termsLoading">Chargement…</span>
+              <span v-else>Commencer le quiz</span>
             </button>
-            <button
-              v-else
-              type="button"
-              :disabled="!hasAnswered"
-              class="px-8 py-3 bg-terracotta text-warm-cream font-semibold rounded-full hover:bg-terracotta/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              @click="finishQuiz"
+            <p
+              v-if="!termsLoading && availableTerms.length === 0"
+              role="status"
+              class="mt-3 text-sm text-danger"
             >
-              Voir les résultats
-            </button>
-          </div>
-        </div>
-
-        <!-- Results Screen -->
-        <div v-else-if="quizState === 'results'" class="max-w-2xl mx-auto">
-          <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
-            <div class="mb-8">
-              <div
-                class="w-32 h-32 rounded-full mx-auto mb-6 flex items-center justify-center text-6xl font-serif font-bold"
-                :class="{
-                  'bg-green-100 text-green-600': percentage >= 70,
-                  'bg-yellow-100 text-yellow-600': percentage >= 50 && percentage < 70,
-                  'bg-red-100 text-red-600': percentage < 50,
-                }"
-              >
-                {{ percentage }}%
-              </div>
-
-              <h2 class="text-4xl font-serif font-bold text-deep-teal mb-2">
-                {{ getResultTitle() }}
-              </h2>
-
-              <p class="text-xl text-deep-teal/70">
-                Vous avez obtenu
-                <span class="font-semibold text-deep-teal">{{ score }}/{{ questions.length }}</span>
-                bonnes réponses
-              </p>
-            </div>
-
-            <div class="grid grid-cols-2 gap-6 mb-8">
-              <div class="p-6 bg-deep-teal/5 rounded-xl">
-                <div class="text-3xl font-serif font-bold text-deep-teal mb-1">
-                  {{ score }}
-                </div>
-                <div class="text-sm text-deep-teal/60">Bonnes réponses</div>
-              </div>
-
-              <div class="p-6 bg-terracotta/5 rounded-xl">
-                <div class="text-3xl font-serif font-bold text-terracotta mb-1">
-                  {{ questions.length - score }}
-                </div>
-                <div class="text-sm text-deep-teal/60">Erreurs</div>
-              </div>
-            </div>
-
-            <div class="flex flex-col sm:flex-row gap-3">
-              <button
-                type="button"
-                class="flex-1 px-6 py-3 bg-deep-teal text-white font-semibold rounded-full hover:bg-deep-teal/90 transition-all cursor-pointer"
-                @click="resetQuiz"
-              >
-                Recommencer
-              </button>
-              <NuxtLink
-                to="/"
-                class="flex-1 px-6 py-3 border-2 border-deep-teal/20 text-deep-teal font-semibold rounded-full hover:bg-deep-teal/5 transition-all text-center"
-              >
-                Retour à l'accueil
-              </NuxtLink>
-            </div>
+              Aucun terme disponible pour cette catégorie
+            </p>
           </div>
         </div>
       </div>
-    </div>
+
+      <!-- Quiz -->
+      <div v-else-if="quizState === 'quiz' && currentQuestion" class="max-w-3xl">
+        <QuizQuestion
+          ref="quizQuestionRef"
+          :question="currentQuestion"
+          :current-question="currentIndex"
+          :total-questions="questions.length"
+          :score="score"
+          @answer="handleAnswer"
+        />
+
+        <div class="mt-8">
+          <button
+            v-if="currentIndex < questions.length - 1"
+            ref="nextButtonRef"
+            type="button"
+            :disabled="!hasAnswered"
+            class="btn-primary"
+            @click="nextQuestion"
+          >
+            Question suivante →
+          </button>
+          <button
+            v-else
+            ref="nextButtonRef"
+            type="button"
+            :disabled="!hasAnswered"
+            class="btn-primary"
+            @click="finishQuiz"
+          >
+            Voir les résultats
+          </button>
+        </div>
+
+        <div
+          class="mt-10 h-0.5 w-full max-w-md bg-line"
+          role="progressbar"
+          aria-label="Progression du quiz"
+          :aria-valuenow="currentIndex + 1"
+          aria-valuemin="1"
+          :aria-valuemax="questions.length"
+        >
+          <div
+            class="h-full bg-accent transition-[width] duration-300"
+            :style="{ width: `${progress}%` }"
+          />
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div v-else-if="quizState === 'results'" class="max-w-xl">
+        <p class="kicker mb-3">Résultat</p>
+        <p class="text-7xl font-semibold tracking-[-0.04em] tabular-nums sm:text-8xl">
+          {{ percentage }}<span class="text-ink-faint">%</span>
+        </p>
+        <h2
+          ref="resultsHeadingRef"
+          tabindex="-1"
+          class="mt-4 font-serif text-3xl italic text-accent focus:outline-none"
+        >
+          {{ getResultTitle() }}
+        </h2>
+
+        <dl class="mt-8 grid max-w-sm grid-cols-2 border-y border-line py-4 text-sm">
+          <div>
+            <dt class="text-ink-faint">Bonnes réponses</dt>
+            <dd class="mt-1 text-2xl font-semibold text-success tabular-nums">{{ score }}</dd>
+          </div>
+          <div>
+            <dt class="text-ink-faint">Erreurs</dt>
+            <dd class="mt-1 text-2xl font-semibold text-danger tabular-nums">
+              {{ questions.length - score }}
+            </dd>
+          </div>
+        </dl>
+
+        <div class="mt-8 flex flex-wrap gap-2">
+          <button type="button" class="btn-primary" @click="resetQuiz">Refaire un quiz</button>
+          <NuxtLink to="/flashcards" class="btn-secondary">Réviser les fiches</NuxtLink>
+        </div>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -263,12 +198,36 @@ const {
   resetQuiz: quizReset,
 } = useQuiz()
 
+const route = useRoute()
+
+function categoryFromQuery() {
+  const raw = route.query.category
+  if (typeof raw !== 'string') return null
+  const id = parseInt(raw, 10)
+  return isNaN(id) ? null : id
+}
+
 const quizState = ref<'setup' | 'quiz' | 'results'>('setup')
-const selectedCategoryId = ref<number | null>(null)
+const selectedCategoryId = ref<number | null>(categoryFromQuery())
+
+const selectedCategoryName = computed(
+  () =>
+    categories.value.find((c) => c.id === selectedCategoryId.value)?.name ??
+    'Toutes les catégories',
+)
 const quizType = ref<'multiple-choice' | 'true-false' | 'mixed'>('mixed')
 const questionCount = ref(10)
 const hasAnswered = ref(false)
-const nextButtonRef = ref<HTMLElement | null>(null)
+const nextButtonRef = ref<HTMLButtonElement | null>(null)
+const quizQuestionRef = ref<{ focusHeading: () => void } | null>(null)
+const setupHeadingRef = ref<HTMLElement | null>(null)
+const resultsHeadingRef = ref<HTMLElement | null>(null)
+
+const quizTypeOptions = [
+  { value: 'multiple-choice', label: 'QCM' },
+  { value: 'true-false', label: 'Vrai/Faux' },
+  { value: 'mixed', label: 'Mixte' },
+] as const
 
 const availableTerms = computed(() => {
   if (selectedCategoryId.value === null) {
@@ -295,6 +254,7 @@ function startQuiz() {
   generateQuestions([...availableTerms.value], quizType.value, questionCount.value)
   quizState.value = 'quiz'
   hasAnswered.value = false
+  nextTick(() => quizQuestionRef.value?.focusHeading())
 }
 
 function handleAnswer(answer: string | boolean) {
@@ -302,17 +262,20 @@ function handleAnswer(answer: string | boolean) {
   hasAnswered.value = true
   nextTick(() => {
     nextButtonRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    nextButtonRef.value?.focus({ preventScroll: true })
   })
 }
 
 function nextQuestion() {
   quizNextQuestion()
   hasAnswered.value = false
+  nextTick(() => quizQuestionRef.value?.focusHeading())
 }
 
 function finishQuiz() {
   quizState.value = 'results'
-  // Trigger confetti animation after a small delay
+  nextTick(() => resultsHeadingRef.value?.focus())
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
   setTimeout(() => {
     triggerConfetti(percentage.value)
   }, 300)
@@ -322,6 +285,7 @@ function resetQuiz() {
   quizReset()
   quizState.value = 'setup'
   hasAnswered.value = false
+  nextTick(() => setupHeadingRef.value?.focus())
 }
 
 function getResultTitle() {
@@ -415,104 +379,49 @@ function triggerConfetti(percentage: number) {
   }
 }
 </script>
-
 <style scoped>
-/* Custom range input styling */
 .slider {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 8px;
-  background: #2d5f5d20;
-  border-radius: 8px;
+  height: 2px;
+  background: var(--line-strong);
   outline: none;
   cursor: pointer;
-}
-
-/* WebKit (Chrome, Safari, Edge) */
-.slider::-webkit-slider-track {
-  width: 100%;
-  height: 8px;
-  background: #2d5f5d20;
-  border-radius: 8px;
 }
 
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 24px;
-  height: 24px;
-  background: #2d5f5d;
-  border: 4px solid white;
+  width: 18px;
+  height: 18px;
+  background: var(--accent);
+  border: 2px solid var(--paper);
   border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(45, 95, 93, 0.3);
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.slider::-webkit-slider-thumb:hover {
-  transform: scale(1.1);
-  box-shadow: 0 3px 8px rgba(45, 95, 93, 0.4);
+.slider:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-.slider::-webkit-slider-thumb:active {
-  transform: scale(1.05);
-}
-
-/* Firefox */
 .slider::-moz-range-track {
-  width: 100%;
-  height: 8px;
-  background: #2d5f5d20;
-  border-radius: 8px;
+  height: 2px;
+  background: var(--line-strong);
 }
 
 .slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background: #2d5f5d;
-  border: 4px solid white;
+  width: 14px;
+  height: 14px;
+  background: var(--accent);
+  border: 2px solid var(--paper);
   border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(45, 95, 93, 0.3);
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.slider::-moz-range-thumb:hover {
-  transform: scale(1.1);
-  box-shadow: 0 3px 8px rgba(45, 95, 93, 0.4);
-}
-
-.slider::-moz-range-thumb:active {
-  transform: scale(1.05);
-}
-
-/* Edge/IE */
-.slider::-ms-track {
-  width: 100%;
-  height: 8px;
-  background: transparent;
-  border-color: transparent;
-  color: transparent;
-}
-
-.slider::-ms-fill-lower {
-  background: #2d5f5d;
-  border-radius: 8px;
-}
-
-.slider::-ms-fill-upper {
-  background: #2d5f5d20;
-  border-radius: 8px;
-}
-
-.slider::-ms-thumb {
-  width: 20px;
-  height: 20px;
-  background: #2d5f5d;
-  border: 4px solid white;
-  border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(45, 95, 93, 0.3);
-  cursor: pointer;
+.slider:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 </style>

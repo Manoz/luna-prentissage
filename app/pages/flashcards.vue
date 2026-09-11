@@ -1,181 +1,107 @@
 <template>
-  <div class="min-h-screen bg-warm-cream">
-    <div
-      class="fixed inset-0 opacity-[0.03] pointer-events-none"
-      style="
-        background-image: url('data:image/svg+xml,%3Csvg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; /%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot; /%3E%3C/svg%3E');
-      "
-    />
+  <div class="flex min-h-screen flex-col">
+    <header
+      class="flex h-13 items-center justify-between gap-4 border-b border-line px-5 text-[13px] sm:px-7"
+    >
+      <p class="min-w-0 truncate text-ink-soft">
+        Fiches <span class="text-ink-faint" aria-hidden="true">/</span>
+        {{ selectedCategory ? selectedCategory.name : 'Toutes les catégories' }}
+      </p>
+      <button
+        v-if="filteredTerms.length > 0"
+        type="button"
+        class="btn-ghost -mr-2 shrink-0"
+        @click="handleShuffle"
+      >
+        Mélanger
+      </button>
+    </header>
 
-    <div class="relative">
-      <!-- Header -->
-      <header class="border-b border-deep-teal/10">
-        <div class="container mx-auto px-6 py-6">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-4">
-              <NuxtLink to="/" class="text-deep-teal/60 hover:text-deep-teal transition-colors">
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-              </NuxtLink>
-              <h1 class="text-2xl font-serif font-bold text-deep-teal">Flashcards</h1>
-            </div>
+    <!-- Loading -->
+    <div v-if="loading" role="status" class="flex flex-1 items-center justify-center py-24">
+      <p class="text-sm text-ink-soft">Chargement des fiches…</p>
+    </div>
 
-            <button
-              v-if="filteredTerms.length > 0"
-              type="button"
-              class="px-4 py-2 text-sm font-medium hover:text-deep-teal border border-deep-teal/20 rounded-full hover:bg-deep-teal/5 transition-all"
-              @click="handleShuffle"
-            >
-              <span class="flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                  />
-                </svg>
-                Mélanger
-              </span>
-            </button>
-          </div>
+    <!-- Empty -->
+    <div v-else-if="filteredTerms.length === 0" role="status" class="px-7 py-16">
+      <h1 class="text-2xl font-semibold tracking-tight">Aucune fiche dans cette catégorie</h1>
+      <p class="mt-2 text-sm text-ink-soft">Choisissez-en une autre dans le menu.</p>
+      <NuxtLink to="/flashcards" class="btn-secondary mt-6">Voir toutes les fiches</NuxtLink>
+    </div>
+
+    <!-- Deck -->
+    <main v-else class="grid flex-1 xl:grid-cols-[1fr_340px]">
+      <div class="flex flex-col justify-center px-5 py-10 sm:px-7 lg:px-14">
+        <div class="mb-7 flex flex-wrap items-center gap-x-4 gap-y-2 text-[12px] text-ink-faint">
+          <span aria-live="polite" class="tabular-nums">
+            Fiche <span class="text-ink">{{ currentIndex + 1 }}</span> / {{ filteredTerms.length }}
+          </span>
+          <span class="hidden items-center gap-1 md:inline-flex">
+            <kbd>←</kbd><kbd>→</kbd><span class="ml-1">pour naviguer</span>
+          </span>
         </div>
-      </header>
 
-      <div class="container mx-auto px-6 py-12">
-        <div class="grid lg:grid-cols-[280px_1fr] gap-8">
-          <!-- Sidebar - Category Filter -->
-          <aside class="lg:sticky lg:top-6 h-fit">
-            <CategoryFilter
-              :categories="categories"
-              :selected-category-id="selectedCategoryId"
-              @select="handleCategorySelect"
-            />
-          </aside>
+        <FlashCard v-if="currentTerm" ref="flashcardRef" :term="currentTerm" />
 
-          <!-- Main Content -->
-          <main>
-            <!-- Loading State -->
-            <div v-if="loading" class="flex items-center justify-center py-20">
-              <div class="text-center">
-                <div
-                  class="w-16 h-16 border-4 border-deep-teal/20 border-t-deep-teal rounded-full animate-spin mx-auto mb-4"
-                />
-                <p class="text-deep-teal/60">Chargement...</p>
-              </div>
-            </div>
+        <div class="mt-10 flex flex-wrap gap-2">
+          <button
+            type="button"
+            :disabled="currentIndex === 0"
+            class="btn-secondary"
+            @click="previousCard"
+          >
+            ← Précédente
+          </button>
+          <button
+            type="button"
+            :disabled="currentIndex === filteredTerms.length - 1"
+            class="btn-primary"
+            @click="nextCard"
+          >
+            Suivante →
+          </button>
+        </div>
 
-            <!-- No Terms -->
-            <div v-else-if="filteredTerms.length === 0" class="text-center py-20">
-              <div class="max-w-md mx-auto">
-                <div
-                  class="w-20 h-20 rounded-full bg-terracotta/10 flex items-center justify-center mx-auto mb-6"
-                >
-                  <svg
-                    class="w-10 h-10 text-terracotta"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <h3 class="text-2xl font-serif font-bold text-deep-teal mb-2">
-                  Aucun terme trouvé
-                </h3>
-                <p class="text-deep-teal/60">Essayez de sélectionner une autre catégorie.</p>
-              </div>
-            </div>
-
-            <!-- Flashcard Display -->
-            <div v-else class="space-y-8">
-              <!-- Progress -->
-              <div class="flex items-center justify-between">
-                <div class="text-sm">
-                  Carte
-                  <span class="font-semibold">{{ currentIndex + 1 }}</span> sur
-                  <span class="font-semibold">{{ filteredTerms.length }}</span>
-                </div>
-                <div class="hidden md:flex items-center gap-2 text-xs text-deep-teal/60">
-                  <kbd class="px-2 py-1 bg-white rounded border border-deep-teal/20">←</kbd>
-                  <kbd class="px-2 py-1 bg-white rounded border border-deep-teal/20">→</kbd>
-                  <span>pour naviguer</span>
-                  <kbd class="px-2 py-1 bg-white rounded border border-deep-teal/20">Espace</kbd>
-                  <span>pour retourner</span>
-                </div>
-              </div>
-
-              <!-- Progress Bar -->
-              <div class="w-full h-2 bg-deep-teal/10 rounded-full overflow-hidden">
-                <div
-                  class="h-full bg-gradient-to-r from-deep-teal to-terracotta transition-all duration-300"
-                  :style="{
-                    width: `${((currentIndex + 1) / filteredTerms.length) * 100}%`,
-                  }"
-                />
-              </div>
-
-              <!-- Flashcard -->
-              <div v-if="currentTerm" class="max-w-2xl mx-auto">
-                <FlashCard ref="flashcardRef" :term="currentTerm" />
-              </div>
-
-              <!-- Navigation -->
-              <div class="flex items-center justify-center gap-4 pt-8">
-                <button
-                  type="button"
-                  :disabled="currentIndex === 0"
-                  class="px-6 py-3 rounded-full border-2 border-deep-teal/20 text-deep-teal font-medium hover:bg-deep-teal hover:text-warm-cream transition-all disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-deep-teal"
-                  @click="previousCard"
-                >
-                  <span class="flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 19l-7-7 7-7"
-                      />
-                    </svg>
-                    Précédent
-                  </span>
-                </button>
-
-                <button
-                  type="button"
-                  :disabled="currentIndex === filteredTerms.length - 1"
-                  class="px-6 py-3 rounded-full bg-deep-teal text-white font-medium hover:bg-deep-teal/90 transition-all shadow-lg disabled:opacity-30 disabled:cursor-not-allowed"
-                  @click="nextCard"
-                >
-                  <span class="flex items-center gap-2">
-                    Suivant
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </span>
-                </button>
-              </div>
-            </div>
-          </main>
+        <div
+          class="mt-8 h-0.5 w-full max-w-md bg-line"
+          role="progressbar"
+          aria-label="Progression des fiches"
+          :aria-valuenow="currentIndex + 1"
+          aria-valuemin="1"
+          :aria-valuemax="filteredTerms.length"
+        >
+          <div
+            class="h-full bg-accent transition-[width] duration-300"
+            :style="{ width: `${((currentIndex + 1) / filteredTerms.length) * 100}%` }"
+          />
         </div>
       </div>
-    </div>
+
+      <aside class="hidden min-h-0 border-l border-line xl:block">
+        <div class="sticky top-0 flex max-h-screen flex-col">
+          <p class="kicker px-6 pt-6 pb-3">Dans cette série</p>
+          <ol ref="listRef" class="min-h-0 flex-1 overflow-y-auto px-4 pb-6">
+            <li v-for="(term, index) in filteredTerms" :key="term.id">
+              <button
+                type="button"
+                class="row"
+                :class="{ 'row-active': index === currentIndex }"
+                :aria-current="index === currentIndex ? 'true' : undefined"
+                @click="goTo(index)"
+              >
+                <span class="truncate font-medium">{{ term.root }}</span>
+                <span
+                  class="truncate text-ink-faint"
+                  :class="{ 'text-accent': index === currentIndex }"
+                >
+                  {{ term.meaning }}
+                </span>
+              </button>
+            </li>
+          </ol>
+        </div>
+      </aside>
+    </main>
   </div>
 </template>
 
@@ -186,9 +112,20 @@ const { categories, fetchCategories } = useCategories()
 const { terms, fetchTerms, shuffleTerms, loading } = useTerms()
 
 const route = useRoute()
-const selectedCategoryId = ref<number | null>(null)
 const currentIndex = ref(0)
-const flashcardRef = ref()
+const flashcardRef = ref<{ flip: () => void; focus: () => void } | null>(null)
+const listRef = ref<HTMLElement | null>(null)
+
+const selectedCategoryId = computed(() => {
+  const raw = route.query.category
+  if (typeof raw !== 'string') return null
+  const id = parseInt(raw, 10)
+  return isNaN(id) ? null : id
+})
+
+const selectedCategory = computed(() =>
+  categories.value.find((c) => c.id === selectedCategoryId.value),
+)
 
 const filteredTerms = computed(() => {
   if (selectedCategoryId.value === null) {
@@ -201,72 +138,82 @@ const currentTerm = computed(() => {
   return filteredTerms.value[currentIndex.value]
 })
 
-// Fetch data on mount + keyboard navigation
+// Arrow keys navigate cards unless the user is inside a form control
+// (where arrows already have a meaning). Flipping is handled natively by
+// the card button (Enter/Space), so no global Space shortcut is needed.
+function handleKeyPress(e: KeyboardEvent) {
+  const target = e.target as HTMLElement | null
+  if (target && ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName)) return
+
+  if (e.key === 'ArrowRight') {
+    nextCard()
+  } else if (e.key === 'ArrowLeft') {
+    previousCard()
+  }
+}
+
 onMounted(async () => {
-  await Promise.all([fetchCategories(), fetchTerms()])
-
-  // Check for category query param
-  const categoryParam = route.query.category
-  if (categoryParam) {
-    const categoryId = parseInt(categoryParam as string, 10)
-    if (!isNaN(categoryId)) {
-      selectedCategoryId.value = categoryId
-    }
-  }
-
-  // Keyboard navigation
-  const handleKeyPress = (e: KeyboardEvent) => {
-    if (e.key === 'ArrowRight') {
-      nextCard()
-    } else if (e.key === 'ArrowLeft') {
-      previousCard()
-    } else if (e.key === ' ') {
-      e.preventDefault()
-      flashcardRef.value?.flip()
-    }
-  }
-
   window.addEventListener('keydown', handleKeyPress)
-
-  onUnmounted(() => {
-    window.removeEventListener('keydown', handleKeyPress)
-  })
+  await Promise.all([fetchCategories(), fetchTerms()])
 })
 
-function handleCategorySelect(categoryId: number | null) {
-  selectedCategoryId.value = categoryId
-  currentIndex.value = 0
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyPress)
+})
+
+// When a nav button becomes disabled under the focused element, the browser
+// drops focus to <body>; move it to the card instead.
+function keepFocusOnCard() {
+  nextTick(() => {
+    if (document.activeElement === document.body) {
+      flashcardRef.value?.focus()
+    }
+  })
+}
+
+function scrollListToCurrent() {
+  nextTick(() => {
+    const active = listRef.value?.querySelector<HTMLElement>('[aria-current="true"]')
+    active?.scrollIntoView({ block: 'nearest' })
+  })
+}
+
+function goTo(index: number) {
+  currentIndex.value = index
+  nextTick(() => flashcardRef.value?.focus())
 }
 
 function nextCard() {
   if (currentIndex.value < filteredTerms.value.length - 1) {
     currentIndex.value++
+    keepFocusOnCard()
+    scrollListToCurrent()
   }
 }
 
 function previousCard() {
   if (currentIndex.value > 0) {
     currentIndex.value--
+    keepFocusOnCard()
+    scrollListToCurrent()
   }
 }
 
 function handleShuffle() {
   shuffleTerms()
   currentIndex.value = 0
+  // The counter may not change (index already 0); focusing the card reads the new term
+  nextTick(() => flashcardRef.value?.focus())
 }
 
-// Reset index when filtered terms change
+// Reset index when the filter changes
+watch(selectedCategoryId, () => {
+  currentIndex.value = 0
+})
+
 watch(filteredTerms, () => {
   if (currentIndex.value >= filteredTerms.value.length) {
     currentIndex.value = 0
   }
 })
 </script>
-
-<style scoped>
-kbd {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-</style>
