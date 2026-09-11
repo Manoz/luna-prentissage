@@ -40,7 +40,7 @@ Branche : `fix/security-accessibility-audit` (depuis `dev`). Un commit par lot.
 - [x] m4 `role="status"` sur les loaders
 - [x] m5 Tableau : caption, `scope="col"`, ligne vide, `<nav>` pagination + `aria-current`
 - [x] S7 Suppression de catégorie avec termes → 409
-- [ ] **À tester manuellement (connexion admin requise)** : ouverture/fermeture des modales au clavier, Échap, retour du focus sur le bouton déclencheur, message d'erreur en cas d'échec réseau
+- [x] Testé en session admin réelle (Chrome) : focus initial dans la modale, Tab piégé, Échap ferme, focus rendu au bouton déclencheur, `alertdialog` sur les suppressions, erreurs réseau affichées en `role="alert"` sans fermer la modale, tableau/caption/pagination/état vide conformes
 
 ## Lot 5 — Durcissement (cf2e9e8)
 
