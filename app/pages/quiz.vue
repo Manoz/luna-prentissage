@@ -16,7 +16,7 @@
               <NuxtLink
                 to="/"
                 aria-label="Retour à l'accueil"
-                class="text-deep-teal/60 hover:text-deep-teal transition-colors"
+                class="text-deep-teal-muted hover:text-deep-teal transition-colors"
               >
                 <svg
                   class="w-6 h-6"
@@ -51,7 +51,7 @@
             >
               Configurer votre quiz
             </h2>
-            <p class="text-deep-teal/60 mb-8">
+            <p class="text-deep-teal-muted mb-8">
               Choisissez les paramètres pour personnaliser votre session de quiz.
             </p>
 
@@ -64,7 +64,7 @@
                 <select
                   id="quiz-category"
                   v-model="selectedCategoryId"
-                  class="w-full px-4 py-3 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
+                  class="w-full px-4 py-3 border-2 border-deep-teal/70 rounded-lg focus:border-deep-teal focus:outline-none"
                 >
                   <option :value="null">Toutes les catégories</option>
                   <option v-for="category in categories" :key="category.id" :value="category.id">
@@ -116,7 +116,7 @@
                     class="slider w-full"
                   />
                 </div>
-                <div class="flex justify-between text-sm text-deep-teal/60 mt-2">
+                <div class="flex justify-between text-sm text-deep-teal-muted mt-2">
                   <span>5</span>
                   <output for="quiz-count" class="text-lg font-semibold text-deep-teal">
                     {{ questionCount }}
@@ -138,7 +138,8 @@
 
               <p
                 v-if="!termsLoading && availableTerms.length === 0"
-                class="text-center text-terracotta text-sm"
+                role="status"
+                class="text-center text-red-700 text-sm"
               >
                 Aucun terme disponible pour cette catégorie
               </p>
@@ -174,7 +175,7 @@
               ref="nextButtonRef"
               type="button"
               :disabled="!hasAnswered"
-              class="px-8 py-3 bg-terracotta text-warm-cream font-semibold rounded-full hover:bg-terracotta/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              class="px-8 py-3 bg-terracotta-dark text-warm-cream font-semibold rounded-full hover:bg-terracotta-dark/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               @click="finishQuiz"
             >
               Voir les résultats
@@ -189,9 +190,9 @@
               <div
                 class="w-32 h-32 rounded-full mx-auto mb-6 flex items-center justify-center text-6xl font-serif font-bold"
                 :class="{
-                  'bg-green-100 text-green-600': percentage >= 70,
-                  'bg-yellow-100 text-yellow-600': percentage >= 50 && percentage < 70,
-                  'bg-red-100 text-red-600': percentage < 50,
+                  'bg-green-100 text-green-800': percentage >= 70,
+                  'bg-yellow-100 text-yellow-800': percentage >= 50 && percentage < 70,
+                  'bg-red-100 text-red-800': percentage < 50,
                 }"
               >
                 {{ percentage }}%
@@ -205,7 +206,7 @@
                 {{ getResultTitle() }}
               </h2>
 
-              <p class="text-xl text-deep-teal/70">
+              <p class="text-xl text-deep-teal-muted">
                 Vous avez obtenu
                 <span class="font-semibold text-deep-teal">{{ score }}/{{ questions.length }}</span>
                 bonnes réponses
@@ -217,14 +218,14 @@
                 <div class="text-3xl font-serif font-bold text-deep-teal mb-1">
                   {{ score }}
                 </div>
-                <div class="text-sm text-deep-teal/60">Bonnes réponses</div>
+                <div class="text-sm text-deep-teal-muted">Bonnes réponses</div>
               </div>
 
               <div class="p-6 bg-terracotta/5 rounded-xl">
                 <div class="text-3xl font-serif font-bold text-terracotta mb-1">
                   {{ questions.length - score }}
                 </div>
-                <div class="text-sm text-deep-teal/60">Erreurs</div>
+                <div class="text-sm text-deep-teal-muted">Erreurs</div>
               </div>
             </div>
 
@@ -238,7 +239,7 @@
               </button>
               <NuxtLink
                 to="/"
-                class="flex-1 px-6 py-3 border-2 border-deep-teal/20 text-deep-teal font-semibold rounded-full hover:bg-deep-teal/5 transition-all text-center"
+                class="flex-1 px-6 py-3 border-2 border-deep-teal/70 text-deep-teal font-semibold rounded-full hover:bg-deep-teal/5 transition-all text-center"
               >
                 Retour à l'accueil
               </NuxtLink>

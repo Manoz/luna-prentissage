@@ -14,7 +14,7 @@
             Luna<span class="text-terracotta">·</span>Prentissage
           </h1>
         </NuxtLink>
-        <p class="text-deep-teal/60 mt-2">Administration</p>
+        <p class="text-deep-teal-muted mt-2">Administration</p>
       </div>
 
       <div class="bg-white rounded-2xl shadow-xl p-8">
@@ -31,7 +31,7 @@
               type="text"
               autocomplete="username"
               required
-              class="w-full px-4 py-3 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none transition-colors"
+              class="w-full px-4 py-3 border-2 border-deep-teal/70 rounded-lg focus:border-deep-teal focus:outline-none transition-colors"
               placeholder=""
             />
           </div>
@@ -46,7 +46,7 @@
               type="password"
               autocomplete="current-password"
               required
-              class="w-full px-4 py-3 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none transition-colors"
+              class="w-full px-4 py-3 border-2 border-deep-teal/70 rounded-lg focus:border-deep-teal focus:outline-none transition-colors"
               placeholder=""
             />
           </div>
@@ -59,7 +59,7 @@
             {{ loading ? 'Connexion...' : 'Se connecter' }}
           </button>
 
-          <p v-if="error" class="text-terracotta text-sm text-center">
+          <p v-if="error" class="text-red-700 text-sm text-center">
             {{ error }}
           </p>
         </form>
@@ -67,7 +67,7 @@
         <div class="mt-6 pt-6 border-t border-deep-teal/10">
           <NuxtLink
             to="/"
-            class="text-sm text-deep-teal/60 hover:text-deep-teal transition-colors flex items-center justify-center gap-2"
+            class="text-sm text-deep-teal-muted hover:text-deep-teal transition-colors flex items-center justify-center gap-2"
           >
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path

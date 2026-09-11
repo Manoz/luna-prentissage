@@ -9,13 +9,13 @@
 
     <div class="relative text-center max-w-2xl">
       <div class="mb-8">
-        <div class="text-9xl font-serif font-bold text-deep-teal/20 mb-4">
+        <div class="text-9xl font-serif font-bold text-deep-teal/20 mb-4" aria-hidden="true">
           {{ error.statusCode }}
         </div>
         <h1 class="text-4xl md:text-5xl font-serif font-bold text-deep-teal mb-4">
           {{ errorTitle }}
         </h1>
-        <p class="text-xl text-deep-teal/70 mb-8">
+        <p class="text-xl text-deep-teal-muted mb-8">
           {{ errorMessage }}
         </p>
       </div>
@@ -32,7 +32,7 @@
         <button
           v-if="error.statusCode === 404"
           type="button"
-          class="px-8 py-3 border-2 border-deep-teal/20 text-deep-teal font-semibold rounded-full hover:bg-deep-teal/5 transition-all"
+          class="px-8 py-3 border-2 border-deep-teal/70 text-deep-teal font-semibold rounded-full hover:bg-deep-teal/5 transition-all"
           @click="goBack"
         >
           Retour en arrière
@@ -41,7 +41,7 @@
 
       <div v-if="isDev" class="mt-12 p-6 bg-white rounded-xl shadow-lg text-left">
         <h3 class="text-lg font-semibold text-deep-teal mb-2">Détails de l'erreur (dev mode)</h3>
-        <pre class="text-sm text-deep-teal/70 overflow-x-auto">{{ error }}</pre>
+        <pre class="text-sm text-deep-teal-muted overflow-x-auto">{{ error }}</pre>
       </div>
     </div>
   </div>

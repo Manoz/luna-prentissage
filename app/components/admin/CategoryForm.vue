@@ -9,7 +9,7 @@
         v-model="formData.name"
         type="text"
         required
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+        class="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
         placeholder="Système Nerveux et Motricité"
       />
     </div>
@@ -30,7 +30,7 @@
           type="text"
           pattern="^#[0-9A-Fa-f]{6}$"
           required
-          class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono"
+          class="flex-1 px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono"
           placeholder="#D4A574"
         />
       </div>
@@ -45,7 +45,7 @@
         id="description"
         v-model="formData.description"
         rows="3"
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+        class="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
         placeholder="Radicaux liés au système nerveux et à la motricité"
       />
     </div>

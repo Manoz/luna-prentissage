@@ -9,7 +9,7 @@
           </h1>
           <NuxtLink
             to="/admin"
-            class="hidden sm:inline text-sm text-deep-teal/60 hover:text-deep-teal hover:underline transition-colors"
+            class="hidden sm:inline text-sm text-deep-teal-muted hover:text-deep-teal hover:underline transition-colors"
           >
             Administration
           </NuxtLink>
@@ -98,7 +98,7 @@
             <h3 class="text-4xl font-serif font-bold text-deep-teal mb-4">
               Explorer par catégorie
             </h3>
-            <p class="text-deep-teal/70 max-w-2xl mx-auto">
+            <p class="text-deep-teal-muted max-w-2xl mx-auto">
               Chaque catégorie regroupe des radicaux liés à un système ou concept médical
               spécifique.
             </p>
@@ -112,23 +112,26 @@
               class="group relative overflow-hidden rounded-2xl p-6 cursor-pointer transition-all hover:shadow-2xl hover:-translate-y-1 block"
               :style="{
                 backgroundColor: category.color,
+                color: readableTextOn(category.color),
                 animationDelay: `${index * 50}ms`,
               }"
               style="animation: fadeInUp 0.6s ease-out backwards"
             >
               <div class="relative z-10">
                 <div class="flex items-start justify-between mb-3">
-                  <span class="text-xs uppercase tracking-wider font-medium text-white/80">
+                  <span class="text-xs uppercase tracking-wider font-medium">
                     {{ getTermCountForCategory(category.id) }} termes
                   </span>
                   <div
                     class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform"
                   >
                     <svg
-                      class="w-4 h-4 text-white"
+                      class="w-4 h-4"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
                     >
                       <path
                         stroke-linecap="round"
@@ -140,11 +143,11 @@
                   </div>
                 </div>
 
-                <h4 class="text-xl font-serif font-bold text-white mb-2 leading-tight">
+                <h4 class="text-xl font-serif font-bold mb-2 leading-tight">
                   {{ category.name }}
                 </h4>
 
-                <p class="text-sm text-white/80 leading-relaxed">
+                <p class="text-sm leading-relaxed">
                   {{ category.description }}
                 </p>
               </div>
@@ -160,7 +163,7 @@
 
       <!-- Footer -->
       <footer class="container mx-auto px-6 py-12 border-t border-deep-teal/10">
-        <div class="text-center text-deep-teal/60 text-sm">
+        <div class="text-center text-deep-teal-muted text-sm">
           <p>Luna-Prentissage · Terminologie Médicale</p>
         </div>
       </footer>

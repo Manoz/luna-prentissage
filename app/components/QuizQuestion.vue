@@ -3,10 +3,10 @@
     <!-- Progress Bar -->
     <div class="mb-8">
       <div class="flex justify-between items-center mb-2">
-        <span class="text-sm font-medium text-deep-teal/60">
+        <span id="quiz-question-position" class="text-sm font-medium text-deep-teal-muted">
           Question {{ currentQuestion + 1 }} sur {{ totalQuestions }}
         </span>
-        <span class="text-sm font-medium text-deep-teal/60">
+        <span class="text-sm font-medium text-deep-teal-muted">
           Score: {{ score }}/{{ currentQuestion + (answered ? 1 : 0) }}
         </span>
       </div>
@@ -27,13 +27,14 @@
 
     <!-- Multiple Choice Question -->
     <div v-if="question.type === 'multiple-choice'" class="space-y-6">
-      <h3
+      <h2
         ref="headingRef"
         tabindex="-1"
+        aria-describedby="quiz-question-position"
         class="text-2xl font-bold text-deep-teal mb-6 focus:outline-none"
       >
         Que signifie <span class="text-terracotta">"{{ question.term.root }}"</span> ?
-      </h3>
+      </h2>
       <div class="space-y-3">
         <button
           v-for="(option, index) in question.options"
@@ -51,14 +52,15 @@
 
     <!-- True/False Question -->
     <div v-else-if="question.type === 'true-false'" class="space-y-6">
-      <h3
+      <h2
         ref="headingRef"
         tabindex="-1"
+        aria-describedby="quiz-question-position"
         class="text-2xl font-bold text-deep-teal mb-6 focus:outline-none"
       >
         <span class="text-terracotta">"{{ question.term.root }}"</span> signifie
         <span class="text-terracotta">"{{ question.statement }}"</span>
-      </h3>
+      </h2>
       <div class="grid grid-cols-2 gap-4">
         <button
           type="button"
@@ -122,7 +124,7 @@
           La bonne réponse est :
           <span class="font-semibold">{{ formatAnswer(question.correctAnswer) }}</span>
         </p>
-        <p class="mt-3 text-sm text-deep-teal/60">
+        <p class="mt-3 text-sm text-deep-teal-muted">
           Catégorie : <span class="font-medium">{{ question.term.category_name }}</span>
         </p>
         <p class="sr-only">Score : {{ score }} sur {{ currentQuestion + 1 }}</p>
@@ -173,7 +175,7 @@ function focusHeading() {
 
 function getOptionClass(option: string) {
   if (!answered.value) {
-    return 'border-gray-300 hover:border-deep-teal hover:bg-deep-teal/5'
+    return 'border-gray-500 hover:border-deep-teal hover:bg-deep-teal/5'
   }
 
   if (option === props.question.correctAnswer) {
@@ -189,7 +191,7 @@ function getOptionClass(option: string) {
 
 function getTrueFalseClass(value: boolean) {
   if (!answered.value) {
-    return 'border-gray-300 hover:border-deep-teal hover:bg-deep-teal/5'
+    return 'border-gray-500 hover:border-deep-teal hover:bg-deep-teal/5'
   }
 
   if (value === props.question.correctAnswer) {

@@ -19,13 +19,14 @@
         class="flashcard-face absolute w-full h-full rounded-xl shadow-2xl p-8 flex items-center justify-center"
         :style="{
           backgroundColor: term.category_color,
+          color: textColor,
           backfaceVisibility: 'hidden',
         }"
         :aria-hidden="isFlipped"
       >
         <div class="text-center">
-          <p class="text-5xl font-bold text-white mb-4">{{ term.root }}</p>
-          <p class="text-white/70 text-sm uppercase tracking-wide">Appuyez pour révéler</p>
+          <p class="text-5xl font-bold mb-4">{{ term.root }}</p>
+          <p class="text-sm uppercase tracking-wide">Appuyez pour révéler</p>
         </div>
       </div>
 
@@ -34,14 +35,15 @@
         class="flashcard-face absolute w-full h-full rounded-xl shadow-2xl p-8 flex items-center justify-center"
         :style="{
           backgroundColor: term.category_color,
+          color: textColor,
           backfaceVisibility: 'hidden',
           transform: 'rotateY(180deg)',
         }"
         :aria-hidden="!isFlipped"
       >
         <div class="text-center">
-          <p class="text-3xl font-semibold text-white mb-4">{{ term.meaning }}</p>
-          <p class="text-white/70 text-sm uppercase tracking-wide mt-6">{{ term.category_name }}</p>
+          <p class="text-3xl font-semibold mb-4">{{ term.meaning }}</p>
+          <p class="text-sm uppercase tracking-wide mt-6">{{ term.category_name }}</p>
         </div>
       </div>
     </div>
@@ -58,6 +60,7 @@ interface Props {
 const props = defineProps<Props>()
 const isFlipped = ref(false)
 const buttonRef = ref<HTMLButtonElement | null>(null)
+const textColor = computed(() => readableTextOn(props.term.category_color))
 
 function flip() {
   isFlipped.value = !isFlipped.value

@@ -15,7 +15,7 @@
             <div class="flex items-center gap-4">
               <NuxtLink
                 to="/admin"
-                class="text-deep-teal/60 hover:text-deep-teal transition-colors"
+                class="text-deep-teal-muted hover:text-deep-teal transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
@@ -50,7 +50,7 @@
                 v-model="searchQuery"
                 type="text"
                 placeholder="Rechercher par radical ou signification..."
-                class="w-full px-4 py-2 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
+                class="w-full px-4 py-2 border-2 border-deep-teal/70 rounded-lg focus:border-deep-teal focus:outline-none"
               />
             </div>
 
@@ -60,7 +60,7 @@
               </label>
               <select
                 v-model="filterCategoryId"
-                class="w-full px-4 py-2 border-2 border-deep-teal/20 rounded-lg focus:border-deep-teal focus:outline-none"
+                class="w-full px-4 py-2 border-2 border-deep-teal/70 rounded-lg focus:border-deep-teal focus:outline-none"
               >
                 <option :value="null">Toutes les catégories</option>
                 <option v-for="category in categories" :key="category.id" :value="category.id">
@@ -70,7 +70,7 @@
             </div>
           </div>
 
-          <div class="mt-4 flex items-center justify-between text-sm text-deep-teal/60">
+          <div class="mt-4 flex items-center justify-between text-sm text-deep-teal-muted">
             <span>{{ filteredTerms.length }} terme(s) trouvé(s)</span>
             <span>Page {{ currentPage }} sur {{ totalPages }}</span>
           </div>
@@ -82,7 +82,7 @@
             <div
               class="w-16 h-16 border-4 border-deep-teal/20 border-t-deep-teal rounded-full animate-spin mx-auto mb-4"
             />
-            <p class="text-deep-teal/60">Chargement...</p>
+            <p class="text-deep-teal-muted">Chargement...</p>
           </div>
         </div>
 
@@ -111,13 +111,16 @@
                   <td class="px-6 py-4">
                     <span class="font-semibold text-deep-teal">{{ term.root }}</span>
                   </td>
-                  <td class="px-6 py-4 text-deep-teal/70">
+                  <td class="px-6 py-4 text-deep-teal-muted">
                     {{ term.meaning }}
                   </td>
                   <td class="px-6 py-4">
                     <span
-                      class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm text-white"
-                      :style="{ backgroundColor: term.category_color }"
+                      class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm"
+                      :style="{
+                        backgroundColor: term.category_color,
+                        color: readableTextOn(term.category_color),
+                      }"
                     >
                       {{ term.category_name }}
                     </span>
@@ -126,7 +129,7 @@
                     <div class="flex items-center justify-end gap-2">
                       <button
                         type="button"
-                        class="p-2 text-deep-teal/60 hover:text-deep-teal hover:bg-deep-teal/5 rounded-lg transition-all"
+                        class="p-2 text-deep-teal-muted hover:text-deep-teal hover:bg-deep-teal/5 rounded-lg transition-all"
                         @click="openEditModal(term)"
                       >
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -140,7 +143,7 @@
                       </button>
                       <button
                         type="button"
-                        class="p-2 text-terracotta/60 hover:text-terracotta hover:bg-terracotta/5 rounded-lg transition-all"
+                        class="p-2 text-red-700 hover:text-red-800 hover:bg-red-50 rounded-lg transition-all"
                         @click="confirmDelete(term)"
                       >
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -165,7 +168,7 @@
               <button
                 type="button"
                 :disabled="currentPage === 1"
-                class="px-4 py-2 text-sm font-medium text-deep-teal border-2 border-deep-teal/20 rounded-lg hover:bg-deep-teal/5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                class="px-4 py-2 text-sm font-medium text-deep-teal border-2 border-deep-teal/70 rounded-lg hover:bg-deep-teal/5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                 @click="currentPage--"
               >
                 Précédent
@@ -190,7 +193,7 @@
               <button
                 type="button"
                 :disabled="currentPage === totalPages"
-                class="px-4 py-2 text-sm font-medium text-deep-teal border-2 border-deep-teal/20 rounded-lg hover:bg-deep-teal/5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                class="px-4 py-2 text-sm font-medium text-deep-teal border-2 border-deep-teal/70 rounded-lg hover:bg-deep-teal/5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                 @click="currentPage++"
               >
                 Suivant
@@ -249,7 +252,7 @@
               <h3 class="text-xl font-serif font-bold text-deep-teal mb-2">
                 Confirmer la suppression
               </h3>
-              <p class="text-deep-teal/60">
+              <p class="text-deep-teal-muted">
                 Êtes-vous sûr de vouloir supprimer le terme
                 <span class="font-semibold text-deep-teal">{{ termToDelete?.root }}</span> ?
               </p>
@@ -266,7 +269,7 @@
               <button
                 type="button"
                 :disabled="deleting"
-                class="flex-1 px-4 py-3 bg-terracotta text-white font-semibold rounded-lg hover:bg-terracotta/90 transition-all disabled:opacity-50"
+                class="flex-1 px-4 py-3 bg-terracotta-dark text-white font-semibold rounded-lg hover:bg-terracotta-dark/90 transition-all disabled:opacity-50"
                 @click="handleDelete"
               >
                 {{ deleting ? 'Suppression...' : 'Supprimer' }}

@@ -4,6 +4,9 @@
   --color-warm-cream: #faf9f6;
   --color-deep-teal: #2d5f5d;
   --color-terracotta: #c1666b;
+  /* Accessible variants: muted text (5.3:1 on cream), dark button background (6:1 under white) */
+  --color-deep-teal-muted: #456f6d;
+  --color-terracotta-dark: #a0474c;
 }
 
 @layer base {

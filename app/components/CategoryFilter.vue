@@ -1,12 +1,12 @@
 <template>
   <div class="category-filter">
-    <h3 class="text-lg font-semibold text-deep-teal mb-4 lg:block hidden">Filtrer par catégorie</h3>
+    <h2 class="text-lg font-semibold text-deep-teal mb-4 lg:block hidden">Filtrer par catégorie</h2>
 
     <!-- Mobile: compact select dropdown -->
     <div class="lg:hidden">
       <select
         aria-label="Filtrer par catégorie"
-        class="w-full p-3 rounded-lg border-2 border-deep-teal/20 bg-white text-deep-teal font-medium focus:border-deep-teal focus:outline-none"
+        class="w-full p-3 rounded-lg border-2 border-deep-teal/70 bg-white text-deep-teal font-medium focus:border-deep-teal focus:outline-none"
         :value="selectedCategoryId ?? ''"
         @change="handleSelectChange"
       >
@@ -25,7 +25,7 @@
         class="w-full p-3 text-left rounded-lg border-2 transition-all font-medium"
         :class="{
           'border-deep-teal bg-deep-teal/5 text-deep-teal': selectedCategoryId === null,
-          'border-gray-300 hover:border-gray-400 text-gray-700': selectedCategoryId !== null,
+          'border-gray-500 hover:border-deep-teal text-gray-700': selectedCategoryId !== null,
         }"
         @click="selectCategory(null)"
       >
@@ -45,13 +45,13 @@
         class="w-full p-3 text-left rounded-lg border-2 transition-all font-medium"
         :class="{
           'border-deep-teal bg-deep-teal/5': selectedCategoryId === category.id,
-          'border-gray-300 hover:border-gray-400': selectedCategoryId !== category.id,
+          'border-gray-500 hover:border-deep-teal': selectedCategoryId !== category.id,
         }"
         @click="selectCategory(category.id)"
       >
         <span class="flex items-center gap-3">
           <span
-            class="w-4 h-4 rounded-full shrink-0"
+            class="w-4 h-4 rounded-full shrink-0 border border-gray-500"
             :style="{ backgroundColor: category.color }"
             aria-hidden="true"
           />

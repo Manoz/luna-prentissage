@@ -7,7 +7,7 @@
         v-model="formData.root"
         type="text"
         required
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+        class="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
         placeholder="arthro-"
       />
       <p class="mt-1 text-sm text-gray-500">Le préfixe ou suffixe médical</p>
@@ -22,7 +22,7 @@
         v-model="formData.meaning"
         type="text"
         required
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+        class="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
         placeholder="articulation"
       />
       <p class="mt-1 text-sm text-gray-500">La signification du radical</p>
@@ -36,7 +36,7 @@
         id="category"
         v-model="formData.category_id"
         required
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+        class="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
       >
         <option value="">Sélectionner une catégorie</option>
         <option v-for="category in categories" :key="category.id" :value="category.id">

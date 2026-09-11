@@ -15,7 +15,7 @@
             <div class="flex items-center gap-4">
               <NuxtLink
                 to="/admin"
-                class="text-deep-teal/60 hover:text-deep-teal transition-colors"
+                class="text-deep-teal-muted hover:text-deep-teal transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
@@ -47,7 +47,7 @@
             <div
               class="w-16 h-16 border-4 border-deep-teal/20 border-t-deep-teal rounded-full animate-spin mx-auto mb-4"
             />
-            <p class="text-deep-teal/60">Chargement...</p>
+            <p class="text-deep-teal-muted">Chargement...</p>
           </div>
         </div>
 
@@ -60,13 +60,13 @@
           >
             <div class="flex items-start justify-between mb-4">
               <div
-                class="w-12 h-12 rounded-full shrink-0"
+                class="w-12 h-12 rounded-full shrink-0 border border-gray-500"
                 :style="{ backgroundColor: category.color }"
               />
               <div class="flex gap-2">
                 <button
                   type="button"
-                  class="p-2 text-deep-teal/60 hover:text-deep-teal hover:bg-deep-teal/5 rounded-lg transition-all"
+                  class="p-2 text-deep-teal-muted hover:text-deep-teal hover:bg-deep-teal/5 rounded-lg transition-all"
                   @click="openEditModal(category)"
                 >
                   <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -99,11 +99,11 @@
               {{ category.name }}
             </h3>
 
-            <p class="text-sm text-deep-teal/60 mb-4">
+            <p class="text-sm text-deep-teal-muted mb-4">
               {{ category.description || 'Aucune description' }}
             </p>
 
-            <div class="flex items-center gap-2 text-xs text-deep-teal/60">
+            <div class="flex items-center gap-2 text-xs text-deep-teal-muted">
               <span class="px-2 py-1 bg-deep-teal/5 rounded font-mono">
                 {{ category.color }}
               </span>
@@ -159,7 +159,7 @@
               <h3 class="text-xl font-serif font-bold text-deep-teal mb-2">
                 Confirmer la suppression
               </h3>
-              <p class="text-deep-teal/60">
+              <p class="text-deep-teal-muted">
                 Êtes-vous sûr de vouloir supprimer la catégorie
                 <span class="font-semibold text-deep-teal">{{ categoryToDelete?.name }}</span>
                 ?
@@ -178,14 +178,14 @@
               <button
                 type="button"
                 :disabled="deleting"
-                class="flex-1 px-4 py-3 bg-terracotta text-white font-semibold rounded-lg hover:bg-terracotta/90 transition-all disabled:opacity-50"
+                class="flex-1 px-4 py-3 bg-terracotta-dark text-white font-semibold rounded-lg hover:bg-terracotta-dark/90 transition-all disabled:opacity-50"
                 @click="handleDelete"
               >
                 {{ deleting ? 'Suppression...' : 'Supprimer' }}
               </button>
             </div>
 
-            <p v-if="deleteError" class="text-terracotta text-sm mt-4 text-center">
+            <p v-if="deleteError" class="text-red-700 text-sm mt-4 text-center">
               {{ deleteError }}
             </p>
           </div>

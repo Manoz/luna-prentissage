@@ -16,7 +16,7 @@
               <NuxtLink
                 to="/"
                 aria-label="Retour à l'accueil"
-                class="text-deep-teal/60 hover:text-deep-teal transition-colors"
+                class="text-deep-teal-muted hover:text-deep-teal transition-colors"
               >
                 <svg
                   class="w-6 h-6"
@@ -40,7 +40,7 @@
             <button
               v-if="filteredTerms.length > 0"
               type="button"
-              class="px-4 py-2 text-sm font-medium hover:text-deep-teal border border-deep-teal/20 rounded-full hover:bg-deep-teal/5 transition-all"
+              class="px-4 py-2 text-sm font-medium hover:text-deep-teal border border-deep-teal/70 rounded-full hover:bg-deep-teal/5 transition-all"
               @click="handleShuffle"
             >
               <span class="flex items-center gap-2">
@@ -85,12 +85,12 @@
                 <div
                   class="w-16 h-16 border-4 border-deep-teal/20 border-t-deep-teal rounded-full animate-spin mx-auto mb-4"
                 />
-                <p class="text-deep-teal/60">Chargement...</p>
+                <p class="text-deep-teal-muted">Chargement...</p>
               </div>
             </div>
 
             <!-- No Terms -->
-            <div v-else-if="filteredTerms.length === 0" class="text-center py-20">
+            <div v-else-if="filteredTerms.length === 0" role="status" class="text-center py-20">
               <div class="max-w-md mx-auto">
                 <div
                   class="w-20 h-20 rounded-full bg-terracotta/10 flex items-center justify-center mx-auto mb-6"
@@ -111,10 +111,10 @@
                     />
                   </svg>
                 </div>
-                <h3 class="text-2xl font-serif font-bold text-deep-teal mb-2">
+                <h2 class="text-2xl font-serif font-bold text-deep-teal mb-2">
                   Aucun terme trouvé
-                </h3>
-                <p class="text-deep-teal/60">Essayez de sélectionner une autre catégorie.</p>
+                </h2>
+                <p class="text-deep-teal-muted">Essayez de sélectionner une autre catégorie.</p>
               </div>
             </div>
 
@@ -127,7 +127,7 @@
                   <span class="font-semibold">{{ currentIndex + 1 }}</span> sur
                   <span class="font-semibold">{{ filteredTerms.length }}</span>
                 </div>
-                <div class="hidden md:flex items-center gap-2 text-xs text-deep-teal/60">
+                <div class="hidden md:flex items-center gap-2 text-xs text-deep-teal-muted">
                   <kbd class="px-2 py-1 bg-white rounded border border-deep-teal/20">←</kbd>
                   <kbd class="px-2 py-1 bg-white rounded border border-deep-teal/20">→</kbd>
                   <span>pour naviguer</span>
@@ -161,7 +161,7 @@
                 <button
                   type="button"
                   :disabled="currentIndex === 0"
-                  class="px-6 py-3 rounded-full border-2 border-deep-teal/20 text-deep-teal font-medium hover:bg-deep-teal hover:text-warm-cream transition-all disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-deep-teal"
+                  class="px-6 py-3 rounded-full border-2 border-deep-teal/70 text-deep-teal font-medium hover:bg-deep-teal hover:text-warm-cream transition-all disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-deep-teal"
                   @click="previousCard"
                 >
                   <span class="flex items-center gap-2">
@@ -304,6 +304,8 @@ function previousCard() {
 function handleShuffle() {
   shuffleTerms()
   currentIndex.value = 0
+  // The counter may not change (index already 0); focusing the card reads the new term
+  nextTick(() => flashcardRef.value?.focus())
 }
 
 // Reset index when filtered terms change
