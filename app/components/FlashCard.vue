@@ -2,50 +2,34 @@
   <button
     ref="buttonRef"
     type="button"
-    class="flashcard-container block w-full text-left select-none rounded-xl focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-deep-teal"
-    :style="{ perspective: '1000px' }"
+    class="block w-full rounded text-left select-none focus-visible:outline-offset-8"
     :aria-pressed="isFlipped"
     @click="flip"
   >
-    <div
-      class="flashcard relative w-full h-80 transition-transform duration-600"
-      :style="{
-        transformStyle: 'preserve-3d',
-        transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-      }"
-    >
-      <!-- Front (root) -->
-      <div
-        class="flashcard-face absolute w-full h-full rounded-xl shadow-2xl p-8 flex items-center justify-center"
-        :style="{
-          backgroundColor: term.category_color,
-          color: textColor,
-          backfaceVisibility: 'hidden',
-        }"
-        :aria-hidden="isFlipped"
-      >
-        <div class="text-center">
-          <p class="text-5xl font-bold mb-4">{{ term.root }}</p>
-          <p class="text-sm uppercase tracking-wide">Appuyez pour révéler</p>
-        </div>
-      </div>
+    <p class="kicker mb-6 flex items-center gap-2">
+      <span class="dot" :style="{ backgroundColor: term.category_color }" aria-hidden="true" />
+      {{ term.category_name }}
+    </p>
 
-      <!-- Back (meaning) -->
-      <div
-        class="flashcard-face absolute w-full h-full rounded-xl shadow-2xl p-8 flex items-center justify-center"
-        :style="{
-          backgroundColor: term.category_color,
-          color: textColor,
-          backfaceVisibility: 'hidden',
-          transform: 'rotateY(180deg)',
-        }"
+    <p class="text-6xl font-semibold tracking-[-0.04em] break-words sm:text-7xl lg:text-8xl">
+      {{ term.root }}
+    </p>
+
+    <div class="mt-8 border-t border-dashed border-line-strong pt-6">
+      <p
+        class="font-serif text-3xl italic transition-opacity duration-200 sm:text-4xl"
+        :class="isFlipped ? 'text-accent opacity-100' : 'opacity-0'"
         :aria-hidden="!isFlipped"
       >
-        <div class="text-center">
-          <p class="text-3xl font-semibold mb-4">{{ term.meaning }}</p>
-          <p class="text-sm uppercase tracking-wide mt-6">{{ term.category_name }}</p>
-        </div>
-      </div>
+        {{ term.meaning }}
+      </p>
+      <p
+        class="mt-2 text-[13px] text-ink-faint transition-opacity duration-200"
+        :class="isFlipped ? 'opacity-0' : 'opacity-100'"
+        :aria-hidden="isFlipped"
+      >
+        Appuyez sur la fiche ou sur Entrée pour révéler la signification
+      </p>
     </div>
   </button>
 </template>
@@ -60,7 +44,6 @@ interface Props {
 const props = defineProps<Props>()
 const isFlipped = ref(false)
 const buttonRef = ref<HTMLButtonElement | null>(null)
-const textColor = computed(() => readableTextOn(props.term.category_color))
 
 function flip() {
   isFlipped.value = !isFlipped.value
@@ -70,7 +53,7 @@ function focus() {
   buttonRef.value?.focus()
 }
 
-// Reset flip when term changes
+// Reset when term changes
 watch(
   () => props.term,
   () => {
