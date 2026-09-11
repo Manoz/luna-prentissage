@@ -2,14 +2,7 @@ export default defineEventHandler(async (event) => {
   await requireAdminAuth(event)
 
   try {
-    const id = Number.parseInt(getRouterParam(event, 'id') as string)
-
-    if (Number.isNaN(id)) {
-      throw createError({
-        statusCode: 400,
-        message: 'Invalid category ID',
-      })
-    }
+    const id = getIdParam(event, 'category ID')
 
     await deleteCategory(id)
     return { success: true }

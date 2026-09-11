@@ -1,8 +1,23 @@
+import { createHash, timingSafeEqual } from 'node:crypto'
 import type { H3Event } from 'h3'
 
 export interface AdminSession {
   authenticated: boolean
   username?: string
+  /** Fingerprint of the password the session was opened with (see passwordFingerprint) */
+  fingerprint?: string
+}
+
+function sha256(value: string): Buffer {
+  return createHash('sha256').update(value).digest()
+}
+
+/**
+ * Short, non-reversible fingerprint of the current admin password. Stored in
+ * the session so that rotating ADMIN_PASSWORD invalidates existing sessions.
+ */
+function passwordFingerprint(): string {
+  return sha256(useRuntimeConfig().adminPassword).toString('hex').slice(0, 16)
 }
 
 function getSessionConfig() {
@@ -20,16 +35,23 @@ function useAdminSession(event: H3Event) {
 
 export function verifyAdminCredentials(username: string, password: string): boolean {
   const config = useRuntimeConfig()
-  return username === config.adminUsername && password === config.adminPassword
+  if (!config.adminPassword) return false
+
+  // Hash both sides so the buffers have equal length, then compare in constant time
+  const usernameMatches = timingSafeEqual(sha256(username), sha256(config.adminUsername))
+  const passwordMatches = timingSafeEqual(sha256(password), sha256(config.adminPassword))
+  return usernameMatches && passwordMatches
 }
 
 export async function getAdminSession(event: H3Event): Promise<AdminSession> {
   const session = await useAdminSession(event)
+  const { authenticated, username, fingerprint } = session.data
 
-  return {
-    authenticated: session.data.authenticated || false,
-    username: session.data.username,
+  if (!authenticated || fingerprint !== passwordFingerprint()) {
+    return { authenticated: false }
   }
+
+  return { authenticated: true, username }
 }
 
 export async function setAdminSession(event: H3Event, username: string) {
@@ -38,6 +60,7 @@ export async function setAdminSession(event: H3Event, username: string) {
   await session.update({
     authenticated: true,
     username,
+    fingerprint: passwordFingerprint(),
   })
 }
 
