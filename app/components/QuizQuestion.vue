@@ -17,7 +17,8 @@
         aria-describedby="quiz-question-position"
         class="text-2xl font-semibold tracking-tight focus:outline-none sm:text-3xl"
       >
-        Que signifie <span class="font-serif font-medium text-accent">{{ question.term.root }}</span> ?
+        Que signifie
+        <span class="font-serif font-medium text-accent">{{ question.term.root }}</span> ?
       </h2>
       <div class="mt-7 flex max-w-xl flex-col gap-2">
         <button
