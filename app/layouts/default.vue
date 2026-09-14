@@ -73,10 +73,13 @@ const { terms } = useTerms()
 
 const menuOpen = ref(false)
 
+const { tutorEnabled } = useRuntimeConfig().public
+
 const nav = [
   { to: '/', label: 'Accueil', exact: true },
   { to: '/flashcards', label: 'Fiches' },
   { to: '/quiz', label: 'Quiz' },
+  ...(tutorEnabled ? [{ to: '/tutor', label: 'Tuteur' }] : []),
   { to: '/admin', label: 'Administration' },
 ]
 

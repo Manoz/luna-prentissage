@@ -14,6 +14,9 @@
       <div class="mt-6 flex flex-wrap gap-2">
         <NuxtLink to="/flashcards" class="btn-primary">Réviser les fiches</NuxtLink>
         <NuxtLink to="/quiz" class="btn-secondary">Lancer un quiz</NuxtLink>
+        <NuxtLink v-if="tutorEnabled" to="/tutor" class="btn-secondary">
+          Poser une question au tuteur
+        </NuxtLink>
       </div>
     </div>
 
@@ -52,6 +55,7 @@
 <script setup lang="ts">
 import type { TermWithCategory } from '~/types'
 
+const { tutorEnabled } = useRuntimeConfig().public
 const { categories, fetchCategories, loading } = useCategories()
 const { terms, fetchTerms, loading: termsLoading } = useTerms()
 

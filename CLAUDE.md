@@ -30,11 +30,12 @@ pnpm migrate      # Run database migrations
   - `useTerms` — fetch, filter, and shuffle terms
   - `useQuiz` — quiz generation, scoring, answer tracking
   - `useTheme` — theme preference (`light` | `dark` | `system`), persisted in localStorage
+  - `useTutor` — AI tutor conversation, consumes the server-sent event stream from `/api/tutor/chat`
 - **Layouts** (`app/layouts/`): `default` (sidebar with nav, category list, theme switch) and `admin` (sidebar with admin nav); login and error screens opt out with `layout: false`. Layouts only read shared state; each page fetches the data it needs in `onMounted`
 - **Components** (`app/components/`): `AppSidebar`, `AppWordmark`, `ThemeSwitch`, `FlashCard`, `QuizQuestion`, and `admin/` (`Modal`, `CategoryForm`, `TermForm`)
 - **Theme**: light/dark tokens as CSS variables in `main.css` (`:root`, `[data-theme='dark']`, `prefers-color-scheme` fallback), exposed to Tailwind through `@theme inline`. An inline head script in `nuxt.config.ts` applies the stored choice before first paint; `plugins/theme.client.ts` mirrors it into `useTheme` after hydration
 - **Category filter**: carried by the URL (`/flashcards?category=<id>`, `/quiz?category=<id>`) so the sidebar links and the pages stay in sync
-- **Fonts**: Public Sans (UI), Newsreader italic (meanings, quiz prompts) via `@nuxt/fonts`
+- **Fonts**: Public Sans (UI), Source Serif 4 (meanings, quiz prompts) via `@nuxt/fonts`
 - **Shared classes** (`main.css`): `btn-primary|secondary|ghost|danger`, `field`, `label`, `hint`, `kicker`, `row`/`row-active`, `dot`
 
 ### Backend (`server/`)
@@ -42,6 +43,7 @@ pnpm migrate      # Run database migrations
 - **Nitro server routes** under `server/api/` — file-based, method-suffixed (e.g., `index.get.ts`, `[id].delete.ts`)
 - **Database**: Neon serverless PostgreSQL via `@neondatabase/serverless` — direct SQL with tagged template literals, no ORM
 - **Auth**: H3 encrypted sessions (7-day cookie), single admin user from env vars
+- **AI tutor**: `server/api/tutor/chat.post.ts` streams answers from `claude-sonnet-5` (`@anthropic-ai/sdk`); `server/utils/tutor.ts` builds the system prompt (rules + full terminology from the DB, prompt-cached). Enabled only when `ANTHROPIC_API_KEY` is set (`public.tutorEnabled` hides the UI otherwise). Quotas in `server/utils/rate-limit.ts`, body validation in `validateTutorInput`
 - **Utilities**:
   - `server/utils/db.ts` — cached DB connection
   - `server/utils/auth.ts` — session helpers
@@ -54,6 +56,7 @@ pnpm migrate      # Run database migrations
 | `GET /api/categories`                     | `POST/PUT/DELETE /api/admin/categories` |
 | `GET /api/terms` (filter by `categoryId`) | `POST/PUT/DELETE /api/admin/terms`      |
 | `GET /api/terms/:id`                      | `POST /api/admin/auth/login\|logout`    |
+| `POST /api/tutor/chat` (SSE)              |                                         |
 |                                           | `GET /api/admin/auth/status`            |
 
 ### Key Types (`app/types/index.ts`)
@@ -70,6 +73,7 @@ Required in `.env` (see `.env.example`):
 - `DATABASE_URL` — Neon PostgreSQL connection string
 - `ADMIN_USERNAME` / `ADMIN_PASSWORD` — single admin credentials
 - `SESSION_SECRET` — 32-char hex for H3 session encryption
+- `ANTHROPIC_API_KEY` — optional, enables the AI tutor
 
 These are read via `nuxt.config.ts` `runtimeConfig` (server-side private keys).
 

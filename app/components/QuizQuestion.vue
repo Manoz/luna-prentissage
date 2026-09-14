@@ -17,7 +17,7 @@
         aria-describedby="quiz-question-position"
         class="text-2xl font-semibold tracking-tight focus:outline-none sm:text-3xl"
       >
-        Que signifie <span class="font-serif italic text-accent">{{ question.term.root }}</span> ?
+        Que signifie <span class="font-serif font-medium text-accent">{{ question.term.root }}</span> ?
       </h2>
       <div class="mt-7 flex max-w-xl flex-col gap-2">
         <button
@@ -45,8 +45,8 @@
         aria-describedby="quiz-question-position"
         class="text-2xl font-semibold tracking-tight focus:outline-none sm:text-3xl"
       >
-        <span class="font-serif italic text-accent">{{ question.term.root }}</span> signifie
-        <span class="font-serif italic text-accent">{{ question.statement }}</span>
+        <span class="font-serif font-medium text-accent">{{ question.term.root }}</span> signifie
+        <span class="font-serif font-medium text-accent">{{ question.statement }}</span>
       </h2>
       <div class="mt-7 grid max-w-xl grid-cols-2 gap-2">
         <button
@@ -82,12 +82,19 @@
         </p>
         <p v-if="!isCorrect" class="mt-1 text-sm text-ink-2">
           La bonne réponse est
-          <span class="font-serif text-base italic text-accent">{{
+          <span class="font-serif text-base font-medium text-accent">{{
             formatAnswer(question.correctAnswer)
           }}</span
           >.
         </p>
         <p class="mt-1 text-xs text-ink-faint">{{ question.term.category_name }}</p>
+        <NuxtLink
+          v-if="tutorEnabled"
+          :to="{ path: '/tutor', query: { q: `Explique-moi le terme ${question.term.root}` } }"
+          class="btn-secondary mt-3"
+        >
+          Demander au tuteur
+        </NuxtLink>
         <p class="sr-only">Score : {{ score }} sur {{ currentQuestion + 1 }}</p>
       </div>
     </div>
@@ -110,6 +117,7 @@ const emit = defineEmits<{
 }>()
 
 const letters = ['A', 'B', 'C', 'D', 'E', 'F']
+const { tutorEnabled } = useRuntimeConfig().public
 
 const answered = ref(false)
 const selectedAnswer = ref<string | boolean | null>(null)

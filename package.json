@@ -39,6 +39,7 @@
     "migrate": "tsx ./scripts/migrate-data.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.125.0",
     "@neondatabase/serverless": "^1.1.0",
     "@nuxt/fonts": "0.14.0",
     "@nuxt/image": "2.1.0",

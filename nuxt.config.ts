@@ -33,7 +33,7 @@ export default defineNuxtConfig({
   fonts: {
     families: [
       { name: 'Public Sans', provider: 'google', weights: [400, 500, 600, 700] },
-      { name: 'Newsreader', provider: 'google', weights: [500], styles: ['italic'] },
+      { name: 'Source Serif 4', provider: 'google', weights: [500, 600] },
     ],
   },
   modules: [
@@ -55,9 +55,12 @@ export default defineNuxtConfig({
     adminUsername: process.env.ADMIN_USERNAME || 'admin',
     adminPassword: process.env.ADMIN_PASSWORD || '',
     sessionSecret: process.env.SESSION_SECRET || '',
+    anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
     // Public keys (exposed to client)
     public: {
       apiBase: '/api',
+      // The tutor UI is only offered when the server can actually call the model
+      tutorEnabled: Boolean(process.env.ANTHROPIC_API_KEY),
     },
   },
 })

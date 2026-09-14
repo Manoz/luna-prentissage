@@ -108,3 +108,53 @@ export function validateLoginInput(body: Record<string, unknown>): void {
     { field: 'password', value: body.password, required: true, type: 'string', maxLength: 200 },
   ])
 }
+
+export interface TutorMessage {
+  role: 'user' | 'assistant'
+  content: string
+}
+
+const TUTOR_MAX_TURNS = 12
+const TUTOR_MAX_MESSAGE_LENGTH = 1000
+
+/**
+ * Validates the chat body and returns the trimmed history: only the most
+ * recent turns are kept, and the last message must come from the user.
+ */
+export function validateTutorInput(body: unknown): TutorMessage[] {
+  if (
+    !body ||
+    typeof body !== 'object' ||
+    !Array.isArray((body as { messages?: unknown }).messages)
+  ) {
+    throw createError({ statusCode: 400, message: 'messages must be an array' })
+  }
+
+  const raw = (body as { messages: unknown[] }).messages
+  if (raw.length === 0) {
+    throw createError({ statusCode: 400, message: 'messages must not be empty' })
+  }
+
+  const messages: TutorMessage[] = raw.map((item, index) => {
+    const entry = item as { role?: unknown; content?: unknown }
+    if (entry.role !== 'user' && entry.role !== 'assistant') {
+      throw createError({ statusCode: 400, message: `messages[${index}].role is invalid` })
+    }
+    if (typeof entry.content !== 'string' || entry.content.trim() === '') {
+      throw createError({ statusCode: 400, message: `messages[${index}].content is required` })
+    }
+    if (entry.content.length > TUTOR_MAX_MESSAGE_LENGTH) {
+      throw createError({
+        statusCode: 400,
+        message: `messages[${index}].content must be at most ${TUTOR_MAX_MESSAGE_LENGTH} characters`,
+      })
+    }
+    return { role: entry.role, content: entry.content.trim() }
+  })
+
+  if (messages[messages.length - 1]!.role !== 'user') {
+    throw createError({ statusCode: 400, message: 'the last message must come from the user' })
+  }
+
+  return messages.slice(-TUTOR_MAX_TURNS)
+}
