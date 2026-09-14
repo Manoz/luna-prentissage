@@ -74,7 +74,7 @@
               :disabled="pending"
               @keydown.enter.exact.prevent="submit"
             />
-            <button type="submit" class="btn-primary self-end" :disabled="pending || !draft.trim()">
+            <button type="submit" class="btn-primary" :disabled="pending || !draft.trim()">
               Envoyer
             </button>
           </div>
