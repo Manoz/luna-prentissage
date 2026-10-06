@@ -39,8 +39,8 @@
     "migrate": "tsx ./scripts/migrate-data.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.125.0",
-    "@neondatabase/serverless": "^1.1.0",
+    "@anthropic-ai/sdk": "^0.131.0",
+    "@neondatabase/serverless": "^1.2.0",
     "@nuxt/fonts": "0.14.0",
     "@nuxt/image": "2.1.0",
     "@tailwindcss/vite": "^4.3.3",
@@ -49,19 +49,19 @@
     "canvas-confetti": "^1.9.4",
     "nuxt": "^4.5.2",
     "tailwindcss": "^4.3.3",
-    "vue": "^3.5.42"
+    "vue": "^3.5.43"
   },
   "devDependencies": {
     "@nuxt/eslint": "1.17.0",
     "@types/canvas-confetti": "^1.9.0",
-    "@vue/language-core": "^3.3.11",
+    "@vue/language-core": "^3.3.12",
     "dotenv": "^17.4.2",
-    "eslint": "^10.10.0",
+    "eslint": "^10.12.0",
     "eslint-config-prettier": "^10.1.8",
-    "prettier": "^3.9.6",
-    "tsx": "^4.23.13",
+    "prettier": "^3.9.9",
+    "tsx": "^4.23.15",
     "typescript": "^6",
-    "vue-tsc": "^3.3.11"
+    "vue-tsc": "^3.3.12"
   },
   "packageManager": "pnpm@12.4.1"
 }
