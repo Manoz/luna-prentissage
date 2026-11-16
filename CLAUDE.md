@@ -43,7 +43,7 @@ pnpm migrate      # Run database migrations
 - **Nitro server routes** under `server/api/` — file-based, method-suffixed (e.g., `index.get.ts`, `[id].delete.ts`)
 - **Database**: Neon serverless PostgreSQL via `@neondatabase/serverless` — direct SQL with tagged template literals, no ORM
 - **Auth**: H3 encrypted sessions (7-day cookie), single admin user from env vars
-- **AI tutor**: `server/api/tutor/chat.post.ts` streams answers from `claude-sonnet-5` (`@anthropic-ai/sdk`); `server/utils/tutor.ts` builds the system prompt (rules + full terminology from the DB, prompt-cached). Enabled only when `ANTHROPIC_API_KEY` is set (`public.tutorEnabled` hides the UI otherwise). Quotas in `server/utils/rate-limit.ts`, body validation in `validateTutorInput`
+- **AI tutor**: `server/api/tutor/chat.post.ts` streams answers from `claude-haiku-5-5` (`@anthropic-ai/sdk`); `server/utils/tutor.ts` builds the system prompt (rules + full terminology from the DB, prompt-cached). Enabled only when `ANTHROPIC_API_KEY` is set (`public.tutorEnabled` hides the UI otherwise). Quotas in `server/utils/rate-limit.ts`, body validation in `validateTutorInput`
 - **Utilities**:
   - `server/utils/db.ts` — cached DB connection
   - `server/utils/auth.ts` — session helpers
