@@ -1,7 +1,15 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { getAllCategories, getAllTerms } from './queries'
 
-export const TUTOR_MODEL = 'claude-sonnet-5'
+export const TUTOR_MODEL = 'claude-haiku-5-5'
+
+// Models that accept output_config.effort; Haiku 4.5 and older models reject it with a 400
+const EFFORT_MODELS = /^claude-(fable|mythos|opus-5|opus-4-[5-8]|sonnet-5|sonnet-4-6|haiku-5)/
+
+/** Extra request options for the tutor model: low effort where the model supports it. */
+export const TUTOR_MODEL_OPTIONS = EFFORT_MODELS.test(TUTOR_MODEL)
+  ? { output_config: { effort: 'low' as const } }
+  : {}
 
 let client: Anthropic | null = null
 

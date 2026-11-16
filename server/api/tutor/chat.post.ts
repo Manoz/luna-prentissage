@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
       const stream = client.messages.stream({
         model: TUTOR_MODEL,
         max_tokens: 1024,
-        output_config: { effort: 'low' },
+        ...TUTOR_MODEL_OPTIONS,
         system,
         messages,
       })

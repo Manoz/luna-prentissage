@@ -219,7 +219,7 @@ Environment variables to configure on the platform:
 
 ## AI Tutor
 
-An optional chat tutor built on the Anthropic API (`@anthropic-ai/sdk`, model `claude-sonnet-5`). Set `ANTHROPIC_API_KEY` to enable it; without the key the page and the menu entry are hidden and the endpoint answers 503.
+An optional chat tutor built on the Anthropic API (`@anthropic-ai/sdk`, model `claude-haiku-5-5`). Set `ANTHROPIC_API_KEY` to enable it; without the key the page and the menu entry are hidden and the endpoint answers 503.
 
 The tutor is scoped to the app: the system prompt carries the rules and the full terminology (rebuilt from the database on every request, cached with prompt caching), and instructs the model to decline anything else. Costs are bounded by a per-IP limit (20 messages per 10 minutes), a global daily ceiling (400 messages), a 1000-character message limit, a trimmed history (last 12 turns) and a 1024-token answer cap. These constants live in `server/utils/rate-limit.ts` and `server/utils/validation.ts`.
 
