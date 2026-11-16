@@ -83,10 +83,8 @@
         </p>
         <p v-if="!isCorrect" class="mt-1 text-sm text-ink-2">
           La bonne réponse est
-          <span class="font-serif text-base font-medium text-accent">{{
-            formatAnswer(question.correctAnswer)
-          }}</span
-          >.
+          <span class="font-serif text-base font-medium text-accent">
+            {{ formatAnswer(question.correctAnswer) }} </span>.
         </p>
         <p class="mt-1 text-xs text-ink-faint">{{ question.term.category_name }}</p>
         <NuxtLink
