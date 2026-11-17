@@ -105,7 +105,7 @@ const tutorClientLimiter = createRateLimiter({
 
 const tutorGlobalLimiter = createRateLimiter({
   windowMs: 24 * 60 * 60 * 1000,
-  max: 400,
+  max: 1500,
   message: 'Le tuteur a atteint sa limite quotidienne. Réessayez demain.',
 })
 
